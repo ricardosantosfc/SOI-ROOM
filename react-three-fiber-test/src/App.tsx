@@ -1,7 +1,7 @@
 import { Suspense, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import './App.css'
-import { Experience } from './components/CanvasContent'
+import { Experience } from './components/Experience'
 import { KeyboardControls, PointerLockControls } from '@react-three/drei'
 
 function App() {
