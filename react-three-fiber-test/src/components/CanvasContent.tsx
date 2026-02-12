@@ -1,4 +1,6 @@
-import { Center, Environment, OrbitControls, useGLTF } from "@react-three/drei";
+import { Center, Environment, Sky, useGLTF } from "@react-three/drei";
+import { Physics } from "@react-three/rapier";
+import { Controls } from "../Controls";
 
 export const Experience = () => {
 
@@ -6,24 +8,19 @@ export const Experience = () => {
 
     return (
         <>
-            <Center><primitive object={gltf.scene}  /></Center>
-            <OrbitControls />
-            <Environment
-      files="https://dl.polyhaven.org/file/ph-assets/HDRIs/hdr/2k/evening_road_01_2k.hdr"
-      ground={{ height: 5, radius: 40, scale: 15 }}
-    />
-            <directionalLight
-                position={[2, 5, 2]}
-                intensity={2.5}
-                castShadow
-                shadow-mapSize-width={2048}
-                shadow-mapSize-height={2048}
-                shadow-bias={-0.0001}
-            />
-            <mesh position-y={-1.5} rotation-x={-Math.PI / 2} receiveShadow>
-                <planeGeometry args={[100, 100]} />
-                <shadowMaterial transparent opacity={0.2} />
-            </mesh>
+            <Physics gravity={[0, 0, 0]}>
+                <Controls />
+                <Center>
+                    <group >
+                        
+                        <primitive object={gltf.scene} />
+                    </group>
+                </Center>
+                <Environment preset="sunset" />
+                <ambientLight intensity={0.4} />
+                <directionalLight position={[5, 5, 5]} intensity={0.4} castShadow />
+                <Sky inclination={0.52} />
+            </Physics>
         </>
     );
 };
