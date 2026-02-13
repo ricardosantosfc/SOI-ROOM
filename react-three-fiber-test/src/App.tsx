@@ -3,6 +3,7 @@ import { Canvas } from '@react-three/fiber'
 import './App.css'
 import { Experience } from './components/Experience'
 import { KeyboardControls, PointerLockControls } from '@react-three/drei'
+import { Perf } from 'r3f-perf'
 
 function App() {
 
@@ -19,6 +20,7 @@ function App() {
         ]}>
         <Canvas shadows camera={{ position: [0, 0, 4], fov: 45 }}>
 
+          <Perf position="top-left" />
           <group position-y={0}>
             <Suspense fallback={null}>
               <Experience />
