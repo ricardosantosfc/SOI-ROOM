@@ -7,7 +7,7 @@ import { Perf } from 'r3f-perf'
 
 function App() {
 
-
+//or fov 45
 
   return (
     <>
@@ -18,7 +18,7 @@ function App() {
           { name: "left", keys: ["ArrowLeft", "a", "A"] },
           { name: "right", keys: ["ArrowRight", "d", "D"] },
         ]}>
-        <Canvas shadows camera={{ position: [0, 0, 4], fov: 45 }}>
+        <Canvas shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
 
           <Perf position="top-left" />
           <group position-y={0}>
@@ -26,7 +26,9 @@ function App() {
               <Experience />
             </Suspense>
           </group>
-          <PointerLockControls />
+          <PointerLockControls 
+          minPolarAngle={Math.PI/5} /*top */
+          maxPolarAngle={Math.PI - Math.PI/5} /*bottom contraint*/ />
         </Canvas>
       </KeyboardControls>
     </>
