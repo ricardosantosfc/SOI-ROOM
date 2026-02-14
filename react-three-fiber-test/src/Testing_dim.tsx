@@ -10,6 +10,8 @@ import { useGLTF, Outlines, Html } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 import { RigidBody } from '@react-three/rapier'
 import { Select } from '@react-three/postprocessing'
+import { useStore } from './store'
+import { useShallow } from 'zustand/shallow'
 
 
 type ActionName = 'flloor' | 'wall left' | 'wall right' | 'wall window.001' | 'wall door l frame fabric only' | 'wall door l frame fabric only.001' | 'wall door' | 'strucutrer wall dor old'
@@ -57,6 +59,17 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   const [isHovered, setIsHovered] = useState(false);
   const [isColliding, setIsColliding] = useState(false)
   const [showDiv, setShowDiv] = useState(false);
+  const { isCameraFixed, setIsCameraFixed } = useStore( useShallow((state) =>
+  ({isCameraFixed: state.isCameraFixed, setIsCameraFixed: state.setIsCameraFixed})),)
+
+  const handleClick = () => {
+    if (isColliding && isHovered) {
+      setShowDiv(prev => !prev);
+      setIsCameraFixed(!isCameraFixed)
+      //every truthy should trigger camera anim, not just cmara fixed
+    }
+    
+  }
   const { nodes, materials } = useGLTF('/testing_dim-transformed.glb') as unknown as GLTFResult
 
   return (
@@ -139,11 +152,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
                 console.log("outing")
                 setIsHovered(false)
               }}
-              onClick={() => {
-                if(isColliding && isHovered){
-                  setShowDiv(prev => !prev);
-                }
-              }}
+              onClick={handleClick}
             >
               {isColliding && isHovered && !showDiv && (
                 <><Outlines thickness={30} />
@@ -159,10 +168,10 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
               {showDiv && (
                 <Html>
-                <div >
-                  <h1>Clicked</h1>
-                </div>
-              </Html>
+                  <div >
+                    <h1>Clicked</h1>
+                  </div>
+                </Html>
               )}
             </mesh>
 
