@@ -56,6 +56,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   //and when triggered, show 2d div -> zustand state to acces props? 
   const [isHovered, setIsHovered] = useState(false);
   const [isColliding, setIsColliding] = useState(false)
+  const [showDiv, setShowDiv] = useState(false);
   const { nodes, materials } = useGLTF('/testing_dim-transformed.glb') as unknown as GLTFResult
 
   return (
@@ -126,34 +127,45 @@ export function Model(props: JSX.IntrinsicElements['group']) {
               setIsColliding(false)
             }}>
             <mesh name="Cube022" geometry={nodes.Cube022.geometry} material={materials.concrete} />
-            <Select enabled={isHovered}>
-              {/* only enable outline if collision (again, sensor) */}
-              <mesh name="Cube022_1" geometry={nodes.Cube022_1.geometry} material={materials['wood floor']}
-                onPointerEnter={(event) => {
-                  console.log("entered")
-                  setIsHovered(true)
-                  event.stopPropagation()
-                }}
-                onPointerOut={() => {
-                  console.log("outing")
-                  setIsHovered(false)
-                }}
-                onClick={() => { console.log("clicked") }}
-              >
-                {isHovered && isColliding && (
-                  <><Outlines thickness={30} />
-                  <Html  position={[0, -0.5,0]} >
+
+            {/* only enable outline if collision (again, sensor) */}
+            <mesh name="Cube022_1" geometry={nodes.Cube022_1.geometry} material={materials['wood floor']}
+              onPointerEnter={(event) => {
+                console.log("entered")
+                setIsHovered(true)
+                event.stopPropagation()
+              }}
+              onPointerOut={() => {
+                console.log("outing")
+                setIsHovered(false)
+              }}
+              onClick={() => {
+                if(isColliding && isHovered){
+                  setShowDiv(prev => !prev);
+                }
+              }}
+            >
+              {isColliding && isHovered && !showDiv && (
+                <><Outlines thickness={30} />
+                  <Html position={[0, -0.5, 0]} >
 
                     <div className="interact-message">
-                     <img src="../hand-pointer-who.svg" className="canvas-overlay-image"></img>
-                     <h1>Interact</h1>
-                  </div>
-                    
-                    
+                      <img src="../hand-pointer-who.svg" className="canvas-overlay-image"></img>
+                      <h1>Interact</h1>
+                    </div>
+
                   </Html></>
               )}
-              </mesh>
-            </Select>
+
+              {showDiv && (
+                <Html>
+                <div >
+                  <h1>Clicked</h1>
+                </div>
+              </Html>
+              )}
+            </mesh>
+
 
           </RigidBody>
         </group>
