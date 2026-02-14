@@ -5,10 +5,12 @@ Files: public/testing_dim.glb [66.64MB] > C:\Users\Ricardo\Documents\GitHub\reac
 */
 
 import * as THREE from 'three'
-import React, { type JSX } from 'react'
-import { useGLTF, useAnimations } from '@react-three/drei'
+import React, { useState, type JSX } from 'react'
+import { useGLTF, Outlines } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 import { RigidBody } from '@react-three/rapier'
+import { Select } from '@react-three/postprocessing'
+
 
 type ActionName = 'flloor' | 'wall left' | 'wall right' | 'wall window.001' | 'wall door l frame fabric only' | 'wall door l frame fabric only.001' | 'wall door' | 'strucutrer wall dor old'
 
@@ -48,6 +50,7 @@ type GLTFResult = GLTF & {
 
 export function Model(props: JSX.IntrinsicElements['group']) {
 
+  const [isHovered, setIsHovered] = useState(false);
   const { nodes, materials } = useGLTF('/testing_dim-transformed.glb') as unknown as GLTFResult
 
   return (
@@ -90,9 +93,9 @@ export function Model(props: JSX.IntrinsicElements['group']) {
           </RigidBody>
         </group>
         <group name="strucutrer_wall_dor_old" position={[-0.022, 1.262, 2.662]} rotation={[0, Math.PI / 2, 0]} scale={[1, 1, 1.308]}>
-        {/* step workaround without gravity, a bit jittery */}
+          {/* step workaround without gravity, a bit jittery */}
           <RigidBody type="fixed" friction={0} restitution={0} sensor onIntersectionEnter={(state) => {
-            
+
             const player = state.other.rigidBody
             if (!player) return
 
@@ -104,7 +107,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
             )
           }}
             onIntersectionExit={(state) => {
-              
+
               const player = state.other.rigidBody
               if (!player) return
 
@@ -115,11 +118,29 @@ export function Model(props: JSX.IntrinsicElements['group']) {
                 true
               )
             }}>
-          <mesh name="Cube022" geometry={nodes.Cube022.geometry} material={materials.concrete} />
-          <mesh name="Cube022_1" geometry={nodes.Cube022_1.geometry} material={materials['wood floor']} />
-        </RigidBody>
+            <mesh name="Cube022" geometry={nodes.Cube022.geometry} material={materials.concrete} />
+            <Select enabled={isHovered}>
+              <mesh name="Cube022_1" geometry={nodes.Cube022_1.geometry} material={materials['wood floor']}
+                onPointerEnter={(event) => {
+                  console.log("entered")
+                  setIsHovered(true)
+                  event.stopPropagation()
+                }}
+                onPointerOut={() => {
+                  console.log("outing")
+                  setIsHovered(false)
+                }}
+                onClick={() => { console.log("clicked") }}
+              >
+                {isHovered && (
+                  <Outlines thickness={30} />
+              )}
+              </mesh>
+            </Select>
+
+          </RigidBody>
+        </group>
       </group>
-    </group>
     </group >
   )
 }
