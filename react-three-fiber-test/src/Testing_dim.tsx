@@ -6,7 +6,7 @@ Files: public/testing_dim.glb [66.64MB] > C:\Users\Ricardo\Documents\GitHub\reac
 
 import * as THREE from 'three'
 import React, { useState, type JSX } from 'react'
-import { useGLTF, Outlines } from '@react-three/drei'
+import { useGLTF, Outlines, Html } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 import { RigidBody } from '@react-three/rapier'
 import { Select } from '@react-three/postprocessing'
@@ -50,7 +50,12 @@ type GLTFResult = GLTF & {
 
 export function Model(props: JSX.IntrinsicElements['group']) {
 
+  //idea: only when close enough + looking at the mesh should the user be able to interact with it
+  //ideally bools would be checked upon collision, but Outlines needs to be child of mesh
+  //forget about outilnes?
+  //and when triggered, show 2d div -> zustand state to acces props? 
   const [isHovered, setIsHovered] = useState(false);
+  const [isColliding, setIsColliding] = useState(false)
   const { nodes, materials } = useGLTF('/testing_dim-transformed.glb') as unknown as GLTFResult
 
   return (
@@ -105,6 +110,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
               { x: t.x, y: t.y + 0.02, z: t.z },
               true
             )
+            setIsColliding(true)
           }}
             onIntersectionExit={(state) => {
 
@@ -117,9 +123,11 @@ export function Model(props: JSX.IntrinsicElements['group']) {
                 { x: t.x, y: t.y - 0.02, z: t.z },
                 true
               )
+              setIsColliding(false)
             }}>
             <mesh name="Cube022" geometry={nodes.Cube022.geometry} material={materials.concrete} />
             <Select enabled={isHovered}>
+              {/* only enable outline if collision (again, sensor) */}
               <mesh name="Cube022_1" geometry={nodes.Cube022_1.geometry} material={materials['wood floor']}
                 onPointerEnter={(event) => {
                   console.log("entered")
@@ -132,8 +140,17 @@ export function Model(props: JSX.IntrinsicElements['group']) {
                 }}
                 onClick={() => { console.log("clicked") }}
               >
-                {isHovered && (
-                  <Outlines thickness={30} />
+                {isHovered && isColliding && (
+                  <><Outlines thickness={30} />
+                  <Html  position={[0, -0.5,0]} >
+
+                    <div className="interact-message">
+                     <img src="../hand-pointer-who.svg" className="canvas-overlay-image"></img>
+                     <h1>Interact</h1>
+                  </div>
+                    
+                    
+                  </Html></>
               )}
               </mesh>
             </Select>
