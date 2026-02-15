@@ -18,7 +18,7 @@ export function Player() {
   const ref = useRef<RapierRigidBody | null>(null)
   const [, get] = useKeyboardControls()
   const { isCameraFixed } = useStore()
-  const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 1.5, 3))
+  const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.3, 1.5))
   const { isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
     ({ isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
   const { setIsOrbitControls } = useStore(useShallow((state) =>
@@ -127,7 +127,7 @@ export function Player() {
   })
   return (
     <>
-      <RigidBody name="Player" ref={ref} colliders={false} mass={1} type="dynamic" position={[0, 0.3, 1.5]} enabledRotations={[false, false, false]}>
+      <RigidBody name="Player" ref={ref} colliders={false} mass={1} type="dynamic" position={currentCameraPosition} enabledRotations={[false, false, false]}>
         <CapsuleCollider args={[0.75, 0.2]} />
       </RigidBody>
     </>

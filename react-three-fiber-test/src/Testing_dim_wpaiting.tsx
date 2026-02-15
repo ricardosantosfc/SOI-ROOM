@@ -8,10 +8,11 @@ import * as THREE from 'three'
 import React, { useEffect, useState, type JSX } from 'react'
 import { useGLTF, Outlines, Html } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
-import { CuboidCollider, RigidBody } from '@react-three/rapier'
+import { CuboidCollider, RigidBody, type CollisionPayload } from '@react-three/rapier'
 import { Select } from '@react-three/postprocessing'
 import { useStore } from './store'
 import { useShallow } from 'zustand/shallow'
+import type { ThreeEvent } from '@react-three/fiber'
 
 type ActionName = 'flloor' | 'wall left' | 'wall right' | 'wall window.001' | 'paiting rocks frame' | 'paiting rocks glass' | 'wall door l frame fabric only' | 'wall door l frame fabric only.001' | 'wall door' | 'strucutrer wall dor old'
 
@@ -58,47 +59,63 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   //ideally bools would be checked upon collision, but Outlines needs to be child of mesh
   //forget about outilnes?
   //and when triggered, show 2d div -> zustand state to acces props? 
-  const [isHovered, setIsHovered] = useState(false);
-  const [isColliding, setIsColliding] = useState(false)
+  const [isPointing, setIsPointing] = useState(-1);
+  const [isIntersecting, setIsIntersecting] = useState(-1)
   const [showDiv, setShowDiv] = useState(false);
   const { isCameraFixed, setIsCameraFixed } = useStore(useShallow((state) =>
     ({ isCameraFixed: state.isCameraFixed, setIsCameraFixed: state.setIsCameraFixed })),)
   const { isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
     ({ isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
 
-   useEffect(() => {
+
+  //-1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
+  const handleIntersectionChange = (state: CollisionPayload, id: number) => {
+    const player = state.other.rigidBody
+    if (!player) return
+
+    setIsIntersecting(id)
+  }
+
+  const handlePointerChange = (event: ThreeEvent<PointerEvent>, id: number) => {
+    setIsPointing(id)
+    event.stopPropagation() //have to see docs 
+  }
+
+  const canInteract = isIntersecting !== -1 && isIntersecting === isPointing
+
+  useEffect(() => {
     if (isCameraFixed) return
-  
+
     const handleGlobalClick = () => {
-      if (isColliding && isHovered) {
+      if (canInteract) {
         setShowDiv(prev => !prev)
         setIsCameraFixed(true)
         setIsCameraAnimating(true)
-        
+
       }
     }
-  
+
     window.addEventListener('pointerup', handleGlobalClick)
-  
+
     return () => {
       window.removeEventListener('pointerup', handleGlobalClick)
     }
-  }, [isCameraFixed, isColliding, isHovered])
-  
+  }, [isCameraFixed, isIntersecting, isPointing])
+
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      
+
       if (isCameraFixed && !isCameraAnimating && e.code === "Space") {
-  
+
         setShowDiv(prev => !prev)
         setIsCameraFixed(false)
         setIsCameraAnimating(true)
-  
+
       }
     }
-  
+
     window.addEventListener("keydown", handleKey)
-  
+
     return () => {
       window.removeEventListener("keydown", handleKey)
     }
@@ -130,31 +147,18 @@ export function Model(props: JSX.IntrinsicElements['group']) {
           </RigidBody>
         </group>
         <RigidBody type="fixed" friction={0} restitution={0}
-         
+
         >
-            <CuboidCollider args={[0.7, 0.1, 1]}  position={[-1.206, 1.314, 0.451]}  
-            
-            sensor onIntersectionEnter={(state) => {
+          <CuboidCollider args={[0.7, 0.1, 1]} position={[-1.206, 1.314, 0.451]}
+            sensor onIntersectionEnter={(state) => { handleIntersectionChange(state, 0) }}
+            onIntersectionExit={(state) => { handleIntersectionChange(state, -1) }}
 
-            const player = state.other.rigidBody
-            if (!player) return
-
-         
-            setIsColliding(true)
-          }}
-            onIntersectionExit={(state) => {
-
-              const player = state.other.rigidBody
-              if (!player) return
-
-          
-              setIsColliding(false)
-            }}></CuboidCollider>
+          ></CuboidCollider>
           <mesh name="paiting_rocks_frame" geometry={nodes.paiting_rocks_frame.geometry} material={materials['wood wals']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623}
 
-           
+
           >
-            {isColliding && isHovered && !showDiv && (
+            {canInteract && !showDiv && (
               <><Outlines thickness={30} />
                 <Html  >
 
@@ -167,8 +171,8 @@ export function Model(props: JSX.IntrinsicElements['group']) {
             )}
 
             {showDiv && !isCameraAnimating && (
-              <Html position={[0.3,0.1,0.5]}>
-                <div className ="information">
+              <Html position={[0.3, 0.1, 0.5]}>
+                <div className="information">
                   <h2>"Meoto Iwa (monochrome edit)"</h2>
                   <h3>Watercolor and gouache, 2025</h3>
                 </div>
@@ -177,17 +181,10 @@ export function Model(props: JSX.IntrinsicElements['group']) {
           </mesh>
         </RigidBody>
 
-        <mesh name="paiting_rocks_glass" geometry={nodes.paiting_rocks_glass.geometry} material={materials['Material.007']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623} 
-         onPointerEnter={(event) => {
+        <mesh name="paiting_rocks_glass" geometry={nodes.paiting_rocks_glass.geometry} material={materials['Material.007']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623}
+          onPointerEnter={(event) => { handlePointerChange(event, 0) }}
+          onPointerOut={(event) => { handlePointerChange(event, -1) }}
 
-              setIsHovered(true)
-              event.stopPropagation()
-            }}
-            onPointerOut={() => {
-
-              setIsHovered(false)
-            }}
-         
         />
         <group name="wall_door_l_frame_fabric_only" position={[0.463, 1.167, 3.353]} rotation={[0, Math.PI / 2, 0]} scale={[1, 0.891, 1.017]}>
           <mesh name="Cube025" geometry={nodes.Cube025.geometry} material={materials['wood table sofa']} />
@@ -215,7 +212,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
               { x: t.x, y: t.y + 0.02, z: t.z },
               true
             )
-        
+
           }}
             onIntersectionExit={(state) => {
 
@@ -228,7 +225,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
                 { x: t.x, y: t.y - 0.02, z: t.z },
                 true
               )
-              
+
             }}>
             <mesh name="Cube022" geometry={nodes.Cube022.geometry} material={materials.concrete} />
             <mesh name="Cube022_1" geometry={nodes.Cube022_1.geometry} material={materials['wood floor']} />
