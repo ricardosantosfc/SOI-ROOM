@@ -72,7 +72,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
       setShowDiv(prev => !prev)
       setIsCameraFixed(true)
       setIsCameraAnimating(true)
-      document.exitPointerLock()
+      
     }
   }
 
@@ -86,7 +86,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 useEffect(() => {
   const handleKey = (e: KeyboardEvent) => {
     
-    if (isCameraFixed && e.code === "Space") {
+    if (isCameraFixed && !isCameraAnimating && e.code === "Space") {
 
       setShowDiv(prev => !prev)
       setIsCameraFixed(false)
@@ -100,7 +100,7 @@ useEffect(() => {
   return () => {
     window.removeEventListener("keydown", handleKey)
   }
-}, [isCameraFixed])
+}, [isCameraFixed, isCameraAnimating])
   
   /*as handleclick forces the pointer to be on top of the mesh, 
     //add global click handler for when camera is fixed.

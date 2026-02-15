@@ -55,6 +55,7 @@ export function Player() {
 
           setIsCameraAnimating(false)
           setIsOrbitControls(true);
+          document.exitPointerLock()
         }
       }
 
