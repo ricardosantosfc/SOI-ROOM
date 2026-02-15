@@ -61,15 +61,55 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   const [showDiv, setShowDiv] = useState(false);
   const { isCameraFixed, setIsCameraFixed } = useStore( useShallow((state) =>
   ({isCameraFixed: state.isCameraFixed, setIsCameraFixed: state.setIsCameraFixed})),)
+    const { isCameraAnimating, setIsCameraAnimating } = useStore( useShallow((state) =>
+    ({isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating})),)
+
 
   const handleClick = () => {
-    if (isColliding && isHovered) {
+    console.log("iscollding" + isColliding)
+    console.log("is hovering" + isHovered)
+
+    if ((isColliding && isHovered ) || isCameraFixed) { 
       setShowDiv(prev => !prev);
       setIsCameraFixed(!isCameraFixed)
-      //every truthy should trigger camera anim, not just cmara fixed
+      setIsCameraAnimating(true)
+     
     }
     
   }
+  
+  /*as handleclick forces the pointer to be on top of the mesh, 
+    //add global click handler for when camera is fixed.
+    //but will only work ok for the painting, not other interactive meshes
+  const handleClick = () => {
+    console.log("iscollding" + isColliding)
+    console.log("is hovering" + isHovered)
+
+    if (!isCameraFixed && (isColliding && isHovered ) ) { 
+      setShowDiv(prev => !prev);
+      setIsCameraFixed(!isCameraFixed)
+      setIsCameraAnimating(true)
+     
+    }
+    
+  }
+
+  useEffect(() => {
+  if (!isCameraFixed) return
+
+  const handleGlobalClick = () => {
+    setShowDiv(false)
+    setIsCameraFixed(false)
+    setIsCameraAnimating(true)
+  }
+
+  window.addEventListener('pointerup', handleGlobalClick)
+
+  return () => {
+    window.removeEventListener('pointerup', handleGlobalClick)
+  }
+}, [isCameraFixed])
+*/
   const { nodes, materials } = useGLTF('/testing_dim-transformed.glb') as unknown as GLTFResult
 
   return (
@@ -144,12 +184,12 @@ export function Model(props: JSX.IntrinsicElements['group']) {
             {/* only enable outline if collision (again, sensor) */}
             <mesh name="Cube022_1" geometry={nodes.Cube022_1.geometry} material={materials['wood floor']}
               onPointerEnter={(event) => {
-                console.log("entered")
+               
                 setIsHovered(true)
                 event.stopPropagation()
               }}
               onPointerOut={() => {
-                console.log("outing")
+              
                 setIsHovered(false)
               }}
               onClick={handleClick}

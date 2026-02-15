@@ -4,6 +4,7 @@ import { useFrame } from "@react-three/fiber"
 import { useKeyboardControls } from "@react-three/drei"
 import { CapsuleCollider, RapierRigidBody, RigidBody } from "@react-three/rapier"
 import { useStore } from "./store"
+import { useShallow } from "zustand/shallow"
 
 
 const SPEED = 3
@@ -18,40 +19,82 @@ export function Player() {
   const [, get] = useKeyboardControls()
   const { isCameraFixed } = useStore()
   const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 1.5, 3))
-  
+  const { isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
+    ({ isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
+
   useFrame((state) => {
+    
     const body = ref.current
     if (!body) return
 
 
-     if (isCameraFixed) {
-      body.setLinvel({ x: 0, y: 0, z: 0 }, true) 
+    if (isCameraFixed) {
+      console.log("is fixed");
+      body.setLinvel({ x: 0, y: 0, z: 0 }, true) //repeating everyframe
 
-  
-      const targetPosition = new THREE.Vector3(0, 1.5, -0.7)
-      
-      // Interpolate smoothly towards the target position
-      const smoothSpeed = 0.1
-      currentCameraPosition.lerp(targetPosition, smoothSpeed)
+      if (isCameraAnimating) {
+        const targetPosition = new THREE.Vector3(0, 1.5, -0.7) //vector depends on clciked mesh
 
-      // Apply the smoothed camera position
-      state.camera.position.copy(currentCameraPosition)
+        // Interpolate smoothly towards the target position
+        const smoothSpeed = 0.1
+        currentCameraPosition.lerp(targetPosition, smoothSpeed)
 
-      
+        // Apply the smoothed camera position
+        state.camera.position.copy(currentCameraPosition)
+
+        
+
+        const distance = currentCameraPosition.distanceTo(targetPosition)
+
+        if (distance < 0.01) {
+          // Snap exactly to target
+          currentCameraPosition.copy(targetPosition)
+          state.camera.position.copy(targetPosition)
+
+          setIsCameraAnimating(false)
+        }
+      }
+
+
       //state.camera.lookAt(0, 1.5, 0) 
 
       return
     }
-    
-    const { forward, backward, left, right } = get()
+    console.log("is moving")
+     const { forward, backward, left, right } = get()
     const velocity = body.linvel()
 
 
     // update camera
     const t = body.translation()
+
+    if (isCameraAnimating) {
+      const targetPosition = new THREE.Vector3(t.x, t.y, t.z) //vector depends on clciked mesh
+
+        // Interpolate smoothly towards the target position
+        const smoothSpeed = 0.2
+        currentCameraPosition.lerp(targetPosition, smoothSpeed)
+
+        // Apply the smoothed camera position
+        state.camera.position.copy(currentCameraPosition)
+
+        
+
+        const distance = currentCameraPosition.distanceTo(targetPosition)
+
+        if (distance < 0.01) {
+          // Snap exactly to target
+          currentCameraPosition.copy(targetPosition)
+          state.camera.position.copy(targetPosition)
+
+          setIsCameraAnimating(false)
+        }
+    }else{
+
+
     state.camera.position.set(t.x, t.y, t.z)
     setCurrentCameraPosition(state.camera.position.clone())
-    
+
     // movement
     const front = Number(backward) - Number(forward)
     const side = Number(left) - Number(right)
@@ -60,7 +103,7 @@ export function Player() {
     sideVector.set(side, 0, 0)
     direction.subVectors(frontVector, sideVector).normalize().multiplyScalar(SPEED).applyEuler(state.camera.rotation)
     body.setLinvel({ x: direction.x, y: velocity.y, z: direction.z }, true)
-
+}
   })
   return (
     <>
