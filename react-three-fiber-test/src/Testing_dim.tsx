@@ -82,6 +82,25 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     window.removeEventListener('pointerup', handleGlobalClick)
   }
 }, [isCameraFixed, isColliding, isHovered])
+
+useEffect(() => {
+  const handleKey = (e: KeyboardEvent) => {
+    
+    if (isCameraFixed && e.code === "Space") {
+
+      setShowDiv(prev => !prev)
+      setIsCameraFixed(false)
+      setIsCameraAnimating(true)
+
+    }
+  }
+
+  window.addEventListener("keydown", handleKey)
+
+  return () => {
+    window.removeEventListener("keydown", handleKey)
+  }
+}, [isCameraFixed])
   
   /*as handleclick forces the pointer to be on top of the mesh, 
     //add global click handler for when camera is fixed.

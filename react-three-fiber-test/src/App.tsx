@@ -9,7 +9,7 @@ import { useStore } from './store'
 function App() {
 
 
-  const isCameraFixed = useStore((state) => state.isCameraFixed)
+  const isOrbitControls = useStore((state) => state.isOrbitControls)
   //or fov 45
 
   return (
@@ -29,13 +29,13 @@ function App() {
               <Experience />
             </Suspense>
           </group>
-          {!isCameraFixed && (
+          {!isOrbitControls && (
             <PointerLockControls
               minPolarAngle={Math.PI / 5}
               maxPolarAngle={Math.PI - Math.PI / 5}
             />
           )}
-          {isCameraFixed && <OrbitControls />}
+          {isOrbitControls && <OrbitControls />}
         </Canvas>
       </KeyboardControls>
     </>

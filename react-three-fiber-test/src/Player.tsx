@@ -21,6 +21,8 @@ export function Player() {
   const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 1.5, 3))
   const { isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
     ({ isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
+  const { setIsOrbitControls } = useStore(useShallow((state) =>
+    ({  setIsOrbitControls: state.setIsOrbitControls })),)
 
   useFrame((state) => {
     
@@ -52,6 +54,7 @@ export function Player() {
           state.camera.position.copy(targetPosition)
 
           setIsCameraAnimating(false)
+          setIsOrbitControls(true);
         }
       }
 
@@ -88,6 +91,8 @@ export function Player() {
           state.camera.position.copy(targetPosition)
 
           setIsCameraAnimating(false)
+          setIsOrbitControls(false)
+          
         }
     }else{
 
