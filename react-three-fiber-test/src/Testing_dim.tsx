@@ -5,7 +5,7 @@ Files: public/testing_dim.glb [66.64MB] > C:\Users\Ricardo\Documents\GitHub\reac
 */
 
 import * as THREE from 'three'
-import React, { useState, type JSX } from 'react'
+import React, { useEffect, useState, type JSX } from 'react'
 import { useGLTF, Outlines, Html } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 import { RigidBody } from '@react-three/rapier'
@@ -64,19 +64,24 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     const { isCameraAnimating, setIsCameraAnimating } = useStore( useShallow((state) =>
     ({isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating})),)
 
+   useEffect(() => {
+  if (isCameraFixed) return
 
-  const handleClick = () => {
-    console.log("iscollding" + isColliding)
-    console.log("is hovering" + isHovered)
-
-    if ((isColliding && isHovered ) || isCameraFixed) { 
-      setShowDiv(prev => !prev);
-      setIsCameraFixed(!isCameraFixed)
+  const handleGlobalClick = () => {
+    if (isColliding && isHovered) {
+      setShowDiv(prev => !prev)
+      setIsCameraFixed(true)
       setIsCameraAnimating(true)
-     
+      document.exitPointerLock()
     }
-    
   }
+
+  window.addEventListener('pointerup', handleGlobalClick)
+
+  return () => {
+    window.removeEventListener('pointerup', handleGlobalClick)
+  }
+}, [isCameraFixed, isColliding, isHovered])
   
   /*as handleclick forces the pointer to be on top of the mesh, 
     //add global click handler for when camera is fixed.
@@ -192,7 +197,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
               
                 setIsHovered(false)
               }}
-              onClick={handleClick}
+             // onClick={handleClick}
             >
               {isColliding && isHovered && !showDiv && (
                 <><Outlines thickness={30} />

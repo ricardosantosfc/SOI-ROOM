@@ -2,12 +2,15 @@ import { Suspense, useState } from 'react'
 import { Canvas } from '@react-three/fiber'
 import './App.css'
 import { Experience } from './components/Experience'
-import { KeyboardControls, PointerLockControls } from '@react-three/drei'
+import { KeyboardControls, OrbitControls, PointerLockControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
+import { useStore } from './store'
 
 function App() {
 
-//or fov 45
+
+  const isCameraFixed = useStore((state) => state.isCameraFixed)
+  //or fov 45
 
   return (
     <>
@@ -26,9 +29,13 @@ function App() {
               <Experience />
             </Suspense>
           </group>
-          <PointerLockControls 
-          minPolarAngle={Math.PI/5} /*top */
-          maxPolarAngle={Math.PI - Math.PI/5} /*bottom contraint*/ />
+          {!isCameraFixed && (
+            <PointerLockControls
+              minPolarAngle={Math.PI / 5}
+              maxPolarAngle={Math.PI - Math.PI / 5}
+            />
+          )}
+          {isCameraFixed && <OrbitControls />}
         </Canvas>
       </KeyboardControls>
     </>
