@@ -35,7 +35,13 @@ function App() {
               maxPolarAngle={Math.PI - Math.PI / 5}
             />
           )}
-          {isOrbitControls && <OrbitControls />}
+        {isOrbitControls && (
+  <OrbitControls
+    onUpdate={(state) => {
+      console.log(state)
+    }}
+  />
+)}
         </Canvas>
       </KeyboardControls>
     </>
