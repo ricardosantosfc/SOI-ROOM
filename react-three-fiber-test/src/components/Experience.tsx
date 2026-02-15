@@ -1,11 +1,11 @@
 import { Center, Environment, Sky, useGLTF } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Player } from "../Player";
-import { Model } from "../Testing_dim";
+import { Model } from "../Testing_dim_wpaiting";
 
 export const Experience = () => {
 
-    const gltf = useGLTF('/testing_dim.glb')
+    //const gltf = useGLTF('/testing_dim_.glb')
 
     return (
         <>

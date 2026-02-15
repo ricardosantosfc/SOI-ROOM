@@ -33,9 +33,9 @@ export function Player() {
     if (isCameraFixed) {
       console.log("is fixed");
       body.setLinvel({ x: 0, y: 0, z: 0 }, true) //repeating everyframe
-
+      
       if (isCameraAnimating) {
-        const targetPosition = new THREE.Vector3(0, 1.5, -0.7) //vector depends on clciked mesh
+        const targetPosition = new THREE.Vector3(-0.3, 0.25, -0.61) //vector depends on clciked mesh
 
         // Interpolate smoothly towards the target position
         const smoothSpeed = 0.1
@@ -49,18 +49,32 @@ export function Player() {
         const distance = currentCameraPosition.distanceTo(targetPosition)
 
         if (distance < 0.01) {
+          state.camera.rotation.set(0,259.2,0)
           // Snap exactly to target
           currentCameraPosition.copy(targetPosition)
           state.camera.position.copy(targetPosition)
 
           setIsCameraAnimating(false)
           setIsOrbitControls(true);
+        
           document.exitPointerLock()
+          
+          
         }
       }
+      //else{ //apllide after animation
+        //state.camera.rotation.set(0,259.2,0)
+      //}
+      
+      //only to be triggered after the controls have changed
+      //here is applying while the lerp jappens, plus continusoly afterwards. 
+      
+      state.camera.rotation.set(0,259.2,0)
 
+      //either apply exact rotation to coincide exaclty after orbit controls are set,
+      //or apply while lerping, but then would also need to apply another rotation ater orbit control set
 
-      //state.camera.lookAt(0, 1.5, 0) 
+      
 
       return
     }
