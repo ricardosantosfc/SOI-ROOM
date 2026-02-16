@@ -60,8 +60,9 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   const [isIntersecting, setIsIntersecting] = useState(-1)
 
 
-  const { isInteracting, setIsInteracting, isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
+  const { isInteracting, setIsInteracting, currentInteraction, setCurrentInteraction, isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
     ({ isInteracting: state.isInteracting, setIsInteracting: state.setIsInteracting,
+      currentInteraction: state.currentInteraction, setCurrentInteraction: state.setcurrentInteraction,
        isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
 
 
@@ -137,6 +138,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
       if (canInteract) {
         
         setIsInteracting(true)
+        setCurrentInteraction(isIntersecting)
         setIsCameraAnimating(true)
 
       }
@@ -156,6 +158,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
       if (isInteracting && !isCameraAnimating && e.code === "Space") {
 
         setIsInteracting(false)
+        setCurrentInteraction(-1)
         setIsCameraAnimating(true)
 
       }
