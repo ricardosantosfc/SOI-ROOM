@@ -2,8 +2,8 @@
 import { create } from 'zustand'
 
 interface ExperienceState {
-  isCameraFixed: boolean
-  setIsCameraFixed: (fixed: boolean) => void
+  isInteracting: boolean
+  setIsInteracting: (fixed: boolean) => void
   isCameraAnimating: boolean
   setIsCameraAnimating : (fixed: boolean) => void
   isOrbitControls: boolean
@@ -11,8 +11,8 @@ interface ExperienceState {
 }
 
 export const useStore = create<ExperienceState>()((set) => ({
-  isCameraFixed: false,
-  setIsCameraFixed: (fixed) => set({ isCameraFixed: fixed }),
+  isInteracting: false,
+  setIsInteracting: (fixed) => set({ isInteracting: fixed }),
   isCameraAnimating: false,
   setIsCameraAnimating: (fixed) => set({ isCameraAnimating: fixed }),
    isOrbitControls: false,

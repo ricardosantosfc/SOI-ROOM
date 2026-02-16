@@ -17,7 +17,7 @@ export function Player() {
 
   const ref = useRef<RapierRigidBody | null>(null)
   const [, get] = useKeyboardControls()
-  const { isCameraFixed } = useStore()
+  const { isInteracting } = useStore()
   const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.3, 1.5))
   const { isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
     ({ isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
@@ -30,8 +30,8 @@ export function Player() {
     if (!body) return
 
 
-    if (isCameraFixed) {
-      console.log("is fixed");
+    if (isInteracting) {
+
       body.setLinvel({ x: 0, y: 0, z: 0 }, true) //repeating everyframe
       
       if (isCameraAnimating) {
@@ -78,7 +78,7 @@ export function Player() {
 
       return
     }
-    console.log("is moving")
+   
      const { forward, backward, left, right } = get()
     const velocity = body.linvel()
 

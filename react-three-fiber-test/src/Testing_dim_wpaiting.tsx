@@ -55,14 +55,14 @@ type GLTFResult = GLTF & {
 
 export function Model(props: JSX.IntrinsicElements['group']) {
 
-
+  // -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
   const [isPointing, setIsPointing] = useState(-1);
   const [isIntersecting, setIsIntersecting] = useState(-1)
-  const [isInteracting, setIsInteracting] = useState(false);
-  const { isCameraFixed, setIsCameraFixed } = useStore(useShallow((state) =>
-    ({ isCameraFixed: state.isCameraFixed, setIsCameraFixed: state.setIsCameraFixed })),)
-  const { isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
-    ({ isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
+
+
+  const { isInteracting, setIsInteracting, isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
+    ({ isInteracting: state.isInteracting, setIsInteracting: state.setIsInteracting,
+       isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
 
 
   //handle floor step up/down
@@ -131,12 +131,12 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
   //on click on canInteract mesh, 
   useEffect(() => {
-    if (isCameraFixed) return
+    if (isInteracting) return
 
     const handleGlobalClick = () => {
       if (canInteract) {
+        
         setIsInteracting(true)
-        setIsCameraFixed(true)
         setIsCameraAnimating(true)
 
       }
@@ -147,16 +147,15 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     return () => {
       window.removeEventListener('pointerup', handleGlobalClick)
     }
-  }, [isCameraFixed, isIntersecting, isPointing])
+  }, [isInteracting, isIntersecting, isPointing])
 
   //exit interaction -------------------needs refact 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
 
-      if (isCameraFixed && !isCameraAnimating && e.code === "Space") {
+      if (isInteracting && !isCameraAnimating && e.code === "Space") {
 
         setIsInteracting(false)
-        setIsCameraFixed(false)
         setIsCameraAnimating(true)
 
       }
@@ -167,7 +166,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     return () => {
       window.removeEventListener("keydown", handleKey)
     }
-  }, [isCameraFixed, isCameraAnimating])
+  }, [isInteracting, isCameraAnimating])
 
 
   const { nodes, materials } = useGLTF('/testing_dim_wpaiting-transformed.glb') as unknown as GLTFResult
