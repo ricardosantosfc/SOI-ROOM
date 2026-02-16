@@ -194,14 +194,15 @@ export function Model(props: JSX.IntrinsicElements['group']) {
             <mesh name="Cube008_1" geometry={nodes.Cube008_1.geometry} material={nodes.Cube008_1.material} />
           </RigidBody>
         </group>
-        <RigidBody type="fixed" friction={0} restitution={0}
+        <RigidBody type="fixed" friction={0} restitution={0}>
 
-        >
           <CuboidCollider args={[0.7, 0.1, 1]} position={[-1.206, 1.314, 0.451]}
+          
             sensor onIntersectionEnter={(state) => { handleIntersectionChange(state, 0) }}
             onIntersectionExit={(state) => { handleIntersectionChange(state, -1) }}
-
+            
           ></CuboidCollider>
+
           <mesh name="paiting_rocks_frame" geometry={nodes.paiting_rocks_frame.geometry} material={materials['wood wals']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623}
           >
             {canInteract && !isInteracting && showCanInteractHtml()}
@@ -211,6 +212,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
         </RigidBody>
 
         <mesh name="paiting_rocks_glass" geometry={nodes.paiting_rocks_glass.geometry} material={materials['Material.007']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623}
+          
           onPointerEnter={(event) => { handlePointerChange(event, 0) }}
           onPointerOut={(event) => { handlePointerChange(event, -1) }}
 
@@ -233,8 +235,8 @@ export function Model(props: JSX.IntrinsicElements['group']) {
           <RigidBody type="fixed" friction={0} restitution={0}
 
             sensor onIntersectionEnter={(state) => { handleFloorStep(state, +0.02) }}
-
             onIntersectionExit={(state) => { handleFloorStep(state, -0.02) }}
+
           >
             <mesh name="Cube022" geometry={nodes.Cube022.geometry} material={materials.concrete} />
             <mesh name="Cube022_1" geometry={nodes.Cube022_1.geometry} material={materials['wood floor']} />
