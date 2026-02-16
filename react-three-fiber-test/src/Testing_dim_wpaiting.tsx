@@ -55,20 +55,32 @@ type GLTFResult = GLTF & {
 
 export function Model(props: JSX.IntrinsicElements['group']) {
 
-  //idea: only when close enough + looking at the mesh should the user be able to interact with it
-  //ideally bools would be checked upon collision, but Outlines needs to be child of mesh
-  //forget about outilnes?
-  //and when triggered, show 2d div -> zustand state to acces props? 
+
   const [isPointing, setIsPointing] = useState(-1);
   const [isIntersecting, setIsIntersecting] = useState(-1)
-  const [showDiv, setShowDiv] = useState(false);
+  const [isInteracting, setIsInteracting] = useState(false);
   const { isCameraFixed, setIsCameraFixed } = useStore(useShallow((state) =>
     ({ isCameraFixed: state.isCameraFixed, setIsCameraFixed: state.setIsCameraFixed })),)
   const { isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
     ({ isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
 
 
-  //-1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
+  //handle floor step up/down
+  const handleFloorStep = (state: CollisionPayload, yStep: number) => {
+    const player = state.other.rigidBody
+    if (!player) return
+
+    const t = player.translation()
+
+    player.setTranslation(
+      { x: t.x, y: t.y + yStep, z: t.z },
+      true
+    )
+  }
+
+  // interactble -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
+
+  //handle collision enter/exit with interactable mesh
   const handleIntersectionChange = (state: CollisionPayload, id: number) => {
     const player = state.other.rigidBody
     if (!player) return
@@ -76,19 +88,54 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     setIsIntersecting(id)
   }
 
+  //handle hovering enter/exit with interactable mesh
   const handlePointerChange = (event: ThreeEvent<PointerEvent>, id: number) => {
     setIsPointing(id)
     event.stopPropagation() //have to see docs 
   }
 
+  //if is colliding and hoveringertain mesh, then can interact
   const canInteract = isIntersecting !== -1 && isIntersecting === isPointing
 
+  //when can interact with mesh, show prompt
+  const showCanInteractHtml = () => {
+    return (
+      <>
+        <Outlines thickness={30} />
+        <Html>
+          <div className="interact-message">
+            <img
+              src="../hand-pointer-who.svg"
+              className="canvas-overlay-image"
+            />
+            <h1>Interact</h1>
+          </div>
+        </Html>
+      </>
+    )
+  }
+
+  //when interactingwith mesh, show info --------- needs refactoring
+  const showIsInteractingHtml = () => {
+    return (
+      <>
+        <Html position={[0.3, 0.1, 0.5]}>
+          <div className="information">
+            <h2>"Meoto Iwa (monochrome edit)"</h2>
+            <h3>Watercolor and gouache, 2025</h3>
+          </div>
+        </Html>
+      </>
+    )
+  }
+
+  //on click on canInteract mesh, 
   useEffect(() => {
     if (isCameraFixed) return
 
     const handleGlobalClick = () => {
       if (canInteract) {
-        setShowDiv(prev => !prev)
+        setIsInteracting(true)
         setIsCameraFixed(true)
         setIsCameraAnimating(true)
 
@@ -102,12 +149,13 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     }
   }, [isCameraFixed, isIntersecting, isPointing])
 
+  //exit interaction -------------------needs refact 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
 
       if (isCameraFixed && !isCameraAnimating && e.code === "Space") {
 
-        setShowDiv(prev => !prev)
+        setIsInteracting(false)
         setIsCameraFixed(false)
         setIsCameraAnimating(true)
 
@@ -155,29 +203,10 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
           ></CuboidCollider>
           <mesh name="paiting_rocks_frame" geometry={nodes.paiting_rocks_frame.geometry} material={materials['wood wals']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623}
-
-
           >
-            {canInteract && !showDiv && (
-              <><Outlines thickness={30} />
-                <Html  >
+            {canInteract && !isInteracting && showCanInteractHtml()}
+            {isInteracting && !isCameraAnimating && showIsInteractingHtml()}
 
-                  <div className="interact-message">
-                    <img src="../hand-pointer-who.svg" className="canvas-overlay-image"></img>
-                    <h1>Interact</h1>
-                  </div>
-
-                </Html></>
-            )}
-
-            {showDiv && !isCameraAnimating && (
-              <Html position={[0.3, 0.1, 0.5]}>
-                <div className="information">
-                  <h2>"Meoto Iwa (monochrome edit)"</h2>
-                  <h3>Watercolor and gouache, 2025</h3>
-                </div>
-              </Html>
-            )}
           </mesh>
         </RigidBody>
 
@@ -201,32 +230,12 @@ export function Model(props: JSX.IntrinsicElements['group']) {
           </RigidBody>
         </group>
         <group name="strucutrer_wall_dor_old" position={[-0.021, 1.262, 2.662]} rotation={[0, Math.PI / 2, 0]} scale={[1, 1, 1.09]}>
-          <RigidBody type="fixed" friction={0} restitution={0} sensor onIntersectionEnter={(state) => {
+          <RigidBody type="fixed" friction={0} restitution={0}
 
-            const player = state.other.rigidBody
-            if (!player) return
+            sensor onIntersectionEnter={(state) => { handleFloorStep(state, +0.02) }}
 
-            const t = player.translation()
-
-            player.setTranslation(
-              { x: t.x, y: t.y + 0.02, z: t.z },
-              true
-            )
-
-          }}
-            onIntersectionExit={(state) => {
-
-              const player = state.other.rigidBody
-              if (!player) return
-
-              const t = player.translation()
-
-              player.setTranslation(
-                { x: t.x, y: t.y - 0.02, z: t.z },
-                true
-              )
-
-            }}>
+            onIntersectionExit={(state) => { handleFloorStep(state, -0.02) }}
+          >
             <mesh name="Cube022" geometry={nodes.Cube022.geometry} material={materials.concrete} />
             <mesh name="Cube022_1" geometry={nodes.Cube022_1.geometry} material={materials['wood floor']} />
           </RigidBody>
