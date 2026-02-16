@@ -116,7 +116,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     )
   }
 
-  //when interactingwith mesh, show info --------- needs refactoring
+  //when interactingwith mesh, show info --------- REFACTOR BASED ON CURRENT INTERACITON---------
   const showIsInteractingHtml = () => {
     return (
       <>
@@ -151,7 +151,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     }
   }, [isInteracting, isIntersecting, isPointing])
 
-  //exit interaction -------------------needs refact 
+  //exit interaction -------------------needs refact ---NO SPACE
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
 
