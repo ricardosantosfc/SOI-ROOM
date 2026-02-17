@@ -5,16 +5,20 @@ import { Experience } from './components/Experience'
 import { KeyboardControls, OrbitControls, PointerLockControls } from '@react-three/drei'
 import { Perf } from 'r3f-perf'
 import { useStore } from './store'
-import { PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
+import { OrbitControls as OrbitControlsImpl, PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
 import { useShallow } from 'zustand/shallow'
 
 function App() {
 
   //or fov 45
 
-  const { isInteracting, isOrbitControls, isCameraAnimating } = useStore(useShallow((state) =>
-  ({isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.isCameraAnimating})),)
+  const { isInteracting, isOrbitControls, isCameraAnimating, setAreOrbitControlsMounted , setObControls } = useStore(useShallow((state) =>
+  ({isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.shouldAnimateCamera,
+    setAreOrbitControlsMounted: state.setAreOrbitControlsMounted, setObControls: state.setObControls
+  })),)
+  
   const plControls = useRef<PointerLockControlsImpl>(null!)
+  const obControls = useRef<OrbitControlsImpl | null>(null)
 
 
   useEffect(() => {
@@ -69,7 +73,15 @@ function App() {
             />
           )}
           {isOrbitControls && (
-            <OrbitControls />
+            <OrbitControls ref={(ref) => { 
+              obControls.current = ref 
+              if (ref) {console.log("ob not nul")
+                
+              obControls.current!.target.set(-1.185,0.190,-0.591)
+    obControls.current!.update()
+    setAreOrbitControlsMounted(true)
+              }
+            }}/>
           )}
         </Canvas>
       </KeyboardControls>

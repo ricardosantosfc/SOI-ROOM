@@ -5,16 +5,18 @@ import { useKeyboardControls } from "@react-three/drei"
 import { CapsuleCollider, RapierRigidBody, RigidBody } from "@react-three/rapier"
 import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
+import type { Vector } from "three/examples/jsm/physics/RapierPhysics.js"
 
+//also set max azimuths etc
 interface InteractionCameraSettings {
 
-  position: THREE.Vector3
-  rotation: THREE.Vector3
+  cameraPosition: THREE.Vector3
+  meshPosition: THREE.Vector3
 }
 
 const interactionCameraMap = new Map<number, InteractionCameraSettings>([
-  [0, { position: new THREE.Vector3(-0.3, 0.2, -0.61), rotation: new THREE.Vector3(0, 259.2, 0) }],
-  [1, { position: new THREE.Vector3(2, 2, 2), rotation: new THREE.Vector3(0, 259.2, 0) }]
+  [0, { cameraPosition: new THREE.Vector3(-0.3, 0.2, -0.61), meshPosition: new THREE.Vector3(-1.185,0.190,-0.591) }],
+  [1, { cameraPosition: new THREE.Vector3(2, 2, 2), meshPosition: new THREE.Vector3(0, 259.2, 0) }]
 ])
 
 
@@ -32,16 +34,17 @@ export function Player() {
   const { camera } = useThree()
   const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.3, 1.5))
   const [currentCameraRotation, setCurrentCameraRotation] = useState(new THREE.Vector3(0, 0, 0))
-  const { isInteracting, currentInteraction, isCameraAnimating, setIsCameraAnimating, setIsOrbitControls,
-    isOnRaisedFloor
+  const { isInteracting, currentInteraction, shouldAnimateCamera, setShouldAnimateCamera, setIsOrbitControls,
+    isOnRaisedFloor, areOrbitControlsMounted
   } = useStore(useShallow((state) =>
   ({
     isInteracting: state.isInteracting,
     currentInteraction: state.currentInteraction,
-    isCameraAnimating: state.isCameraAnimating,
-    setIsCameraAnimating: state.setIsCameraAnimating,
+    shouldAnimateCamera: state.shouldAnimateCamera,
+    setShouldAnimateCamera: state.setShouldAnimateCamera,
     setIsOrbitControls: state.setIsOrbitControls,
-    isOnRaisedFloor: state.isOnRaisedFloor
+    isOnRaisedFloor: state.isOnRaisedFloor,
+    areOrbitControlsMounted: state.areOrbitControlsMounted
   })),)
 
 
@@ -61,33 +64,80 @@ export function Player() {
         new THREE.Vector3(camera.rotation.x, camera.rotation.y, camera.rotation.z)
       )
       console.log(currentCameraRotation);
-      setIsCameraAnimating(true)
+      setShouldAnimateCamera(true)
       
     } else {
       console.log("interacting set to false")
-      setIsCameraAnimating(true)
+      setShouldAnimateCamera(true)
     }
   }, [isInteracting])
 
   
-  const animateCamera = ( state: RootState, targetPosition: THREE.Vector3,targetRotation: THREE.Vector3, smoothSpeed : number) => {
+  const animateCameraToInteraction = ( state: RootState, targetInteraction: InteractionCameraSettings, smoothSpeed : number) => {
 
-      currentCameraPosition.lerp(targetPosition, smoothSpeed)
+    const targetCameraPosition = targetInteraction.cameraPosition
+    const targetMeshPosition = targetInteraction.meshPosition
 
-        // Apply the smoothed camera position
+      currentCameraPosition.lerp(targetCameraPosition, smoothSpeed)
+
+      // Apply the smoothed camera position
       state.camera.position.copy(currentCameraPosition)
-      const distance = currentCameraPosition.distanceTo(targetPosition)
-      state.camera.rotation.set(targetRotation.x, targetRotation.y, targetRotation.z)
+      const distance = currentCameraPosition.distanceTo(targetCameraPosition)
+
+      state.camera.lookAt(targetMeshPosition)
+    
        if (distance < 0.01) {
 
           // Snap exactly to target
-          currentCameraPosition.copy(targetPosition)
-          state.camera.position.copy(targetPosition)
+          currentCameraPosition.copy(targetCameraPosition)
+          state.camera.position.copy(targetCameraPosition)
+          
 
-          setIsCameraAnimating(false)
+          setShouldAnimateCamera(false)
           setIsOrbitControls(true);
-          state.camera.rotation.set(targetRotation.x, targetRotation.y, targetRotation.z)
+     
           document.exitPointerLock();
+          
+      }
+  }
+
+  useEffect(() => {
+
+    if (areOrbitControlsMounted) {
+ 
+      //camera.lookAt(interactionCameraMap.get(currentInteraction)!.meshPosition)
+    }
+  }, [areOrbitControlsMounted])
+
+
+  const animateCameraToPlayer = ( state: RootState, playerTranslation: Vector,  smoothSpeed : number) => {
+  
+    const targetPosition = new THREE.Vector3(playerTranslation.x, playerTranslation.y, playerTranslation.z)
+
+      // Interpolate smoothly towards the target position
+      currentCameraPosition.lerp(targetPosition, smoothSpeed)
+
+      // Apply the smoothed camera position
+      state.camera.position.copy(currentCameraPosition)
+
+
+
+      const distance = currentCameraPosition.distanceTo(targetPosition)
+      state.camera.rotation.set(
+        currentCameraRotation.x,
+        currentCameraRotation.y,
+        currentCameraRotation.z
+      )
+
+      if (distance < 0.01) {
+        // Snap exactly to target
+        currentCameraPosition.copy(targetPosition)
+        state.camera.position.copy(targetPosition)
+
+        setShouldAnimateCamera(false)
+        setIsOrbitControls(false)
+ 
+        console.log(state.camera.rotation)
       }
   }
 
@@ -112,30 +162,18 @@ export function Player() {
 
     const body = ref.current
     if (!body) return
-
-
     
     if (isInteracting) {
 
       //interaction has been triggered
-      if (isCameraAnimating) {
+      if (shouldAnimateCamera) {
         
-        animateCamera(state,interactionCameraMap.get(currentInteraction)!.position, interactionCameraMap.get(currentInteraction)!.rotation, 0.1)
+        animateCameraToInteraction(state,interactionCameraMap.get(currentInteraction)!, 0.1)
 
       }
-      //else{ //apllide after animation
-      //state.camera.rotation.set(0,259.2,0)
-      //}
-
-      //only to be triggered after the controls have changed
-      //here is applying while the lerp jappens, plus continusoly afterwards. 
-      //need a listener to immedialty after orbit ctronls stop
-      const targetRotation = interactionCameraMap.get(currentInteraction)!.rotation
-      state.camera.rotation.set(targetRotation.x, targetRotation.y, targetRotation.z)
-
-      //either apply exact rotation to coincide exaclty after orbit controls are set,
-      //or apply while lerping, but then would also need to apply another rotation ater orbit control set
-
+      
+      //should do until controls are mounted, so transition less jittery
+      //state.camera.lookAt(-1.185008150935173,0.19030003476142898,-0.5905551153291018)
 
 
       return
@@ -149,39 +187,10 @@ export function Player() {
     const t = body.translation()
 
     //exit interaction
-    if (isCameraAnimating) {
-      const targetPosition = new THREE.Vector3(t.x, t.y, t.z) //vector depends on clciked mesh
+    if (shouldAnimateCamera) {
 
-      // Interpolate smoothly towards the target position
-      const smoothSpeed = 0.2
-      currentCameraPosition.lerp(targetPosition, smoothSpeed)
-
-      // Apply the smoothed camera position
-      state.camera.position.copy(currentCameraPosition)
-
-
-
-      const distance = currentCameraPosition.distanceTo(targetPosition)
-      state.camera.rotation.set(
-        currentCameraRotation.x,
-        currentCameraRotation.y,
-        currentCameraRotation.z
-      )
-
-      if (distance < 0.01) {
-        // Snap exactly to target
-        currentCameraPosition.copy(targetPosition)
-        state.camera.position.copy(targetPosition)
-
-        setIsCameraAnimating(false)
-        setIsOrbitControls(false)
-        state.camera.rotation.set(
-          currentCameraRotation.x,
-          currentCameraRotation.y,
-          currentCameraRotation.z
-        )
-        console.log(state.camera.rotation)
-      }
+      animateCameraToPlayer(state, t, 0.2)
+      
     } else {
 
 

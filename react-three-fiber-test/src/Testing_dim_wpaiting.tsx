@@ -68,7 +68,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     setIsInteracting: state.setIsInteracting,
     currentInteraction: state.currentInteraction,
     setCurrentInteraction: state.setcurrentInteraction,
-    isCameraAnimating: state.isCameraAnimating,
+    isCameraAnimating: state.shouldAnimateCamera,
     setIsOnRaisedFloor: state.setIsOnRaisedFloor
   })),)
 
@@ -84,7 +84,12 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   }
 
   //handle hovering enter/exit with interactable mesh
+  //gets worldPosition to be set in the  Player interactionCameraMap meshPositions
   const handlePointerChange = (event: ThreeEvent<PointerEvent>, id: number) => {
+    
+    //const worldPos = new THREE.Vector3()
+    //event.object.getWorldPosition(worldPos)
+    //console.log(worldPos)
     setIsPointing(id)
     event.stopPropagation() //have to see docs 
   }
