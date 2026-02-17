@@ -1,18 +1,18 @@
 import * as THREE from "three"
 import { useEffect, useRef, useState } from "react"
-import { useFrame } from "@react-three/fiber"
+import { useFrame, useThree } from "@react-three/fiber"
 import { useKeyboardControls } from "@react-three/drei"
 import { CapsuleCollider, RapierRigidBody, RigidBody } from "@react-three/rapier"
 import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
 
-interface InteractionCamera {
+interface InteractionCameraSettings {
 
   position: THREE.Vector3
   rotation: THREE.Vector3
 }
 
-const interactionCameraMap = new Map<number, InteractionCamera>([
+const interactionCameraMap = new Map<number, InteractionCameraSettings>([
   [0, { position: new THREE.Vector3(-0.3, 0.2, -0.61), rotation: new THREE.Vector3(0, 259.2, 0) }],
   [1, { position: new THREE.Vector3(2, 2, 2), rotation: new THREE.Vector3(0, 259.2, 0) }]
 ])
@@ -28,6 +28,7 @@ export function Player() {
 
   const ref = useRef<RapierRigidBody | null>(null)
   const [, get] = useKeyboardControls()
+  const { camera } = useThree()
   const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.3, 1.5))
   const [currentCameraRotation, setCurrentCameraRotation] = useState(new THREE.Vector3(0,0,0))
   const { isInteracting, currentInteraction, isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
@@ -49,6 +50,11 @@ export function Player() {
     if (isInteracting) {
       console.log("interacting set true")
       body.setLinvel({ x: 0, y: 0, z: 0 }, true)
+
+      setCurrentCameraRotation(
+        new THREE.Vector3(camera.rotation.x, camera.rotation.y, camera.rotation.z)
+      )
+      console.log(currentCameraRotation);
     }
   }, [isInteracting])
 
@@ -127,6 +133,11 @@ export function Player() {
 
 
       const distance = currentCameraPosition.distanceTo(targetPosition)
+      state.camera.rotation.set(
+          currentCameraRotation.x,
+          currentCameraRotation.y,
+          currentCameraRotation.z
+        )
 
       if (distance < 0.01) {
         // Snap exactly to target
@@ -135,7 +146,12 @@ export function Player() {
 
         setIsCameraAnimating(false)
         setIsOrbitControls(false)
-
+        state.camera.rotation.set(
+          currentCameraRotation.x,
+          currentCameraRotation.y,
+          currentCameraRotation.z
+        )
+        console.log(state.camera.rotation)
       }
     } else {
 
