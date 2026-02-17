@@ -10,6 +10,8 @@ interface ExperienceState {
   setIsCameraAnimating : (fixed: boolean) => void
   isOrbitControls: boolean
   setIsOrbitControls : (fixed: boolean) => void
+  isOnRaisedFloor: boolean
+  setIsOnRaisedFloor: (fixed: boolean) => void
 }
 
 export const useStore = create<ExperienceState>()((set) => ({
@@ -19,7 +21,9 @@ export const useStore = create<ExperienceState>()((set) => ({
   setcurrentInteraction: (fixed) => set({ currentInteraction: fixed }),
   isCameraAnimating: false,
   setIsCameraAnimating: (fixed) => set({ isCameraAnimating: fixed }),
-   isOrbitControls: false,
+  isOrbitControls: false,
   setIsOrbitControls: (fixed) => set({ isOrbitControls: fixed }),
+  isOnRaisedFloor: true,
+  setIsOnRaisedFloor: (fixed) => set({ isOnRaisedFloor: fixed }),
 
 }))

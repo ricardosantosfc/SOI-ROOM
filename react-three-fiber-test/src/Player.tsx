@@ -30,24 +30,28 @@ export function Player() {
   const [, get] = useKeyboardControls()
   const { camera } = useThree()
   const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.3, 1.5))
-  const [currentCameraRotation, setCurrentCameraRotation] = useState(new THREE.Vector3(0,0,0))
-  const { isInteracting, currentInteraction, isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
+  const [currentCameraRotation, setCurrentCameraRotation] = useState(new THREE.Vector3(0, 0, 0))
+  const { isInteracting, currentInteraction, isCameraAnimating, setIsCameraAnimating, setIsOrbitControls,
+    isOnRaisedFloor
+  } = useStore(useShallow((state) =>
   ({
     isInteracting: state.isInteracting,
     currentInteraction: state.currentInteraction,
     isCameraAnimating: state.isCameraAnimating,
-    setIsCameraAnimating: state.setIsCameraAnimating
+    setIsCameraAnimating: state.setIsCameraAnimating,
+    setIsOrbitControls: state.setIsOrbitControls,
+    isOnRaisedFloor: state.isOnRaisedFloor
   })),)
-  const { setIsOrbitControls } = useStore(useShallow((state) =>
-    ({ setIsOrbitControls: state.setIsOrbitControls })),)
+
 
 
   //the moment interaction starts, stop movement 
   useEffect(() => {
-    const body = ref.current
-    if (!body) return
 
     if (isInteracting) {
+      const body = ref.current
+      if (!body) return
+
       console.log("interacting set true")
       body.setLinvel({ x: 0, y: 0, z: 0 }, true)
 
@@ -55,9 +59,31 @@ export function Player() {
         new THREE.Vector3(camera.rotation.x, camera.rotation.y, camera.rotation.z)
       )
       console.log(currentCameraRotation);
+      setIsCameraAnimating(true)
+
+    } else {
+      console.log("interacting set to false")
+      setIsCameraAnimating(true)
     }
   }, [isInteracting])
 
+
+  useEffect(() => {
+
+    console.log("triggered is on raise floor")
+    const body = ref.current
+    if (!body) return
+
+    console.log(isOnRaisedFloor)
+    const yStep = isOnRaisedFloor? 0.02: -0.02
+
+    const t = body.translation()
+
+      body.setTranslation(
+        { x: t.x, y: t.y + yStep, z: t.z },
+        true
+      )
+  }, [isOnRaisedFloor])
 
   useFrame((state) => {
 
@@ -134,10 +160,10 @@ export function Player() {
 
       const distance = currentCameraPosition.distanceTo(targetPosition)
       state.camera.rotation.set(
-          currentCameraRotation.x,
-          currentCameraRotation.y,
-          currentCameraRotation.z
-        )
+        currentCameraRotation.x,
+        currentCameraRotation.y,
+        currentCameraRotation.z
+      )
 
       if (distance < 0.01) {
         // Snap exactly to target

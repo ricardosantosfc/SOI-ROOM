@@ -60,24 +60,18 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   const [isIntersecting, setIsIntersecting] = useState(-1)
 
 
-  const { isInteracting, setIsInteracting, currentInteraction, setCurrentInteraction, isCameraAnimating, setIsCameraAnimating } = useStore(useShallow((state) =>
-    ({ isInteracting: state.isInteracting, setIsInteracting: state.setIsInteracting,
-      currentInteraction: state.currentInteraction, setCurrentInteraction: state.setcurrentInteraction,
-       isCameraAnimating: state.isCameraAnimating, setIsCameraAnimating: state.setIsCameraAnimating })),)
+  const { isInteracting, setIsInteracting, currentInteraction, setCurrentInteraction, isCameraAnimating,
+    setIsOnRaisedFloor
+  } = useStore(useShallow((state) =>
+  ({
+    isInteracting: state.isInteracting,
+    setIsInteracting: state.setIsInteracting,
+    currentInteraction: state.currentInteraction,
+    setCurrentInteraction: state.setcurrentInteraction,
+    isCameraAnimating: state.isCameraAnimating,
+    setIsOnRaisedFloor: state.setIsOnRaisedFloor
+  })),)
 
-
-  //handle floor step up/down
-  const handleFloorStep = (state: CollisionPayload, yStep: number) => {
-    const player = state.other.rigidBody
-    if (!player) return
-
-    const t = player.translation()
-
-    player.setTranslation(
-      { x: t.x, y: t.y + yStep, z: t.z },
-      true
-    )
-  }
 
   // interactble -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
 
@@ -136,10 +130,9 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
     const handleGlobalClick = () => {
       if (canInteract) {
-        
+
         setIsInteracting(true)
         setCurrentInteraction(isIntersecting)
-        setIsCameraAnimating(true)
 
       }
     }
@@ -159,7 +152,6 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
         setIsInteracting(false)
         setCurrentInteraction(-1)
-        setIsCameraAnimating(true)
 
       }
     }
@@ -199,10 +191,10 @@ export function Model(props: JSX.IntrinsicElements['group']) {
         <RigidBody type="fixed" friction={0} restitution={0}>
 
           <CuboidCollider args={[0.7, 0.1, 1]} position={[-1.206, 1.314, 0.451]}
-          
+
             sensor onIntersectionEnter={(state) => { handleIntersectionChange(state, 0) }}
             onIntersectionExit={(state) => { handleIntersectionChange(state, -1) }}
-            
+
           ></CuboidCollider>
 
           <mesh name="paiting_rocks_frame" geometry={nodes.paiting_rocks_frame.geometry} material={materials['wood wals']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623}
@@ -214,7 +206,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
         </RigidBody>
 
         <mesh name="paiting_rocks_glass" geometry={nodes.paiting_rocks_glass.geometry} material={materials['Material.007']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623}
-          
+
           onPointerEnter={(event) => { handlePointerChange(event, 0) }}
           onPointerOut={(event) => { handlePointerChange(event, -1) }}
 
@@ -236,8 +228,8 @@ export function Model(props: JSX.IntrinsicElements['group']) {
         <group name="strucutrer_wall_dor_old" position={[-0.021, 1.262, 2.662]} rotation={[0, Math.PI / 2, 0]} scale={[1, 1, 1.09]}>
           <RigidBody type="fixed" friction={0} restitution={0}
 
-            sensor onIntersectionEnter={(state) => { handleFloorStep(state, +0.02) }}
-            onIntersectionExit={(state) => { handleFloorStep(state, -0.02) }}
+            sensor onIntersectionEnter={() => { setIsOnRaisedFloor(true) }}
+            onIntersectionExit={() => { setIsOnRaisedFloor(false) }}
 
           >
             <mesh name="Cube022" geometry={nodes.Cube022.geometry} material={materials.concrete} />
