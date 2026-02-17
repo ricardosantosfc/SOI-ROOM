@@ -62,7 +62,7 @@ export function Player() {
       )
       console.log(currentCameraRotation);
       setIsCameraAnimating(true)
-
+      
     } else {
       console.log("interacting set to false")
       setIsCameraAnimating(true)
@@ -86,10 +86,10 @@ export function Player() {
 
           setIsCameraAnimating(false)
           setIsOrbitControls(true);
-           state.camera.rotation.set(
-         targetRotation.x, targetRotation.y, targetRotation.z
-        )
-  }}
+          state.camera.rotation.set(targetRotation.x, targetRotation.y, targetRotation.z)
+          document.exitPointerLock();
+      }
+  }
 
   //handle raised floor entering/exit
   useEffect(() => {
@@ -119,37 +119,9 @@ export function Player() {
 
       //interaction has been triggered
       if (isCameraAnimating) {
-        const targetPosition = interactionCameraMap.get(currentInteraction)!.position
+        
+        animateCamera(state,interactionCameraMap.get(currentInteraction)!.position, interactionCameraMap.get(currentInteraction)!.rotation, 0.1)
 
-        // Interpolate smoothly towards the target position
-        const smoothSpeed = 0.1
-        currentCameraPosition.lerp(targetPosition, smoothSpeed)
-
-        // Apply the smoothed camera position
-        state.camera.position.copy(currentCameraPosition)
-
-
-
-        const distance = currentCameraPosition.distanceTo(targetPosition)
-         const targetRotation = interactionCameraMap.get(currentInteraction)!.rotation
-      state.camera.rotation.set(targetRotation.x, targetRotation.y, targetRotation.z)
-
-
-        if (distance < 0.01) {
-
-          // Snap exactly to target
-          currentCameraPosition.copy(targetPosition)
-          state.camera.position.copy(targetPosition)
-
-          setIsCameraAnimating(false)
-          setIsOrbitControls(true);
-           state.camera.rotation.set(
-         targetRotation.x, targetRotation.y, targetRotation.z
-        )
-          document.exitPointerLock()
-
-
-        }
       }
       //else{ //apllide after animation
       //state.camera.rotation.set(0,259.2,0)
