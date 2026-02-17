@@ -6,32 +6,45 @@ import { KeyboardControls, OrbitControls, PointerLockControls } from '@react-thr
 import { Perf } from 'r3f-perf'
 import { useStore } from './store'
 import { PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
+import { useShallow } from 'zustand/shallow'
 
 function App() {
 
-
-  const isOrbitControls = useStore((state) => state.isOrbitControls)
   //or fov 45
+
+  const { isInteracting, isOrbitControls, isCameraAnimating } = useStore(useShallow((state) =>
+  ({isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.isCameraAnimating})),)
   const plControls = useRef<PointerLockControlsImpl>(null!)
 
-  /*
+
   useEffect(() => {
-  const handleKey = (e: KeyboardEvent) => {
-    if (e.code === "KeyQ") {
-      console.log("Q pressed — locking")
-      plControls.current?.lock()
-      console.log(plControls)
+    const handleKey = (e: KeyboardEvent) => {
+      if (isInteracting && !isCameraAnimating && e.code === "Space") {
+        console.log("Q pressed — locking")
+
+
+        const tryLock = () => {
+          console.log("frame lock attempt")
+          if (plControls.current) {
+            plControls.current.lock()
+            console.log("Pointer locked")
+          } else {
+            requestAnimationFrame(tryLock)
+          }
+        }
+
+        tryLock()
+      }
     }
-  }
 
-  document.addEventListener("keydown", handleKey)
+    document.addEventListener("keydown", handleKey)
 
-  return () => {
-    document.removeEventListener("keydown", handleKey)
-  }
-}, [])
-  
-*/
+    return () => {
+      document.removeEventListener("keydown", handleKey)
+    }
+  }, [isInteracting, isCameraAnimating])
+
+
   return (
     <>
       <KeyboardControls
@@ -53,18 +66,10 @@ function App() {
             <PointerLockControls ref={plControls}
               minPolarAngle={Math.PI / 5}
               maxPolarAngle={Math.PI - Math.PI / 5}
-              onUpdate={(state) => {
-                console.log("on change pointerlockcontrols")
-                console.log("is locke " + state.isLocked)
-              }}
             />
           )}
           {isOrbitControls && (
-            <OrbitControls
-              onUpdate={() => {
-                console.log("on change orbit controls")
-              }}
-            />
+            <OrbitControls />
           )}
         </Canvas>
       </KeyboardControls>
