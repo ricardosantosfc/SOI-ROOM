@@ -1,6 +1,6 @@
 import * as THREE from "three"
 import { useEffect, useRef, useState } from "react"
-import { useFrame, useThree } from "@react-three/fiber"
+import { useFrame, useThree, type RootState } from "@react-three/fiber"
 import { useKeyboardControls } from "@react-three/drei"
 import { CapsuleCollider, RapierRigidBody, RigidBody } from "@react-three/rapier"
 import { useStore } from "./store"
@@ -46,7 +46,8 @@ export function Player() {
 
 
 
-  //the moment interaction starts, stop movement 
+  //the moment interaction starts, stop movement, get current pl camera rotation, trigger camera animation
+  //the moment interaction stops, trigger animation, set old pl camera rotation, start movemnt
   useEffect(() => {
 
     if (isInteracting) {
@@ -68,6 +69,27 @@ export function Player() {
     }
   }, [isInteracting])
 
+  
+  const animateCamera = ( state: RootState, targetPosition: THREE.Vector3,targetRotation: THREE.Vector3, smoothSpeed : number) => {
+
+      currentCameraPosition.lerp(targetPosition, smoothSpeed)
+
+        // Apply the smoothed camera position
+      state.camera.position.copy(currentCameraPosition)
+      const distance = currentCameraPosition.distanceTo(targetPosition)
+      state.camera.rotation.set(targetRotation.x, targetRotation.y, targetRotation.z)
+       if (distance < 0.01) {
+
+          // Snap exactly to target
+          currentCameraPosition.copy(targetPosition)
+          state.camera.position.copy(targetPosition)
+
+          setIsCameraAnimating(false)
+          setIsOrbitControls(true);
+           state.camera.rotation.set(
+         targetRotation.x, targetRotation.y, targetRotation.z
+        )
+  }}
 
   //handle raised floor entering/exit
   useEffect(() => {
@@ -85,14 +107,17 @@ export function Player() {
       )
   }, [isOnRaisedFloor])
 
+  //every frame,
   useFrame((state) => {
 
     const body = ref.current
     if (!body) return
 
 
+    
     if (isInteracting) {
 
+      //interaction has been triggered
       if (isCameraAnimating) {
         const targetPosition = interactionCameraMap.get(currentInteraction)!.position
 
@@ -106,6 +131,9 @@ export function Player() {
 
 
         const distance = currentCameraPosition.distanceTo(targetPosition)
+         const targetRotation = interactionCameraMap.get(currentInteraction)!.rotation
+      state.camera.rotation.set(targetRotation.x, targetRotation.y, targetRotation.z)
+
 
         if (distance < 0.01) {
 
@@ -115,7 +143,9 @@ export function Player() {
 
           setIsCameraAnimating(false)
           setIsOrbitControls(true);
-
+           state.camera.rotation.set(
+         targetRotation.x, targetRotation.y, targetRotation.z
+        )
           document.exitPointerLock()
 
 
@@ -146,6 +176,7 @@ export function Player() {
     // update camera
     const t = body.translation()
 
+    //exit interaction
     if (isCameraAnimating) {
       const targetPosition = new THREE.Vector3(t.x, t.y, t.z) //vector depends on clciked mesh
 
