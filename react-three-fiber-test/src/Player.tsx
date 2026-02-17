@@ -23,6 +23,7 @@ const direction = new THREE.Vector3()
 const frontVector = new THREE.Vector3()
 const sideVector = new THREE.Vector3()
 
+const RAISED_LEVEL_YSTEP = 0.02
 
 export function Player() {
 
@@ -68,14 +69,13 @@ export function Player() {
   }, [isInteracting])
 
 
+  //handle raised floor entering/exit
   useEffect(() => {
 
-    console.log("triggered is on raise floor")
     const body = ref.current
     if (!body) return
 
-    console.log(isOnRaisedFloor)
-    const yStep = isOnRaisedFloor? 0.02: -0.02
+    const yStep = isOnRaisedFloor? RAISED_LEVEL_YSTEP: -RAISED_LEVEL_YSTEP
 
     const t = body.translation()
 
