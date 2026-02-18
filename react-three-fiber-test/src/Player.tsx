@@ -15,7 +15,10 @@ interface InteractionCameraSettings {
 }
 
 const interactionCameraMap = new Map<number, InteractionCameraSettings>([
-  [0, { cameraPosition: new THREE.Vector3(-0.3, 0.2, -0.61), meshPosition: new THREE.Vector3(-1.185,0.190,-0.591) }],
+  [0, {
+    cameraPosition: new THREE.Vector3(-0.3, 0.2, -0.61),
+    meshPosition: new THREE.Vector3(-1.185, 0.190, -0.591)
+  }],
   [1, { cameraPosition: new THREE.Vector3(2, 2, 2), meshPosition: new THREE.Vector3(0, 259.2, 0) }]
 ])
 
@@ -65,82 +68,74 @@ export function Player() {
       )
       console.log(currentCameraRotation);
       setShouldAnimateCamera(true)
-      
+
     } else {
       console.log("interacting set to false")
       setShouldAnimateCamera(true)
     }
   }, [isInteracting])
 
-  
-  const animateCameraToInteraction = ( state: RootState, targetInteraction: InteractionCameraSettings, smoothSpeed : number) => {
+
+  //when starts inetracting and camera should be animated, 
+  const animateCameraToInteraction = (state: RootState, targetInteraction: InteractionCameraSettings, smoothSpeed: number) => {
 
     const targetCameraPosition = targetInteraction.cameraPosition
-    const targetMeshPosition = targetInteraction.meshPosition
 
-      currentCameraPosition.lerp(targetCameraPosition, smoothSpeed)
+    currentCameraPosition.lerp(targetCameraPosition, smoothSpeed)
 
-      // Apply the smoothed camera position
-      state.camera.position.copy(currentCameraPosition)
-      const distance = currentCameraPosition.distanceTo(targetCameraPosition)
+    // Apply the smoothed camera position
+    state.camera.position.copy(currentCameraPosition)
+    const distance = currentCameraPosition.distanceTo(targetCameraPosition)
 
-      state.camera.lookAt(targetMeshPosition)
-    
-       if (distance < 0.01) {
+    //look at is done outside to account for acutal ob mounting
+    if (distance < 0.01) {
 
-          // Snap exactly to target
-          currentCameraPosition.copy(targetCameraPosition)
-          state.camera.position.copy(targetCameraPosition)
-          
+      // Snap exactly to target
+      currentCameraPosition.copy(targetCameraPosition)
+      state.camera.position.copy(targetCameraPosition)
 
-          setShouldAnimateCamera(false)
-          setIsOrbitControls(true);
-     
-          document.exitPointerLock();
-          
-      }
+
+      setShouldAnimateCamera(false)
+      setIsOrbitControls(true);
+
+      document.exitPointerLock();
+
+    }
   }
 
-useEffect(() => {
+  //once ob controls are mounted, set mesh as ob target
+  useEffect(() => {
 
-  if (obControls) {
-    console.log("ob insinde player")
-    obControls.target.copy(interactionCameraMap.get(currentInteraction)!.meshPosition)
-    obControls.update()
-  }else{
-    console.log("pl controls")
-  }
-}, [obControls])
+    if (obControls) {
 
-  const animateCameraToPlayer = ( state: RootState, playerTranslation: Vector,  smoothSpeed : number) => {
-  
+      obControls.target.copy(interactionCameraMap.get(currentInteraction)!.meshPosition)
+      obControls.update()
+    }
+  }, [obControls])
+
+  ////when exiting inetractign and camera should be animated,
+  const animateCameraToPlayer = (state: RootState, playerTranslation: Vector, smoothSpeed: number) => {
+
     const targetPosition = new THREE.Vector3(playerTranslation.x, playerTranslation.y, playerTranslation.z)
 
-      // Interpolate smoothly towards the target position
-      currentCameraPosition.lerp(targetPosition, smoothSpeed)
+    // Interpolate smoothly towards the target position
+    currentCameraPosition.lerp(targetPosition, smoothSpeed)
 
-      // Apply the smoothed camera position
-      state.camera.position.copy(currentCameraPosition)
+    // Apply the smoothed camera position
+    state.camera.position.copy(currentCameraPosition)
+    const distance = currentCameraPosition.distanceTo(targetPosition)
 
+    state.camera.rotation.set(currentCameraRotation.x, currentCameraRotation.y, currentCameraRotation.z)
 
+    if (distance < 0.01) {
+      // Snap exactly to target
+      currentCameraPosition.copy(targetPosition)
+      state.camera.position.copy(targetPosition)
 
-      const distance = currentCameraPosition.distanceTo(targetPosition)
-      state.camera.rotation.set(
-        currentCameraRotation.x,
-        currentCameraRotation.y,
-        currentCameraRotation.z
-      )
+      setShouldAnimateCamera(false)
+      setIsOrbitControls(false)
 
-      if (distance < 0.01) {
-        // Snap exactly to target
-        currentCameraPosition.copy(targetPosition)
-        state.camera.position.copy(targetPosition)
-
-        setShouldAnimateCamera(false)
-        setIsOrbitControls(false)
- 
-        console.log(state.camera.rotation)
-      }
+    }
   }
 
   //handle raised floor entering/exit
@@ -149,41 +144,40 @@ useEffect(() => {
     const body = ref.current
     if (!body) return
 
-    const yStep = isOnRaisedFloor? RAISED_LEVEL_YSTEP: -RAISED_LEVEL_YSTEP
+    const yStep = isOnRaisedFloor ? RAISED_LEVEL_YSTEP : -RAISED_LEVEL_YSTEP
 
     const t = body.translation()
 
-      body.setTranslation(
-        { x: t.x, y: t.y + yStep, z: t.z },
-        true
-      )
+    body.setTranslation(
+      { x: t.x, y: t.y + yStep, z: t.z },
+      true
+    )
   }, [isOnRaisedFloor])
 
-  //every frame,
+//------------------------------------------------------------frame----------
+
   useFrame((state) => {
 
     const body = ref.current
     if (!body) return
-    
+
     if (isInteracting) {
 
-      //interaction has been triggered
       if (shouldAnimateCamera) {
-        
-        animateCameraToInteraction(state,interactionCameraMap.get(currentInteraction)!, 0.1)
-
+        animateCameraToInteraction(state, interactionCameraMap.get(currentInteraction)!, 0.1)
       }
-      
-      //should do until controls are mounted, so transition less jittery
-      //state.camera.lookAt(-1.185008150935173,0.19030003476142898,-0.5905551153291018)
 
+      //avoids jittery effect, done while should animate camera up until actually mounted
+      if (!obControls) { 
+        state.camera.lookAt(interactionCameraMap.get(currentInteraction)!.meshPosition)
+      }
 
       return
+
     }
 
     const { forward, backward, left, right } = get()
     const velocity = body.linvel()
-
 
     // update camera
     const t = body.translation()
@@ -192,7 +186,7 @@ useEffect(() => {
     if (shouldAnimateCamera) {
 
       animateCameraToPlayer(state, t, 0.2)
-      
+
     } else {
 
 

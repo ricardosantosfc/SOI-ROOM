@@ -76,7 +76,14 @@ function App() {
           {isOrbitControls && (
             <OrbitControls ref={(ref) => {
               setObControls(ref) 
-            }} />
+            }}
+            enablePan={false} 
+            minDistance={0.4}
+            maxDistance={1}
+            maxAzimuthAngle={Math.PI-(Math.PI/12)}
+            minAzimuthAngle={Math.PI / 12}
+            maxPolarAngle={Math.PI-(Math.PI/12)} 
+            minPolarAngle={Math.PI / 12}/>
           )}
         </Canvas>
       </KeyboardControls>
