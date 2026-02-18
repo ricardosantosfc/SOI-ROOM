@@ -106,7 +106,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
           <div className="interact-message">
             <img
               src="../hand-pointer-who.svg"
-              className="canvas-overlay-image"
+              className="interact-image"
             />
             <h1>Interact</h1>
           </div>
@@ -115,19 +115,21 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     )
   }
 
-  //when interactingwith mesh, show info --------- REFACTOR BASED ON CURRENT INTERACITON---------
+    /*
+  //when interactingwith mesh, show info 3d space
   const showIsInteractingHtml = () => {
+
     return (
       <>
-        <Html position={[0.3, 0.1, 0.5]}>
+        <Html position={[-0.32, 0.1, 0.5]}>
           <div className="information">
             <h2>"Meoto Iwa (monochrome edit)"</h2>
             <h3>Watercolor and gouache, 2025</h3>
           </div>
         </Html>
       </>
-    )
-  }
+    
+  })*/
 
   //on click on canInteract mesh, 
   useEffect(() => {
@@ -205,7 +207,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
           <mesh name="paiting_rocks_frame" geometry={nodes.paiting_rocks_frame.geometry} material={materials['wood wals']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623}
           >
             {canInteract && !isInteracting && showCanInteractHtml()}
-            {isInteracting && !isCameraAnimating && showIsInteractingHtml()}
+            {/*isInteracting && !isCameraAnimating && showIsInteractingHtml()*/}
 
           </mesh>
         </RigidBody>

@@ -7,7 +7,7 @@ import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
 import type { Vector } from "three/examples/jsm/physics/RapierPhysics.js"
 
-//also set max azimuths etc
+//see if makes sense to set max azimuths etc per mesh
 interface InteractionCameraSettings {
 
   cameraPosition: THREE.Vector3
@@ -23,7 +23,7 @@ const interactionCameraMap = new Map<number, InteractionCameraSettings>([
 ])
 
 
-const SPEED = 3
+const SPEED = 2.2
 const direction = new THREE.Vector3()
 const frontVector = new THREE.Vector3()
 const sideVector = new THREE.Vector3()
@@ -164,7 +164,7 @@ export function Player() {
     if (isInteracting) {
 
       if (shouldAnimateCamera) {
-        animateCameraToInteraction(state, interactionCameraMap.get(currentInteraction)!, 0.1)
+        animateCameraToInteraction(state, interactionCameraMap.get(currentInteraction)!, 0.2)
       }
 
       //avoids jittery effect, done while should animate camera up until actually mounted

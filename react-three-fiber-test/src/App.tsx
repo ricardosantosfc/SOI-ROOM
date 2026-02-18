@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, useState } from 'react'
+import { Suspense, useEffect, useRef, useState, type ComponentType, type JSX } from 'react'
 import { Canvas } from '@react-three/fiber'
 import './App.css'
 import { Experience } from './components/Experience'
@@ -7,21 +7,29 @@ import { Perf } from 'r3f-perf'
 import { useStore } from './store'
 import { OrbitControls as OrbitControlsImpl, PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
 import { useShallow } from 'zustand/shallow'
+import { OverlayInteraction0 } from './overlays/OverlayInteraction0'
+
+const overlayMap: Record<number, ComponentType> = {
+  0: OverlayInteraction0,
+}
 
 function App() {
 
   //or fov 45
 
-  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls } = useStore(useShallow((state) =>
+  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls, currentInteraction } = useStore(useShallow((state) =>
   ({
     isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.shouldAnimateCamera,
-     setObControls: state.setObControls
+    setObControls: state.setObControls, currentInteraction: state.currentInteraction
   })),)
 
   const plControls = useRef<PointerLockControlsImpl>(null!)
+  const [isMoving, setIsMoving] = useState(false)
 
 
-//wont work properly outside app, even if curr pl is stored
+  const CurrentOverlayComponent = overlayMap[currentInteraction]
+
+  //wont work properly outside app, even if curr pl is stored
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (isInteracting && !isCameraAnimating && e.code === "Space") {
@@ -59,33 +67,49 @@ function App() {
           { name: "left", keys: ["ArrowLeft", "a", "A"] },
           { name: "right", keys: ["ArrowRight", "d", "D"] },
         ]}>
-        <Canvas shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
+        <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+          <Canvas shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
 
-          <Perf position="top-left" />
-          <group position-y={0}>
-            <Suspense fallback={null}>
-              <Experience />
-            </Suspense>
-          </group>
-          {!isOrbitControls && (
-            <PointerLockControls ref={plControls}
-              minPolarAngle={Math.PI / 5}
-              maxPolarAngle={Math.PI - Math.PI / 5}
-            />
-          )}
-          {isOrbitControls && (
-            <OrbitControls ref={(ref) => {
-              setObControls(ref) 
-            }}
-            enablePan={false} 
-            minDistance={0.4}
-            maxDistance={1}
-            maxAzimuthAngle={Math.PI-(Math.PI/12)}
-            minAzimuthAngle={Math.PI / 12}
-            maxPolarAngle={Math.PI-(Math.PI/12)} 
-            minPolarAngle={Math.PI / 12}/>
-          )}
-        </Canvas>
+            <Perf position="top-left" />
+            <group position-y={0}>
+              <Suspense fallback={null}>
+                <Experience />
+              </Suspense>
+            </group>
+            {!isOrbitControls && (
+              <PointerLockControls ref={plControls}
+                minPolarAngle={Math.PI / 5}
+                maxPolarAngle={Math.PI - Math.PI / 5}
+              />
+            )}
+            {isOrbitControls && (
+              <OrbitControls ref={(ref) => {
+                setObControls(ref)
+              }}
+                onStart={() => {
+                  console.log("mving")
+                  setIsMoving(true)
+                }}
+                onEnd={() => {
+                  console.log("stop")
+                  setIsMoving(false)
+                }
+
+                }
+                enablePan={false}
+                minDistance={0.4}
+                maxDistance={1}
+                maxAzimuthAngle={Math.PI - (Math.PI / 12)}
+                minAzimuthAngle={Math.PI / 12}
+                maxPolarAngle={Math.PI - (Math.PI / 12)}
+                minPolarAngle={Math.PI / 12} />
+            )}
+          </Canvas>
+          <div className='ui-overlay'>
+            {isOrbitControls && !isMoving && currentInteraction !== -1 && (<CurrentOverlayComponent />)}
+          </div>
+
+        </div>
       </KeyboardControls>
     </>
   )

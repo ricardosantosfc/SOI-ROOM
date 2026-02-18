@@ -42,28 +42,11 @@ body {
   justify-content: center;
   align-items: center;
 
-
 }
 
-.information{
-   display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-    background: rgba(51, 51, 51, 0.851);
-  color: #f0f0f0;
-  border-radius: 8px;
-  padding: 10px 10px;
-  width: max-content; 
-  gap:2px;
-}
-
-.information h2, h3 {
-  margin: 0;
-  
-}
 
 .interact-message h1 {
+
   background: rgba(51, 51, 51, 0.851);
   color: #f0f0f0;
   border-radius: 8px;
@@ -73,7 +56,26 @@ body {
 }
 
 
-.canvas-overlay-image {
+.interact-image{
   height: 15vh;
   margin-bottom: -5vh;
+}
+
+.ui-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none; 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+
+}
+
+.ui-overlay button {
+  pointer-events: auto; 
 }
