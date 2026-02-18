@@ -12,15 +12,16 @@ function App() {
 
   //or fov 45
 
-  const { isInteracting, isOrbitControls, isCameraAnimating, setAreOrbitControlsMounted , setObControls } = useStore(useShallow((state) =>
-  ({isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.shouldAnimateCamera,
-    setAreOrbitControlsMounted: state.setAreOrbitControlsMounted, setObControls: state.setObControls
+  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls } = useStore(useShallow((state) =>
+  ({
+    isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.shouldAnimateCamera,
+     setObControls: state.setObControls
   })),)
-  
+
   const plControls = useRef<PointerLockControlsImpl>(null!)
-  const obControls = useRef<OrbitControlsImpl | null>(null)
 
 
+//wont work properly outside app, even if curr pl is stored
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (isInteracting && !isCameraAnimating && e.code === "Space") {
@@ -73,15 +74,9 @@ function App() {
             />
           )}
           {isOrbitControls && (
-            <OrbitControls ref={(ref) => { 
-              obControls.current = ref 
-              if (ref) {console.log("ob not nul")
-                
-              obControls.current!.target.set(-1.185,0.190,-0.591)
-    obControls.current!.update()
-    setAreOrbitControlsMounted(true)
-              }
-            }}/>
+            <OrbitControls ref={(ref) => {
+              setObControls(ref) 
+            }} />
           )}
         </Canvas>
       </KeyboardControls>

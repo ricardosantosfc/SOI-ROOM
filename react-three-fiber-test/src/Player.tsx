@@ -35,7 +35,7 @@ export function Player() {
   const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.3, 1.5))
   const [currentCameraRotation, setCurrentCameraRotation] = useState(new THREE.Vector3(0, 0, 0))
   const { isInteracting, currentInteraction, shouldAnimateCamera, setShouldAnimateCamera, setIsOrbitControls,
-    isOnRaisedFloor, areOrbitControlsMounted
+    isOnRaisedFloor, obControls
   } = useStore(useShallow((state) =>
   ({
     isInteracting: state.isInteracting,
@@ -44,7 +44,7 @@ export function Player() {
     setShouldAnimateCamera: state.setShouldAnimateCamera,
     setIsOrbitControls: state.setIsOrbitControls,
     isOnRaisedFloor: state.isOnRaisedFloor,
-    areOrbitControlsMounted: state.areOrbitControlsMounted
+    obControls: state.obControls
   })),)
 
 
@@ -101,14 +101,16 @@ export function Player() {
       }
   }
 
-  useEffect(() => {
+useEffect(() => {
 
-    if (areOrbitControlsMounted) {
- 
-      //camera.lookAt(interactionCameraMap.get(currentInteraction)!.meshPosition)
-    }
-  }, [areOrbitControlsMounted])
-
+  if (obControls) {
+    console.log("ob insinde player")
+    obControls.target.copy(interactionCameraMap.get(currentInteraction)!.meshPosition)
+    obControls.update()
+  }else{
+    console.log("pl controls")
+  }
+}, [obControls])
 
   const animateCameraToPlayer = ( state: RootState, playerTranslation: Vector,  smoothSpeed : number) => {
   

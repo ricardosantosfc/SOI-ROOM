@@ -1,5 +1,5 @@
 
-import type { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import { OrbitControls as OrbitControlsImpl, PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
 import { create } from 'zustand'
 
 interface ExperienceState {
@@ -12,11 +12,10 @@ interface ExperienceState {
   isOrbitControls: boolean
   setIsOrbitControls : (fixed: boolean) => void
 
-  obControls: OrbitControls | null
-  setObControls: (c: OrbitControls | null) => void
+  obControls: OrbitControlsImpl | null
+  setObControls: (c: OrbitControlsImpl | null) => void
 
-  areOrbitControlsMounted : boolean
-  setAreOrbitControlsMounted : (fixed: boolean) => void
+
   isOnRaisedFloor: boolean
   setIsOnRaisedFloor: (fixed: boolean) => void
 }
@@ -29,13 +28,11 @@ export const useStore = create<ExperienceState>()((set) => ({
   shouldAnimateCamera: false,
   setShouldAnimateCamera: (fixed) => set({ shouldAnimateCamera: fixed }),
   isOrbitControls: false,
+  setIsOrbitControls: (fixed) => set({ isOrbitControls: fixed }),
 
   obControls: null,
   setObControls: (c) => set({ obControls: c }),
 
-  setIsOrbitControls: (fixed) => set({ isOrbitControls: fixed }),
-  areOrbitControlsMounted: false,
-  setAreOrbitControlsMounted: (fixed) => set({ areOrbitControlsMounted: fixed }),
   isOnRaisedFloor: true,
   setIsOnRaisedFloor: (fixed) => set({ isOnRaisedFloor: fixed }),
 
