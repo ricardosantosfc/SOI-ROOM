@@ -27,7 +27,7 @@ const interactionCameraMap = new Map<number, InteractionCameraSettings>([
 ])
 
 
-const SPEED = 2.2
+const SPEED = 1.9
 const direction = new THREE.Vector3()
 const frontVector = new THREE.Vector3()
 const sideVector = new THREE.Vector3()

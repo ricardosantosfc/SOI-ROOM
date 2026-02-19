@@ -1,5 +1,5 @@
 import { useMemo, useRef } from "react"
-import { pages } from "../BookUI"
+import { pages } from "../overlays/OverlayInteraction1"
 import { Bone, BoxGeometry, Color, Float32BufferAttribute, MeshStandardMaterial, Skeleton, SkinnedMesh, SRGBColorSpace, Uint16BufferAttribute, Vector3, type Group } from "three";
 import { useTexture } from "@react-three/drei";
 import { useStore } from "../store";
@@ -7,11 +7,13 @@ import { useShallow } from "zustand/shallow";
 import { CuboidCollider } from "@react-three/rapier";
 import * as THREE from 'three'
 import { useObjectInteractions } from "../ObjectInteractions";
+import { useFrame } from "@react-three/fiber";
+import { degToRad } from "three/src/math/MathUtils.js";
 
-
+const lerpFactor = 0.05;
 const PAGE_WIDTH = 1.28;
 const PAGE_HEIGHT = 1.71;
-const PAGE_DEPTH = 0.003;
+const PAGE_DEPTH = 0.006;
 const PAGE_SEGMENTS = 30;
 const SEGMENT_WIDTH = PAGE_WIDTH / PAGE_SEGMENTS;
 
@@ -80,7 +82,7 @@ interface PageProps {
     [key: string]: any; // allow any extra props
 }
 
-function Page({ number, front, back,page, ...props }: PageProps) {
+function Page({ number, front, back,page, opened, ...props }: PageProps) {
     
     const[picture, picture2] = useTexture([
     `/textures/${front}.jpg`,
@@ -91,7 +93,7 @@ function Page({ number, front, back,page, ...props }: PageProps) {
 
     const group = useRef<Group>(null);
 
-    const skinnedMeshRef = useRef(null) 
+    const skinnedMeshRef = useRef<SkinnedMesh | null>(null)
 
     const manualSkinnedMesh = useMemo( () => {
         
@@ -134,12 +136,26 @@ function Page({ number, front, back,page, ...props }: PageProps) {
 
     },[])
 
+    useFrame(() =>{
+
+        if(!skinnedMeshRef.current){
+            return
+        }
+
+        let targetRotation = opened ? -Math.PI /2 : Math.PI /2 
+        targetRotation +=degToRad(number* 0.8)
+
+        const bones = skinnedMeshRef.current.skeleton.bones
+        bones[0].rotation.y = THREE.MathUtils.lerp(bones[0].rotation.y, targetRotation, lerpFactor)
+
+    })
+
     return (
         <group {...props} ref={group}>
             <primitive  object = {manualSkinnedMesh}
             scale={0.2} 
             ref={skinnedMeshRef }
-            position-z = {-number * PAGE_DEPTH+ page * PAGE_DEPTH}/>
+            position-z = {-0.1 * PAGE_DEPTH + page * PAGE_DEPTH}/>
         </group>
     )
 }
@@ -163,7 +179,8 @@ export function Book(props: BookProps) { //
     //console.log(worldPos)
     return (
         
-        <group {...props}
+        <group {...props} 
+        /*rotation-y = {-Math.PI/2}*/
 
          onPointerEnter={(event) => {handlePointerChange(event, 1)}}
 
@@ -184,6 +201,7 @@ export function Book(props: BookProps) { //
                     key={index}
                     page={page}
                     number={index}
+                    opened = {page > index}
                     {...pageData}
                     
                     />
