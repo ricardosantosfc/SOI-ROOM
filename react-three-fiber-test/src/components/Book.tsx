@@ -150,7 +150,7 @@ interface BookProps {
 
 export function Book(props: BookProps) { //
 
-    const { handleIntersectionChange, handlePointerChange,showCanInteractHtml } = useObjectInteractions();
+    const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml } = useObjectInteractions();
     
    const { page
     } = useStore(useShallow((state) =>
@@ -172,8 +172,8 @@ export function Book(props: BookProps) { //
         >
              <CuboidCollider args={[0.5, 0.1, 0.5]} position={[0.3, 0, 0]}
             
-                sensor onIntersectionEnter={(state) => { handleIntersectionChange(state, 1) }}
-                 onIntersectionExit={(state) => { handleIntersectionChange(state, -1) }}
+                sensor onIntersectionEnter={(state) => { handleIntersectionEnter(state, 1) }}
+                 onIntersectionExit={(state) => { handleIntersectionExit(state, 1) }}
             
             ></CuboidCollider>
 

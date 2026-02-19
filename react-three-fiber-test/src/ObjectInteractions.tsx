@@ -34,13 +34,38 @@ export function useObjectInteractions() {
     // interactble -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
 
     //handle collision enter/exit with interactable mesh
+    /*DEPRECATED: may lead to race condition if enter0->enter1->exit0
     const handleIntersectionChange = (state: CollisionPayload, id: number): void => {
         const player = state.other.rigidBody
         if (!player) return
 
         setIsIntersecting(id)
-        //console.log("is intersecitng" + id)
+        console.log("is intersecitng" + id)
+    }*/
+
+     const handleIntersectionEnter = (state: CollisionPayload, id: number): void => {
+        const player = state.other.rigidBody
+        if (!player) return
+
+        setIsIntersecting(id)
+        console.log("is intersecitng" + id)
     }
+
+     const handleIntersectionExit = (state: CollisionPayload, id: number): void => {
+        const player = state.other.rigidBody
+        if (!player) return
+
+        if(id === isIntersecting){
+             setIsIntersecting(-1)
+            console.log("exiting" + id)
+        } //otherwise ignore
+        else{
+            console.log("ignoring exit")
+        }
+           
+    }
+
+
 
     //handle hovering enter/exit with interactable mesh
     //gets worldPosition to be set in the  Player interactionCameraMap meshPositions.
@@ -60,10 +85,12 @@ export function useObjectInteractions() {
 
     //if is colliding and hoveringertain mesh, then can interact
     const canInteract = (): boolean => {
+        console.log("seeing if can interact")
         if (isIntersecting !== -1 && isIntersecting === isPointing) {
 
             return true
         }
+        console.log("cannotinteract interctinf"+ isIntersecting + "piontd" + isPointing)
         return false
     }
 
@@ -129,11 +156,13 @@ export function useObjectInteractions() {
 
 
     return {
-        handleIntersectionChange,
+       
         handlePointerChange,
         showCanInteractHtml,
         canInteract,
-        setIsOnRaisedFloorImpl
+        setIsOnRaisedFloorImpl,
+        handleIntersectionEnter,
+        handleIntersectionExit
 
     }
 }

@@ -58,7 +58,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
   // -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
 
-  const { handleIntersectionChange, handlePointerChange,showCanInteractHtml,setIsOnRaisedFloorImpl } = useObjectInteractions();
+  const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml,setIsOnRaisedFloorImpl } = useObjectInteractions();
 
   const { nodes, materials } = useGLTF('/testing_dim_wpaiting-transformed.glb') as unknown as GLTFResult
 
@@ -88,8 +88,8 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
           <CuboidCollider args={[0.7, 0.1, 1]} position={[-1.206, 1.314, 0.451]}
 
-            sensor onIntersectionEnter={(state) => { handleIntersectionChange(state, 0) }}
-            onIntersectionExit={(state) => { handleIntersectionChange(state, -1) }}
+            sensor onIntersectionEnter={(state) => { handleIntersectionEnter(state, 0) }}
+            onIntersectionExit={(state) => { handleIntersectionExit(state, 0) }}
 
           ></CuboidCollider>
 
