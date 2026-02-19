@@ -57,16 +57,8 @@ export const OverlayInteraction1 = () => {
                 {index === 0 ? "Cover" : `Pages ${index * 2 - 1} – ${index * 2}`}
               </button>
             ))}
-            <button
-              className={`border-transparent hover:border-white transition-all duration-300  px-4 py-3 rounded-full  text-lg uppercase shrink-0 border ${
-                page === pages.length
-                  ? "bg-white/90 text-black"
-                  : "bg-black/30 text-white"
-              }`}
-              onClick={() => setPage(pages.length)}
-            >
-              Back Cover
-            </button>
+            
+           
           </div>
         </div>
       </main>

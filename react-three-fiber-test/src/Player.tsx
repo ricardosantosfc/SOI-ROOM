@@ -22,8 +22,8 @@ const interactionCameraMap = new Map<number, InteractionCameraSettings>([
     meshPosition: new THREE.Vector3(-1.185, 0.190, -0.591)
   }],
   [1, 
-    { cameraPosition: new THREE.Vector3(0.1, 0, 0.4), 
-      meshPosition: new THREE.Vector3(0.15,0,0) }]
+    { cameraPosition: new THREE.Vector3(0.1, 0, 0.3), 
+      meshPosition: new THREE.Vector3(0.00108,-0.3,0) }]
 ])
 
 

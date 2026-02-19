@@ -153,7 +153,8 @@ function Page({ number, front, back,page, opened, ...props }: PageProps) {
     return (
         <group {...props} ref={group}>
             <primitive  object = {manualSkinnedMesh}
-            scale={0.2} 
+            
+            
             ref={skinnedMeshRef }
             position-z = {-0.1 * PAGE_DEPTH + page * PAGE_DEPTH}/>
         </group>
@@ -180,6 +181,10 @@ export function Book(props: BookProps) { //
     return (
         
         <group {...props} 
+        scale={0.2} 
+            rotation-y={-Math.PI/2}
+            rotation-x={-Math.PI/2}
+            position-y={-0.3}
         /*rotation-y = {-Math.PI/2}*/
 
          onPointerEnter={(event) => {handlePointerChange(event, 1)}}
@@ -187,6 +192,7 @@ export function Book(props: BookProps) { //
          onPointerOut={(event) => {handlePointerChange(event, -1) }}
 
         >
+            {showCanInteractHtml(1)}
              <CuboidCollider args={[0.5, 0.1, 0.5]} position={[0.3, 0, 0]}
             
                 sensor onIntersectionEnter={(state) => { handleIntersectionEnter(state, 1) }}
@@ -194,7 +200,7 @@ export function Book(props: BookProps) { //
             
             ></CuboidCollider>
 
-            {showCanInteractHtml(1)}
+        
             
             {pages.map((pageData, index) => 
                 <Page
@@ -207,6 +213,18 @@ export function Book(props: BookProps) { //
                     />
             
         ) }
+
+{/*
+        <mesh  scale={0.2} 
+            rotation={[-Math.PI / 2, 0,0]}
+            position-y={-0.31}
+      
+            position-z = {-0.1 * PAGE_DEPTH + page * PAGE_DEPTH}>
+
+  <boxGeometry args={[PAGE_WIDTH, PAGE_HEIGHT, PAGE_DEPTH]}  />
+  <meshPhongMaterial color="#f1f1f107" opacity={0} transparent/>
+ 
+</mesh> */}
         </group>
     );
 }
