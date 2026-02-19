@@ -1,3 +1,4 @@
+/**player moevement, camera and controls */
 import * as THREE from "three"
 import { useEffect, useRef, useState } from "react"
 import { useFrame, useThree, type RootState } from "@react-three/fiber"
@@ -7,19 +8,22 @@ import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
 import type { Vector } from "three/examples/jsm/physics/RapierPhysics.js"
 
-//see if makes sense to set max azimuths etc per mesh
+//see if makes sense to set max azimuths etc per mesh  -----------------might really need to--------------
 interface InteractionCameraSettings {
 
   cameraPosition: THREE.Vector3
   meshPosition: THREE.Vector3
 }
 
+//  0 = paitnng , 1 = sketchbook, 2= radio
 const interactionCameraMap = new Map<number, InteractionCameraSettings>([
   [0, {
     cameraPosition: new THREE.Vector3(-0.3, 0.2, -0.61),
     meshPosition: new THREE.Vector3(-1.185, 0.190, -0.591)
   }],
-  [1, { cameraPosition: new THREE.Vector3(2, 2, 2), meshPosition: new THREE.Vector3(0, 259.2, 0) }]
+  [1, 
+    { cameraPosition: new THREE.Vector3(0.1, 0, 0.4), 
+      meshPosition: new THREE.Vector3(0.15,0,0) }]
 ])
 
 
@@ -79,6 +83,7 @@ export function Player() {
   //when starts inetracting and camera should be animated, 
   const animateCameraToInteraction = (state: RootState, targetInteraction: InteractionCameraSettings, smoothSpeed: number) => {
 
+    
     const targetCameraPosition = targetInteraction.cameraPosition
 
     currentCameraPosition.lerp(targetCameraPosition, smoothSpeed)
@@ -87,13 +92,16 @@ export function Player() {
     state.camera.position.copy(currentCameraPosition)
     const distance = currentCameraPosition.distanceTo(targetCameraPosition)
 
+    
     //look at is done outside to account for acutal ob mounting
     if (distance < 0.01) {
 
       // Snap exactly to target
       currentCameraPosition.copy(targetCameraPosition)
+      
       state.camera.position.copy(targetCameraPosition)
 
+      
 
       setShouldAnimateCamera(false)
       setIsOrbitControls(true);

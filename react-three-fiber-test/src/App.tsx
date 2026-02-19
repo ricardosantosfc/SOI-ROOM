@@ -8,9 +8,12 @@ import { useStore } from './store'
 import { OrbitControls as OrbitControlsImpl, PointerLockControls as PointerLockControlsImpl } from 'three-stdlib'
 import { useShallow } from 'zustand/shallow'
 import { OverlayInteraction0 } from './overlays/OverlayInteraction0'
+import { OverlayInteraction1 } from './overlays/OverlayInteraction1'
 
+//  0 = paitnng , 1 = sketchbook, 2= radio
 const overlayMap: Record<number, ComponentType> = {
   0: OverlayInteraction0,
+  1: OverlayInteraction1,
 }
 
 function App() {

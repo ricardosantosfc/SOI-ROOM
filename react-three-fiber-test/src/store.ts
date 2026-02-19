@@ -3,7 +3,8 @@ import { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { create } from 'zustand'
 
 interface ExperienceState { //see docs for fixed
-  isInteracting: boolean
+
+  isInteracting: boolean //if curr interaciton !=-1
   setIsInteracting: (fixed: boolean) => void
   currentInteraction: number
   setcurrentInteraction: (fixed: number) => void //might simplify to single current in = -1,...
@@ -18,6 +19,10 @@ interface ExperienceState { //see docs for fixed
   page: number;
   setPage: (fixed: number) => void
 
+  isIntersecting: number;
+  setIsIntersecting: (fixed: number) => void 
+  isPointing: number;
+  setIsPointing: (fixed: number) => void 
 
   isOnRaisedFloor: boolean
   setIsOnRaisedFloor: (fixed: boolean) => void
@@ -38,6 +43,12 @@ export const useStore = create<ExperienceState>()((set) => ({
 
   page: 0,
   setPage: (fixed) => set({ page: fixed }),
+
+  isIntersecting: -1,
+  setIsIntersecting: (fixed) => set({ isIntersecting: fixed }),
+  isPointing: -1,
+  setIsPointing: (fixed) => set({ isPointing: fixed }),
+    
 
   isOnRaisedFloor: true,
   setIsOnRaisedFloor: (fixed) => set({ isOnRaisedFloor: fixed }),

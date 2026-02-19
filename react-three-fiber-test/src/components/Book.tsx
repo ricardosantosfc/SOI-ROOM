@@ -6,6 +6,7 @@ import { useStore } from "../store";
 import { useShallow } from "zustand/shallow";
 import { CuboidCollider } from "@react-three/rapier";
 import * as THREE from 'three'
+import { useObjectInteractions } from "../ObjectInteractions";
 
 
 const PAGE_WIDTH = 1.28;
@@ -148,6 +149,9 @@ interface BookProps {
 }
 
 export function Book(props: BookProps) { //
+
+    const { handleIntersectionChange, handlePointerChange,showCanInteractHtml } = useObjectInteractions();
+    
    const { page
     } = useStore(useShallow((state) =>
     ({
@@ -161,20 +165,20 @@ export function Book(props: BookProps) { //
         
         <group {...props}
 
-         onPointerEnter={(event) => { 
-            const worldPos = new THREE.Vector3();
-            event.object.getWorldPosition(worldPos)
-            console.log(worldPos)
-        }}
+         onPointerEnter={(event) => {handlePointerChange(event, 1)}}
 
-        onPointerOut={(event) => { console.log("uwuuw") }}
+         onPointerOut={(event) => {handlePointerChange(event, -1) }}
+
         >
              <CuboidCollider args={[0.5, 0.1, 0.5]} position={[0.3, 0, 0]}
             
-                sensor onIntersectionEnter={(state) => { console.log("intersected") }}
-                 onIntersectionExit={(state) => { console.log("exited intersection") }}
+                sensor onIntersectionEnter={(state) => { handleIntersectionChange(state, 1) }}
+                 onIntersectionExit={(state) => { handleIntersectionChange(state, -1) }}
             
             ></CuboidCollider>
+
+            {showCanInteractHtml(1)}
+            
             {pages.map((pageData, index) => 
                 <Page
                     key={index}

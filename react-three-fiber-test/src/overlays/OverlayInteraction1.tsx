@@ -1,12 +1,11 @@
-//ui overlay for painting
-import styles from "./OverlayInteraction0.module.css"
-export function OverlayInteraction0 () {
+import styles from "./OverlayInteraction1.module.css"
+export function OverlayInteraction1 () {
 
     return(
         <>
          <div className={styles.information}>
-            <h2>"Meoto Iwa (monochrome edit)"</h2>
-            <h3>Watercolor and gouache, 2025</h3>
+            <h2>"skethcbook"</h2>
+            <h3>soemthing something, today 3am</h3>
           </div>
        <button className={styles.btn}
         onClick={() => console.log("btn")}

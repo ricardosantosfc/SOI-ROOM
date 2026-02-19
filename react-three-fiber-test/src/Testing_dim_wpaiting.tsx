@@ -13,6 +13,7 @@ import { Select } from '@react-three/postprocessing'
 import { useStore } from './store'
 import { useShallow } from 'zustand/shallow'
 import type { ThreeEvent } from '@react-three/fiber'
+import { useObjectInteractions } from './ObjectInteractions'
 
 type ActionName = 'flloor' | 'wall left' | 'wall right' | 'wall window.001' | 'paiting rocks frame' | 'paiting rocks glass' | 'wall door l frame fabric only' | 'wall door l frame fabric only.001' | 'wall door' | 'strucutrer wall dor old'
 
@@ -56,120 +57,8 @@ type GLTFResult = GLTF & {
 export function Model(props: JSX.IntrinsicElements['group']) {
 
   // -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
-  const [isPointing, setIsPointing] = useState(-1);
-  const [isIntersecting, setIsIntersecting] = useState(-1)
 
-
-  const { isInteracting, setIsInteracting, currentInteraction, setCurrentInteraction, isCameraAnimating,
-    setIsOnRaisedFloor
-  } = useStore(useShallow((state) =>
-  ({
-    isInteracting: state.isInteracting,
-    setIsInteracting: state.setIsInteracting,
-    currentInteraction: state.currentInteraction,
-    setCurrentInteraction: state.setcurrentInteraction,
-    isCameraAnimating: state.shouldAnimateCamera,
-    setIsOnRaisedFloor: state.setIsOnRaisedFloor
-  })),)
-
-
-  // interactble -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
-
-  //handle collision enter/exit with interactable mesh
-  const handleIntersectionChange = (state: CollisionPayload, id: number) => {
-    const player = state.other.rigidBody
-    if (!player) return
-
-    setIsIntersecting(id)
-  }
-
-  //handle hovering enter/exit with interactable mesh
-  //gets worldPosition to be set in the  Player interactionCameraMap meshPositions
-  const handlePointerChange = (event: ThreeEvent<PointerEvent>, id: number) => {
-    
-    //const worldPos = new THREE.Vector3()
-    //event.object.getWorldPosition(worldPos)
-    //console.log(worldPos)
-    setIsPointing(id)
-    event.stopPropagation() //have to see docs 
-  }
-
-  //if is colliding and hoveringertain mesh, then can interact
-  const canInteract = isIntersecting !== -1 && isIntersecting === isPointing
-
-  //when can interact with mesh, show prompt
-  const showCanInteractHtml = () => {
-    return (
-      <>
-        <Outlines thickness={30} />
-        <Html>
-          <div className="interact-message">
-            <img
-              src="../hand-pointer-who.svg"
-              className="interact-image"
-            />
-            <h1>Interact</h1>
-          </div>
-        </Html>
-      </>
-    )
-  }
-
-    /*
-  //when interactingwith mesh, show info 3d space
-  const showIsInteractingHtml = () => {
-
-    return (
-      <>
-        <Html position={[-0.32, 0.1, 0.5]}>
-          <div className="information">
-            <h2>"Meoto Iwa (monochrome edit)"</h2>
-            <h3>Watercolor and gouache, 2025</h3>
-          </div>
-        </Html>
-      </>
-    
-  })*/
-
-  //on click on canInteract mesh, 
-  useEffect(() => {
-    if (isInteracting) return
-
-    const handleGlobalClick = () => {
-      if (canInteract) {
-
-        setIsInteracting(true)
-        setCurrentInteraction(isIntersecting)
-
-      }
-    }
-
-    window.addEventListener('pointerup', handleGlobalClick)
-
-    return () => {
-      window.removeEventListener('pointerup', handleGlobalClick)
-    }
-  }, [isInteracting, isIntersecting, isPointing])
-
-  //exit interaction -------------------needs refact ---NO SPACE
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-
-      if (isInteracting && !isCameraAnimating && e.code === "Space") {
-
-        setIsInteracting(false)
-        setCurrentInteraction(-1)
-
-      }
-    }
-
-    window.addEventListener("keydown", handleKey)
-
-    return () => {
-      window.removeEventListener("keydown", handleKey)
-    }
-  }, [isInteracting, isCameraAnimating])
-
+  const { handleIntersectionChange, handlePointerChange,showCanInteractHtml,setIsOnRaisedFloorImpl } = useObjectInteractions();
 
   const { nodes, materials } = useGLTF('/testing_dim_wpaiting-transformed.glb') as unknown as GLTFResult
 
@@ -206,7 +95,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
           <mesh name="paiting_rocks_frame" geometry={nodes.paiting_rocks_frame.geometry} material={materials['wood wals']} position={[-1.206, 1.314, 0.451]} rotation={[Math.PI / 2, 0, -Math.PI / 2]} scale={0.623}
           >
-            {canInteract && !isInteracting && showCanInteractHtml()}
+            {showCanInteractHtml(0)}
             {/*isInteracting && !isCameraAnimating && showIsInteractingHtml()*/}
 
           </mesh>
@@ -235,8 +124,8 @@ export function Model(props: JSX.IntrinsicElements['group']) {
         <group name="strucutrer_wall_dor_old" position={[-0.021, 1.262, 2.662]} rotation={[0, Math.PI / 2, 0]} scale={[1, 1, 1.09]}>
           <RigidBody type="fixed" friction={0} restitution={0}
 
-            sensor onIntersectionEnter={() => { setIsOnRaisedFloor(true) }}
-            onIntersectionExit={() => { setIsOnRaisedFloor(false) }}
+            sensor onIntersectionEnter={() => { setIsOnRaisedFloorImpl(true)}}
+            onIntersectionExit={() => { setIsOnRaisedFloorImpl(false) }}
 
           >
             <mesh name="Cube022" geometry={nodes.Cube022.geometry} material={materials.concrete} />
