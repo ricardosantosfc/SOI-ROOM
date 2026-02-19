@@ -2,6 +2,7 @@ import { Center, Environment, Sky, useGLTF } from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Player } from "../Player";
 import { Model } from "../Testing_dim_wpaiting";
+import { Book } from "./Book";
 
 export const Experience = () => {
 
@@ -12,8 +13,10 @@ export const Experience = () => {
             <Physics gravity={[0, 0, 0]} debug>
                 
                 <Player />
+                <Book/>
                 <Center>
                     <Model/>
+                    
                 </Center>
                  {/*<Center>
                      <Model/>

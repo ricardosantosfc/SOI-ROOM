@@ -2,7 +2,7 @@
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { create } from 'zustand'
 
-interface ExperienceState {
+interface ExperienceState { //see docs for fixed
   isInteracting: boolean
   setIsInteracting: (fixed: boolean) => void
   currentInteraction: number
@@ -14,6 +14,9 @@ interface ExperienceState {
 
   obControls: OrbitControlsImpl | null
   setObControls: (c: OrbitControlsImpl | null) => void
+
+  page: number;
+  setPage: (fixed: number) => void
 
 
   isOnRaisedFloor: boolean
@@ -32,6 +35,9 @@ export const useStore = create<ExperienceState>()((set) => ({
 
   obControls: null,
   setObControls: (c) => set({ obControls: c }),
+
+  page: 0,
+  setPage: (fixed) => set({ page: fixed }),
 
   isOnRaisedFloor: true,
   setIsOnRaisedFloor: (fixed) => set({ isOnRaisedFloor: fixed }),
