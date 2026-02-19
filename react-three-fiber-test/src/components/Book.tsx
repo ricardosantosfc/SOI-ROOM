@@ -193,7 +193,7 @@ export function Book(props: BookProps) { //
 
         >
             {showCanInteractHtml(1)}
-             <CuboidCollider args={[0.5, 0.1, 0.5]} position={[0.3, 0, 0]}
+             <CuboidCollider args={[0.9, 3, 2]} position={[0, -6, 0]}
             
                 sensor onIntersectionEnter={(state) => { handleIntersectionEnter(state, 1) }}
                  onIntersectionExit={(state) => { handleIntersectionExit(state, 1) }}
