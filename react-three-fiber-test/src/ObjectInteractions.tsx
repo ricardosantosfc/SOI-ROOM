@@ -4,7 +4,7 @@ import type { ThreeEvent } from '@react-three/fiber'
 import { Html, Outlines } from "@react-three/drei"
 import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import * as THREE from 'three'
 
 export function useObjectInteractions() {
@@ -24,7 +24,16 @@ export function useObjectInteractions() {
         setIsOnRaisedFloor: state.setIsOnRaisedFloor,
     })),)
 
-     const intersectionSet = new Set<number>();
+    //so showInteract reacts immediatly
+   const [intersectionSet, setIntersectionSet] = useState<Set<number>>(new Set());
+
+   const addIntersection = (id: number) => setIntersectionSet((prev) => new Set(prev).add(id));
+
+   const deleteIntersection = (id: number) => setIntersectionSet((prev) => {
+    const next = new Set(prev);
+    next.delete(id);
+    return next;
+    });
 
     //a bit dumb, but considering modularity + separation of concerns
     const setIsOnRaisedFloorImpl= (bool: boolean): void =>{
@@ -37,7 +46,7 @@ export function useObjectInteractions() {
         const player = state.other.rigidBody
         if (!player) return
 
-        intersectionSet.add(id)
+        addIntersection(id)
         console.log("is intersecitng" + id)
     }
 
@@ -45,7 +54,9 @@ export function useObjectInteractions() {
         const player = state.other.rigidBody
         if (!player) return
 
-        intersectionSet.delete(id)
+        console.log("exits : " + id)
+
+        deleteIntersection(id)
    
     }
 
@@ -72,9 +83,10 @@ export function useObjectInteractions() {
 
     //if is colliding and hoveringertain mesh, then can interact
     const canInteract = (): boolean => {
-        console.log("seeing if can interact")
+        
         if (intersectionSet.has(isPointing)) {
 
+            console.log("inside can intereac, set contains")
             return true
         }
         console.log("cannotinteract not in set pionting" + isPointing)
