@@ -40,9 +40,9 @@ export const OverlayInteraction1 = () => {
 
  return (
     <>
-      <main className=" pointer-events-none select-none z-10 fixed  inset-0  flex justify-between flex-col">
+      <main className={styles.main} /*className=" pointer-events-none select-none z-10 fixed  inset-0  flex justify-between flex-col" */ >
 
-        <div className="w-full overflow-auto pointer-events-auto flex justify-center">
+        <div className={styles.controls} /*className="w-full overflow-auto pointer-events-auto flex justify-center"*/>
           <div className="overflow-auto flex items-center gap-4 max-w-full p-10">
             {[...pages].map((_, index) => (
               <button

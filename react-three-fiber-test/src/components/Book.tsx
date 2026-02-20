@@ -14,7 +14,7 @@ const lerpFactor = 0.05;
 const PAGE_WIDTH = 1.28;
 const PAGE_HEIGHT = 1.71;
 const PAGE_DEPTH = 0.006;
-const PAGE_SEGMENTS = 30;
+const PAGE_SEGMENTS = 1;
 const SEGMENT_WIDTH = PAGE_WIDTH / PAGE_SEGMENTS;
 
 const pageGeometry = new BoxGeometry(
