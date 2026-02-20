@@ -72,12 +72,16 @@ export function useObjectInteractions() {
     //do dynamically-------------------------------------------------
     const handlePointerChange = (event: ThreeEvent<PointerEvent>, id: number): void => {
 
-        const worldPos = new THREE.Vector3()
-        event.object.getWorldPosition(worldPos)
-        console.log(worldPos)
-        setIsPointing(id)
-        event.stopPropagation() //have to see docs 
-        //console.log("is pointing" + id)
+        if(!isInteracting){
+            //const worldPos = new THREE.Vector3()
+            //event.object.getWorldPosition(worldPos)
+            //console.log(worldPos)
+            setIsPointing(id)
+           //have to see docs 
+            //console.log("is pointing" + id)
+        }
+         event.stopPropagation() 
+       
     }
 
     //rturn isPointing

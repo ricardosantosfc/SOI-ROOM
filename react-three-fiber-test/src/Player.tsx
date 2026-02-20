@@ -27,6 +27,8 @@ interface InteractionCameraSettings {
   minPolarAngle: number
   minDistance: number
   maxDistance: number
+  initialPolarAngle?: number
+  initialAzimuthalAngle?: number
 
 }
 
@@ -40,7 +42,9 @@ const interactionCameraMap = new Map<number, InteractionCameraSettings>([
     maxPolarAngle: (Math.PI - (Math.PI / 12)),
     minPolarAngle: Math.PI / 12,
     minDistance: 0.4,
-    maxDistance:1
+    maxDistance: 1,
+
+
 
   }],
   [1, { 
@@ -51,7 +55,9 @@ const interactionCameraMap = new Map<number, InteractionCameraSettings>([
     maxPolarAngle: Math.PI/2.5,
     minPolarAngle: 0,
     minDistance: 0.3,
-    maxDistance: 0.7
+    maxDistance: 0.7,
+    initialPolarAngle: 0,
+    initialAzimuthalAngle: 0
     }]
 ])
 
@@ -155,8 +161,15 @@ export function Player() {
       obControls.minPolarAngle = ics.minPolarAngle
       obControls.minDistance = ics.minDistance
       obControls.maxDistance = ics.maxDistance
-      //obControls.setPolarAngle(0)
-      //obControls.setAzimuthalAngle(0)
+
+      //a bit iffy, see if lerping a must, would require additional state (keeping old camera rotation before lerp,...) 
+      if(ics.initialPolarAngle !== undefined){
+         obControls.setPolarAngle(ics.initialPolarAngle)
+      }
+      if(ics.initialAzimuthalAngle !== undefined){
+        obControls.setAzimuthalAngle(ics.initialAzimuthalAngle)
+      }
+
       obControls.update()
     }
   }, [obControls])
