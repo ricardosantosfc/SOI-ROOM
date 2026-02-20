@@ -8,22 +8,51 @@ import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
 import type { Vector } from "three/examples/jsm/physics/RapierPhysics.js"
 
+/*
+minDistance={0.4}
+                maxDistance={1}
+                maxAzimuthAngle={Math.PI - (Math.PI / 12)}
+                minAzimuthAngle={Math.PI / 12}
+                maxPolarAngle={Math.PI - (Math.PI / 12)}
+                minPolarAngle={Math.PI / 12} />
+*/ 
 //see if makes sense to set max azimuths etc per mesh  -----------------might really need to--------------
 interface InteractionCameraSettings {
 
   cameraPosition: THREE.Vector3
   meshPosition: THREE.Vector3
+  maxAzimuthAngle: number
+  minAzimuthAngle: number
+  maxPolarAngle: number
+  minPolarAngle: number
+  minDistance: number
+  maxDistance: number
+
 }
 
 //  0 = paitnng , 1 = sketchbook, 2= radio
 const interactionCameraMap = new Map<number, InteractionCameraSettings>([
   [0, {
     cameraPosition: new THREE.Vector3(-0.3, 0.2, -0.61),
-    meshPosition: new THREE.Vector3(-1.185, 0.190, -0.591)
+    meshPosition: new THREE.Vector3(-1.185, 0.190, -0.591),
+    maxAzimuthAngle: (Math.PI - (Math.PI / 12)),
+    minAzimuthAngle: Math.PI / 12,
+    maxPolarAngle: (Math.PI - (Math.PI / 12)),
+    minPolarAngle: Math.PI / 12,
+    minDistance: 0.4,
+    maxDistance:1
+
   }],
-  [1, 
-    { cameraPosition: new THREE.Vector3(0.1, 0, 0.3), 
-      meshPosition: new THREE.Vector3(0.00108,-0.3,0) }]
+  [1, { 
+    cameraPosition: new THREE.Vector3(0.1, 0, 0.3), 
+    meshPosition: new THREE.Vector3(0.00108,-0.3,0),
+    maxAzimuthAngle: -Infinity,
+    minAzimuthAngle: -Infinity,
+    maxPolarAngle: Math.PI/2.5,
+    minPolarAngle: 0,
+    minDistance: 0.3,
+    maxDistance: 0.7
+    }]
 ])
 
 
@@ -86,6 +115,7 @@ export function Player() {
     
     const targetCameraPosition = targetInteraction.cameraPosition
 
+
     currentCameraPosition.lerp(targetCameraPosition, smoothSpeed)
 
     // Apply the smoothed camera position
@@ -111,12 +141,22 @@ export function Player() {
     }
   }
 
-  //once ob controls are mounted, set mesh as ob target
+  //once ob controls are mounted, set mesh as ob target + other ob configs
   useEffect(() => {
 
     if (obControls) {
 
-      obControls.target.copy(interactionCameraMap.get(currentInteraction)!.meshPosition)
+      const ics = interactionCameraMap.get(currentInteraction)!
+      
+      obControls.target.copy(ics.meshPosition)
+      obControls.maxAzimuthAngle = ics.maxAzimuthAngle
+      obControls.minAzimuthAngle = ics.minAzimuthAngle
+      obControls.maxPolarAngle = ics.maxPolarAngle
+      obControls.minPolarAngle = ics.minPolarAngle
+      obControls.minDistance = ics.minDistance
+      obControls.maxDistance = ics.maxDistance
+      //obControls.setPolarAngle(0)
+      //obControls.setAzimuthalAngle(0)
       obControls.update()
     }
   }, [obControls])
