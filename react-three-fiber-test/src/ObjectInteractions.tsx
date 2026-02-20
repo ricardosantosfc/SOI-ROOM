@@ -10,7 +10,7 @@ import * as THREE from 'three'
 export function useObjectInteractions() {
 
     const { isInteracting, setIsInteracting, currentInteraction, setCurrentInteraction, isCameraAnimating,
-        isIntersecting, setIsIntersecting, isPointing, setIsPointing,
+        isPointing, setIsPointing,
         setIsOnRaisedFloor
     } = useStore(useShallow((state) =>
     ({
@@ -19,13 +19,12 @@ export function useObjectInteractions() {
         currentInteraction: state.currentInteraction,
         setCurrentInteraction: state.setcurrentInteraction,
         isCameraAnimating: state.shouldAnimateCamera,
-        isIntersecting: state.isIntersecting,
-        setIsIntersecting: state.setIsIntersecting,
         isPointing: state.isPointing,
         setIsPointing: state.setIsPointing,
         setIsOnRaisedFloor: state.setIsOnRaisedFloor,
     })),)
 
+     const intersectionSet = new Set<number>();
 
     //a bit dumb, but considering modularity + separation of concerns
     const setIsOnRaisedFloorImpl= (bool: boolean): void =>{
@@ -33,21 +32,12 @@ export function useObjectInteractions() {
     }
     // interactble -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
 
-    //handle collision enter/exit with interactable mesh
-    /*DEPRECATED: may lead to race condition if enter0->enter1->exit0
-    const handleIntersectionChange = (state: CollisionPayload, id: number): void => {
-        const player = state.other.rigidBody
-        if (!player) return
-
-        setIsIntersecting(id)
-        console.log("is intersecitng" + id)
-    }*/
-
+   
      const handleIntersectionEnter = (state: CollisionPayload, id: number): void => {
         const player = state.other.rigidBody
         if (!player) return
 
-        setIsIntersecting(id)
+        intersectionSet.add(id)
         console.log("is intersecitng" + id)
     }
 
@@ -55,16 +45,9 @@ export function useObjectInteractions() {
         const player = state.other.rigidBody
         if (!player) return
 
-        if(id === isIntersecting){
-             setIsIntersecting(-1)
-            console.log("exiting" + id)
-        } //otherwise ignore
-        else{
-            console.log("ignoring exit")
-        }
-           
+        intersectionSet.delete(id)
+   
     }
-
 
 
     //handle hovering enter/exit with interactable mesh
@@ -90,11 +73,11 @@ export function useObjectInteractions() {
     //if is colliding and hoveringertain mesh, then can interact
     const canInteract = (): boolean => {
         console.log("seeing if can interact")
-        if (isIntersecting !== -1 && isIntersecting === isPointing) {
+        if (intersectionSet.has(isPointing)) {
 
             return true
         }
-        console.log("cannotinteract interctinf"+ isIntersecting + "piontd" + isPointing)
+        console.log("cannotinteract not in set pionting" + isPointing)
         return false
     }
 
@@ -126,7 +109,7 @@ export function useObjectInteractions() {
             if (canInteract()) {
 
                 setIsInteracting(true)
-                setCurrentInteraction(isIntersecting)
+                setCurrentInteraction(isPointing)
 
             }
         }
@@ -136,7 +119,7 @@ export function useObjectInteractions() {
         return () => {
             window.removeEventListener('pointerup', handleGlobalClick)
         }
-    }, [isInteracting, isIntersecting, isPointing, canInteract, setIsInteracting, setCurrentInteraction])
+    }, [isInteracting, isPointing, canInteract, setIsInteracting, setCurrentInteraction])
 
     //exit interaction -------------------needs refact ---NO SPACE
     useEffect(() => {
