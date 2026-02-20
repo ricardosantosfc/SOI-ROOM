@@ -70,7 +70,8 @@ function App() {
           { name: "left", keys: ["ArrowLeft", "a", "A"] },
           { name: "right", keys: ["ArrowRight", "d", "D"] },
         ]}>
-        <div style={{ position: "relative", width: "100vw", height: "100vh" }}>
+        <div style={{ position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls? "default": isMoving? "grabbing" : "grab"
+   }}>
           <Canvas shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
 
             <Perf position="top-left" />
