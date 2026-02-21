@@ -1,4 +1,4 @@
-import { useMemo, useRef } from "react"
+import { useEffect, useMemo, useRef } from "react"
 import { pages } from "../overlays/OverlayInteraction1"
 import { Bone, BoxGeometry, Color, Float32BufferAttribute, MeshStandardMaterial, Skeleton, SkinnedMesh, SRGBColorSpace, Uint16BufferAttribute, Vector3, type Group } from "three";
 import { useTexture } from "@react-three/drei";
@@ -82,7 +82,22 @@ interface PageProps {
     [key: string]: any; // allow any extra props
 }
 
-function Page({ number, front, back,page, opened, ...props }: PageProps) {
+function Page({ number, front, back,page, opened, isHighlighted, ...props }: PageProps) {
+    
+     const { EMISSIVE_INTENSITY, emissiveHighlightColor } = useObjectInteractions();
+
+    useEffect(() => {
+        if (!skinnedMeshRef.current) return
+
+        const material = skinnedMeshRef.current.material
+
+        const mats = material as MeshStandardMaterial[]
+
+        //only wil change on front and back of pages, not other faces
+        mats[4].emissiveIntensity = isHighlighted ? EMISSIVE_INTENSITY : 0
+        mats[5].emissiveIntensity = isHighlighted ? EMISSIVE_INTENSITY : 0
+
+    }, [isHighlighted])
     
     const[picture, picture2] = useTexture([
     `/textures/${front}.jpg`,
@@ -115,14 +130,18 @@ function Page({ number, front, back,page, opened, ...props }: PageProps) {
         const materials = [...pageMaterials, 
             new MeshStandardMaterial({
                 color: whiteColor,
-                map: picture, roughness: 0.8
+                map: picture, roughness: 0.8,
+                emissive: emissiveHighlightColor,
+                emissiveIntensity: 0
 
             }),
             new MeshStandardMaterial({
                 color: whiteColor,
-                map: picture2, roughness: 0.8
-
+                map: picture2, roughness: 0.8,
+                emissive: emissiveHighlightColor, 
+                emissiveIntensity: 0
             })
+            
         ];
 
 
@@ -167,7 +186,7 @@ interface BookProps {
 
 export function Book(props: BookProps) { //
 
-    const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml } = useObjectInteractions();
+    const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml, canInteractWithMesh } = useObjectInteractions();
     
    const { page
     } = useStore(useShallow((state) =>
@@ -175,9 +194,7 @@ export function Book(props: BookProps) { //
       page: state.page,
     })),)
     
-//const worldPos = new THREE.Vector3()
-    //event.object.getWorldPosition(worldPos)
-    //console.log(worldPos)
+
     return (
         
         <group {...props} 
@@ -208,6 +225,7 @@ export function Book(props: BookProps) { //
                     page={page}
                     number={index}
                     opened = {page > index}
+                    isHighlighted = {canInteractWithMesh(1)} //to be used as useEffect hook by pages
                     {...pageData}
                     
                     />

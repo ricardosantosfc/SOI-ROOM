@@ -35,6 +35,9 @@ export function useObjectInteractions() {
     return next;
     });
 
+    const emissiveHighlightColor = new THREE.Color("orange")
+    const EMISSIVE_INTENSITY = 0.22
+
     //a bit dumb, but considering modularity + separation of concerns
     const setIsOnRaisedFloorImpl= (bool: boolean): void =>{
         setIsOnRaisedFloor(bool)
@@ -78,25 +81,22 @@ export function useObjectInteractions() {
        
     }
 
-    //rturn isPointing
-    //trun is intrecting
-
-    //if is colliding and hoveringertain mesh, then can interact
+    //if is colliding and hovering a mesh, then can interact
     const canInteract = (): boolean => {
-        
-        if (intersectionSet.has(isPointing)) {
-
-            console.log("inside can intereac, set contains")
-            return true
-        }
-        console.log("cannotinteract not in set pionting" + isPointing)
-        return false
+  
+        return !isInteracting && intersectionSet.has(isPointing)
+ 
     }
 
+    //can it interact with certain mesh id? -> forhighlight material emissivenesss, and showcaninteract html
+    const canInteractWithMesh = (id: number) => {
+  
+        return canInteract() && isPointing === id
+    }
 
     //when can interact with mesh, show prompt
     const showCanInteractHtml = (id: number) => {
-        if (canInteract() && !isInteracting && isPointing === id) {
+        if (canInteractWithMesh(id)) {
             return (
                 <>
                     <Outlines thickness={30} />
@@ -113,10 +113,11 @@ export function useObjectInteractions() {
             )
         }
     }
+
+    
     //on click on canInteract mesh, 
     useEffect(() => {
-        if (isInteracting) return
-
+  
         const handleGlobalClick = () => {
             if (canInteract()) {
 
@@ -158,10 +159,12 @@ export function useObjectInteractions() {
        
         handlePointerChange,
         showCanInteractHtml,
-        canInteract,
         setIsOnRaisedFloorImpl,
         handleIntersectionEnter,
-        handleIntersectionExit
+        handleIntersectionExit,
+        emissiveHighlightColor,
+        EMISSIVE_INTENSITY,
+        canInteractWithMesh
 
     }
 }
