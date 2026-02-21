@@ -35,8 +35,9 @@ export function useObjectInteractions() {
     return next;
     });
 
-    const emissiveHighlightColor = new THREE.Color("orange")
-    const EMISSIVE_INTENSITY = 0.22
+    //for emissivehighlight to work correctly on the gtlf,interactbale objects must have their own spearate mats
+    const emissiveHighlightColor = new THREE.Color("orange") 
+    const emissiveHighlightIntensity = 0.22
 
     //a bit dumb, but considering modularity + separation of concerns
     const setIsOnRaisedFloorImpl= (bool: boolean): void =>{
@@ -94,19 +95,19 @@ export function useObjectInteractions() {
         return canInteract() && isPointing === id
     }
 
-    //when can interact with mesh, show prompt
+    //when can interact with mesh, show prompt --- should be specific comp
     const showCanInteractHtml = (id: number) => {
         if (canInteractWithMesh(id)) {
             return (
                 <>
-                    <Outlines thickness={30} />
+                    {/*<Outlines thickness={20} />*/}
                     <Html>
                         <div className="interact-message">
                             <img
                                 src="../hand-pointer-who.svg"
                                 className="interact-image"
                             />
-                            <h1>Interact</h1>
+                            {/*<h1>Interact</h1>*/}
                         </div>
                     </Html>
                 </>
@@ -163,7 +164,7 @@ export function useObjectInteractions() {
         handleIntersectionEnter,
         handleIntersectionExit,
         emissiveHighlightColor,
-        EMISSIVE_INTENSITY,
+        emissiveHighlightIntensity,
         canInteractWithMesh
 
     }

@@ -84,7 +84,7 @@ interface PageProps {
 
 function Page({ number, front, back,page, opened, isHighlighted, ...props }: PageProps) {
     
-     const { EMISSIVE_INTENSITY, emissiveHighlightColor } = useObjectInteractions();
+     const { emissiveHighlightIntensity, emissiveHighlightColor } = useObjectInteractions();
 
     useEffect(() => {
         if (!skinnedMeshRef.current) return
@@ -94,8 +94,8 @@ function Page({ number, front, back,page, opened, isHighlighted, ...props }: Pag
         const mats = material as MeshStandardMaterial[]
 
         //only wil change on front and back of pages, not other faces
-        mats[4].emissiveIntensity = isHighlighted ? EMISSIVE_INTENSITY : 0
-        mats[5].emissiveIntensity = isHighlighted ? EMISSIVE_INTENSITY : 0
+        mats[4].emissiveIntensity = isHighlighted ? emissiveHighlightIntensity : 0
+        mats[5].emissiveIntensity = isHighlighted ? emissiveHighlightIntensity : 0
 
     }, [isHighlighted])
     

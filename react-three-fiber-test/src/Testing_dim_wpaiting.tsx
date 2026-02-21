@@ -5,13 +5,11 @@ Files: public/testing_dim_wpaiting.glb [66.64MB] > C:\Users\Ricardo\Documents\Gi
 */
 
 import * as THREE from 'three'
-import React, { useEffect, useState, type JSX } from 'react'
+import React, { useEffect, useRef, useState, type JSX } from 'react'
 import { useGLTF, Outlines, Html } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 import { CuboidCollider, RigidBody, type CollisionPayload } from '@react-three/rapier'
 import { Select } from '@react-three/postprocessing'
-import { useStore } from './store'
-import { useShallow } from 'zustand/shallow'
 import type { ThreeEvent } from '@react-three/fiber'
 import { useObjectInteractions } from './ObjectInteractions'
 
@@ -58,7 +56,23 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
   // -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
 
-  const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml,setIsOnRaisedFloorImpl } = useObjectInteractions();
+  const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml, canInteractWithMesh, 
+    emissiveHighlightColor, emissiveHighlightIntensity,  setIsOnRaisedFloorImpl } = useObjectInteractions();
+
+    /* const mat = ref.material as THREE.MeshStandardMaterial;
+            mat.emissive = emissiveHighlightColor;
+            mat.emissiveIntensity = canInteractWithMesh(0) ? 1 : 0;*/
+    const paintingRef = useRef<THREE.Mesh>(null);
+
+       useEffect(() => {
+           if (!paintingRef.current) return
+   
+           const mat = paintingRef.current.material as THREE.MeshStandardMaterial
+   
+           mat.emissive = emissiveHighlightColor;
+           mat.emissiveIntensity = canInteractWithMesh(0) ? 0.5  : 0
+   
+       }, [canInteractWithMesh(0)])
 
   const { nodes, materials } = useGLTF('/testing_dim_wpaiting-transformed.glb') as unknown as GLTFResult
 
@@ -105,6 +119,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
           onPointerEnter={(event) => { handlePointerChange(event, 0) }}
           onPointerOut={(event) => { handlePointerChange(event, -1) }}
+          ref={paintingRef}
 
         />
         <group name="wall_door_l_frame_fabric_only" position={[0.463, 1.167, 3.353]} rotation={[0, Math.PI / 2, 0]} scale={[1, 0.891, 1.017]}>
