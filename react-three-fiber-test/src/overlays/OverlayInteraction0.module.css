@@ -1,13 +1,3 @@
-.btn {
-    font-family: inherit;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 10px 16px;
-    background: white;
-    cursor: pointer;
-    border-radius: 8px;
-}
 
 .information {
     display: flex;

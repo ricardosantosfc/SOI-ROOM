@@ -74,7 +74,7 @@ function App() {
    }}>
           <Canvas shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
 
-            <Perf position="top-left" />
+            {/*<Perf position="top-left" />*/}
             <group position-y={0}>
               <Suspense fallback={null}>
                 <Experience />
@@ -83,7 +83,7 @@ function App() {
             {!isOrbitControls && (
               <PointerLockControls ref={plControls}
                 minPolarAngle={Math.PI / 5}
-                maxPolarAngle={Math.PI - Math.PI / 5}
+                maxPolarAngle={Math.PI - Math.PI / 5.5}
               />
             )}
             {isOrbitControls && (

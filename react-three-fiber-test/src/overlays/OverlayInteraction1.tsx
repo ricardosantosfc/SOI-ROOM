@@ -1,9 +1,36 @@
 import styles from "./OverlayInteraction1.module.css"
-/* handles book and page ui + state*/ 
+/* handles book and page ui + state*/
 import { useShallow } from "zustand/shallow";
 import { useStore } from "../store";
+import { useState } from "react";
 
 
+const informations = [
+
+  {
+    name: "Lucky",
+    mediumYear: "Charcoal, 2021 "
+  },
+   {
+    name: "Musashi (Takehiko Inoue study)",
+    mediumYear: "Ink, watercolor, and gouache, 2016 "
+  },
+  {
+    name: "Tormenta",
+    mediumYear: "Charcoal,  "
+  },
+  {
+    name: "Fräulein Bürstner",
+    mediumYear: "Watercolor, 2021 "
+  },
+ 
+  {
+    name: "Musashi (Takehiko Inoue study)",
+    mediumYear: "Ink and digital, 2016 "
+  }
+
+
+]
 const pictures = [
   "p1",
   "p2",
@@ -30,15 +57,15 @@ pages.push({
 });
 
 export const OverlayInteraction1 = () => {
-  const { page, setPage} = useStore(useShallow((state) =>({
+  const { page, setPage } = useStore(useShallow((state) => ({
 
-          page: state.page,
-          setPage: state.setPage,
- 
-      })),)
+    page: state.page,
+    setPage: state.setPage,
 
+  })),)
 
- return (
+const [isInfoHidden, setIsInfoHidden] = useState(false)
+  return (
     <>
       <main className={styles.main} /*className=" pointer-events-none select-none z-10 fixed  inset-0  flex justify-between flex-col" */ >
 
@@ -47,21 +74,34 @@ export const OverlayInteraction1 = () => {
             {[...pages].map((_, index) => (
               <button
                 key={index}
-                className={`border-transparent hover:border-white transition-all duration-300  px-4 py-3 rounded-full  text-lg uppercase shrink-0 border ${
-                  index === page
-                    ? "bg-white/90 text-black"
-                    : "bg-black/30 text-white"
-                }`}
+                className={`border-transparent hover:border-white transition-all duration-300  px-4 py-3 rounded-full  text-lg uppercase shrink-0 border ${index === page
+                  ? "bg-white/90 text-black"
+                  : "bg-black/30 text-white"
+                  }`}
                 onClick={() => setPage(index)}
               >
                 {index === 0 ? "Cover" : `Pages ${index * 2 - 1} – ${index * 2}`}
               </button>
             ))}
-            
-           
+
+
           </div>
         </div>
+
       </main>
+      {!isInfoHidden && page !== 0 && (<div className={styles.information} >
+        <div className={styles.informationChild}>
+          <h2 >{informations[(page - 1) * 2].name}</h2>
+          <h3>{informations[(page - 1) * 2].mediumYear}</h3>
+        </div>
+        <div className={styles.informationChild}>
+          <h2 >{informations[(page - 1) * 2 + 1].name}</h2>
+          <h3>{informations[(page - 1) * 2 + 1].mediumYear}</h3>
+        </div>
+      </div>)}
+       {page !== 0 &&(<button className="btn"
+        onClick={() => setIsInfoHidden(!isInfoHidden)}
+      > <img className ="btn-img" src = {isInfoHidden? "../chevron-down.svg" : "../chevron-up.svg"}></img></button>)}
     </>
   );
 };

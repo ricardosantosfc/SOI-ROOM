@@ -55,3 +55,49 @@ h3 {
   overflow-x: auto;
   max-width: 100%;
 }
+
+
+.information {
+  position: absolute;
+  top: 50%;             
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;           
+  gap: 20px;                    
+  padding: 10px 20px;
+
+  transform: translateY(-50%);                             
+}
+
+.informationChild {
+      display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: rgba(233, 233, 233, 0.851);
+    color: #2d2d2d;
+    border-radius: 8px;
+    padding: 10px 10px;
+    width: max-content;
+    gap: 2px;
+    border: 0.4vh solid #494949;
+
+}
+
+.informationChild:last-child {
+  text-align: right; 
+}
+
+
+.information h2,
+.information h3 {
+    margin: 0;
+
+}
+
+
+
+
+
