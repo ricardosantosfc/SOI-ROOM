@@ -8,15 +8,7 @@ import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
 import type { Vector } from "three/examples/jsm/physics/RapierPhysics.js"
 
-/*
-minDistance={0.4}
-                maxDistance={1}
-                maxAzimuthAngle={Math.PI - (Math.PI / 12)}
-                minAzimuthAngle={Math.PI / 12}
-                maxPolarAngle={Math.PI - (Math.PI / 12)}
-                minPolarAngle={Math.PI / 12} />
-*/ 
-//see if makes sense to set max azimuths etc per mesh  -----------------might really need to--------------
+
 interface InteractionCameraSettings {
 
   cameraPosition: THREE.Vector3
