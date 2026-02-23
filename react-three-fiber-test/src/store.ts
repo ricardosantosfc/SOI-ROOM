@@ -23,6 +23,9 @@ interface ExperienceState { //see docs for fixed
   isPointing: number;
   setIsPointing: (fixed: number) => void 
 
+  isInfoHidden: boolean
+  setIsInfoHidden: (fixed: boolean) => void
+
   isOnRaisedFloor: boolean
   setIsOnRaisedFloor: (fixed: boolean) => void
 }
@@ -46,6 +49,8 @@ export const useStore = create<ExperienceState>()((set) => ({
   isPointing: -1,
   setIsPointing: (fixed) => set({ isPointing: fixed }),
     
+  isInfoHidden: false,
+  setIsInfoHidden: (fixed) => set({ isInfoHidden: fixed }),
 
   isOnRaisedFloor: true,
   setIsOnRaisedFloor: (fixed) => set({ isOnRaisedFloor: fixed }),

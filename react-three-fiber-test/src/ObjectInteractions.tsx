@@ -10,8 +10,9 @@ import * as THREE from 'three'
 export function useObjectInteractions() {
 
     const { isInteracting, setIsInteracting, currentInteraction, setCurrentInteraction, isCameraAnimating,
-        isPointing, setIsPointing,
-        setIsOnRaisedFloor
+        isPointing, setIsPointing, 
+        setIsOnRaisedFloor,
+        setIsInfoHidden
     } = useStore(useShallow((state) =>
     ({
         isInteracting: state.isInteracting,
@@ -22,6 +23,7 @@ export function useObjectInteractions() {
         isPointing: state.isPointing,
         setIsPointing: state.setIsPointing,
         setIsOnRaisedFloor: state.setIsOnRaisedFloor,
+        setIsInfoHidden: state.setIsInfoHidden
     })),)
 
     //so showInteract reacts immediatly
@@ -124,6 +126,7 @@ export function useObjectInteractions() {
 
                 setIsInteracting(true)
                 setCurrentInteraction(isPointing)
+                setIsInfoHidden(false)
 
             }
         }

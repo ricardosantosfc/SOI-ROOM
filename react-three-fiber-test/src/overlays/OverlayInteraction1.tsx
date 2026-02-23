@@ -57,14 +57,15 @@ pages.push({
 });
 
 export const OverlayInteraction1 = () => {
-  const { page, setPage } = useStore(useShallow((state) => ({
+  const { page, setPage, isInfoHidden, setIsInfoHidden } = useStore(useShallow((state) => ({
 
     page: state.page,
     setPage: state.setPage,
+    isInfoHidden: state.isInfoHidden,
+    setIsInfoHidden: state.setIsInfoHidden
 
   })),)
 
-const [isInfoHidden, setIsInfoHidden] = useState(false)
   return (
     <>
       <main className={styles.main} /*className=" pointer-events-none select-none z-10 fixed  inset-0  flex justify-between flex-col" */ >

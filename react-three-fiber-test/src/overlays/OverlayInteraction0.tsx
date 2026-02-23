@@ -1,9 +1,16 @@
 //ui overlay for painting
 import { useState } from "react"
 import styles from "./OverlayInteraction0.module.css"
+import { useStore } from "../store"
+import { useShallow } from "zustand/shallow"
 export function OverlayInteraction0 () {
 
-  const [isInfoHidden, setIsInfoHidden] = useState(false)
+   const { isInfoHidden, setIsInfoHidden } = useStore(useShallow((state) => ({
+
+      isInfoHidden: state.isInfoHidden,
+      setIsInfoHidden: state.setIsInfoHidden
+  
+    })),)
     return(
         <>
          {!isInfoHidden && (<div className={styles.information}>
