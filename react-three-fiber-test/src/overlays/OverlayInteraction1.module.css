@@ -82,7 +82,7 @@ h3 {
     padding: 10px 10px;
     width: max-content;
     gap: 2px;
-    border: 0.4vh solid #494949;
+    /*border: 0.4vh solid #494949;*/
 
 }
 
@@ -94,7 +94,7 @@ h3 {
 .information h2,
 .information h3 {
     margin: 0;
-
+font-weight: 400;
 }
 
 

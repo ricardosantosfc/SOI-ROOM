@@ -1,5 +1,4 @@
 //ui overlay for painting
-import { useState } from "react"
 import styles from "./OverlayInteraction0.module.css"
 import { useStore } from "../store"
 import { useShallow } from "zustand/shallow"
@@ -15,7 +14,7 @@ export function OverlayInteraction0 () {
         <>
          {!isInfoHidden && (<div className={styles.information}>
             <h2>Meoto Iwa (monochrome edit)</h2>
-            <h3>Watercolor and gouache, 2025</h3>
+            <h4>Watercolor and gouache, 2025</h4>
           </div>)}
        <button className="btn"
         onClick={() => setIsInfoHidden(!isInfoHidden)}

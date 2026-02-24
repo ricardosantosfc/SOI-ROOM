@@ -42,8 +42,8 @@ const interactionCameraMap = new Map<number, InteractionCameraSettings>([
   [1, { 
     cameraPosition: new THREE.Vector3(0.1, 0, 0.3), 
     meshPosition: new THREE.Vector3(0.00108,-0.3,0),
-    maxAzimuthAngle: -Infinity,
-    minAzimuthAngle: -Infinity,
+    maxAzimuthAngle: Math.PI/3,
+    minAzimuthAngle: -Math.PI/3,
     maxPolarAngle: Math.PI/2.5,
     minPolarAngle: 0,
     minDistance: 0.3,

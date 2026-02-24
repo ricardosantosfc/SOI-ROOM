@@ -2,7 +2,6 @@ import styles from "./OverlayInteraction1.module.css"
 /* handles book and page ui + state*/
 import { useShallow } from "zustand/shallow";
 import { useStore } from "../store";
-import { useState } from "react";
 
 
 const informations = [
