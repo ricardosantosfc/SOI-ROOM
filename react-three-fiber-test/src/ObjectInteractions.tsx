@@ -105,11 +105,10 @@ export function useObjectInteractions() {
                     {/*<Outlines thickness={20} />*/}
                     <Html>
                         <div className="interact-message">
-                            <img
-                                src="../hand-pointer-who.svg"
-                                className="interact-image"
-                            />
-                            {/*<h1>Interact</h1>*/}
+                            <div className="pulse-circle">
+                                <div className="inner-dot" />
+                                <div className="outer-ring" />
+                            </div>
                         </div>
                     </Html>
                 </>
