@@ -28,6 +28,9 @@ interface ExperienceState { //see docs for fixed
 
   isOnRaisedFloor: boolean
   setIsOnRaisedFloor: (fixed: boolean) => void
+
+  showMainMenu: boolean
+  setShowMainMenu: (fixed: boolean) => void
 }
 
 export const useStore = create<ExperienceState>()((set) => ({
@@ -54,5 +57,8 @@ export const useStore = create<ExperienceState>()((set) => ({
 
   isOnRaisedFloor: true,
   setIsOnRaisedFloor: (fixed) => set({ isOnRaisedFloor: fixed }),
+
+  showMainMenu: true,
+  setShowMainMenu: (fixed) => set({showMainMenu: fixed }),
 
 }))

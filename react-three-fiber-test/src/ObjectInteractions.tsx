@@ -120,7 +120,12 @@ export function useObjectInteractions() {
     //on click on canInteract mesh, 
     useEffect(() => {
   
-        const handleGlobalClick = () => {
+        
+        const handleGlobalClick = (event: PointerEvent) => {
+
+            if(event.button!==0){
+                return 
+            }
             if (canInteract()) {
 
                 setIsInteracting(true)

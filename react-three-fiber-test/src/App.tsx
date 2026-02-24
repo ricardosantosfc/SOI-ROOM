@@ -9,6 +9,7 @@ import { OrbitControls as OrbitControlsImpl, PointerLockControls as PointerLockC
 import { useShallow } from 'zustand/shallow'
 import { OverlayInteraction0 } from './overlays/OverlayInteraction0'
 import { OverlayInteraction1 } from './overlays/OverlayInteraction1'
+import { MainMenu } from './overlays/MainMenu'
 
 //  0 = paitnng , 1 = sketchbook, 2= radio
 const overlayMap: Record<number, ComponentType> = {
@@ -20,10 +21,10 @@ function App() {
 
   //or fov 45
 
-  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls, currentInteraction } = useStore(useShallow((state) =>
+  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls, currentInteraction, showMainMenu } = useStore(useShallow((state) =>
   ({
     isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.shouldAnimateCamera,
-    setObControls: state.setObControls, currentInteraction: state.currentInteraction
+    setObControls: state.setObControls, currentInteraction: state.currentInteraction, showMainMenu : state.showMainMenu,
   })),)
 
   const plControls = useRef<PointerLockControlsImpl>(null!)
@@ -107,6 +108,7 @@ function App() {
           </Canvas>
           <div className='ui-overlay'>
             {isOrbitControls && !isMoving && currentInteraction !== -1 && (<CurrentOverlayComponent />)}
+            {showMainMenu && (<MainMenu></MainMenu>)}
           </div>
 
         </div>

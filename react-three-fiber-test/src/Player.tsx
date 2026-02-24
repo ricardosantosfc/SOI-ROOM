@@ -69,7 +69,7 @@ export function Player() {
   const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.3, 1.5))
   const [currentCameraRotation, setCurrentCameraRotation] = useState(new THREE.Vector3(0, 0, 0))
   const { isInteracting, currentInteraction, shouldAnimateCamera, setShouldAnimateCamera, setIsOrbitControls,
-    isOnRaisedFloor, obControls
+    isOnRaisedFloor, obControls, showMainMenu, setShowMainMenu
   } = useStore(useShallow((state) =>
   ({
     isInteracting: state.isInteracting,
@@ -78,7 +78,9 @@ export function Player() {
     setShouldAnimateCamera: state.setShouldAnimateCamera,
     setIsOrbitControls: state.setIsOrbitControls,
     isOnRaisedFloor: state.isOnRaisedFloor,
-    obControls: state.obControls
+    obControls: state.obControls,
+    showMainMenu: state.showMainMenu,
+    setShowMainMenu: state.setShowMainMenu
   })),)
 
 

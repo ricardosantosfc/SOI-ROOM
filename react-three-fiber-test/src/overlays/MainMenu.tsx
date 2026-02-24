@@ -1,10 +1,10 @@
 //main menu overlay, when esc is pressed
-export function OverlayControls() {
+export function MainMenu() {
 
     return (
         <>
-            <div >
-                <h2>"Controls"</h2>
+            <div  >
+                controls
 
             </div>
         </>
