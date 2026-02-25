@@ -21,10 +21,11 @@ function App() {
 
   //or fov 45
 
-  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls, currentInteraction, showMainMenu } = useStore(useShallow((state) =>
+  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls, currentInteraction, showMainMenu, setshowMainMenu } = useStore(useShallow((state) =>
   ({
     isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.shouldAnimateCamera,
     setObControls: state.setObControls, currentInteraction: state.currentInteraction, showMainMenu : state.showMainMenu,
+    setshowMainMenu: state.setShowMainMenu
   })),)
 
   const plControls = useRef<PointerLockControlsImpl>(null!)
@@ -33,7 +34,7 @@ function App() {
 
   const CurrentOverlayComponent = overlayMap[currentInteraction]
 
-  //wont work properly outside app, even if curr pl is stored
+  //on interaction exit, pl auto frame lock. wont work properly outside app, even if curr pl is stored
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       if (isInteracting && !isCameraAnimating && e.code === "Space") {
@@ -61,7 +62,30 @@ function App() {
     }
   }, [isInteracting, isCameraAnimating])
 
+// for assigning when to show the main menu for pl controls (as esc key press event is not caught when in pl controls)- instead,
+//since pointerlock is unlocked when esc is pressed, listen to it.
+//but poiterlock is alos programmaticaly unlocked when ob controls are set, so must check
+useEffect(() => {
+  const handlePointerLockChange = () => {
+    if (document.pointerLockElement) {
+      console.log("locked")
+    } else {
+      if (isOrbitControls) {
+        console.log(" unlocked pointer for ob controls")
+      } else {
+        console.log(" unlocked pointer for show main menu")
+        setshowMainMenu(true)
+      }
+    }
+  }
 
+  document.addEventListener("pointerlockchange", handlePointerLockChange)
+
+  return () => {
+    document.removeEventListener("pointerlockchange", handlePointerLockChange)
+  }
+}, [isOrbitControls])
+  
   return (
     <>
       <KeyboardControls

@@ -216,6 +216,10 @@ export function Player() {
     const body = ref.current
     if (!body) return
 
+    if(showMainMenu){ // see if need to axtually stop the loop or this is enough
+      return
+    }
+
     if (isInteracting) {
 
       if (shouldAnimateCamera) {
