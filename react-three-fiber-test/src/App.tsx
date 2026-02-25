@@ -85,34 +85,6 @@ useEffect(() => {
     document.removeEventListener("pointerlockchange", handlePointerLockChange)
   }
 }, [isOrbitControls])
-
-/* incredibly dumb, but do a click first elsewhere before start button to enable frame loop
-useEffect(() => {
-  const handleClick = (e: MouseEvent) => {
-
-    if (showMainMenu) {
-
-       const tryLock = () => {
-          console.log("frame lock attempt")
-          if (plControls.current) {
-            plControls.current.lock()
-            console.log("Pointer locked")
-          } else {
-            requestAnimationFrame(tryLock)
-          }
-        }
-
-        tryLock()
-      }
-  };
-
-
-  document.addEventListener("click", handleClick);
-
-  return () => {
-    document.removeEventListener("click", handleClick);
-  };
-}, [showMainMenu]); */
   
   //still very sphaget, but works... might still need some sort of cooldown or message for when lock/unlock successively too fast and browser blocks
   const handleStartClick = () => {
