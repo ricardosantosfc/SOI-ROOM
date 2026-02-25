@@ -21,11 +21,11 @@ function App() {
 
   //or fov 45
 
-  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls, currentInteraction, showMainMenu, setshowMainMenu } = useStore(useShallow((state) =>
+  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls, currentInteraction, showMainMenu, setShowMainMenu } = useStore(useShallow((state) =>
   ({
     isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.shouldAnimateCamera,
     setObControls: state.setObControls, currentInteraction: state.currentInteraction, showMainMenu : state.showMainMenu,
-    setshowMainMenu: state.setShowMainMenu
+    setShowMainMenu: state.setShowMainMenu
   })),)
 
   const plControls = useRef<PointerLockControlsImpl>(null!)
@@ -74,7 +74,7 @@ useEffect(() => {
         console.log(" unlocked pointer for ob controls")
       } else {
         console.log(" unlocked pointer for show main menu")
-        setshowMainMenu(true)
+        setShowMainMenu(true)
       }
     }
   }
@@ -85,7 +85,51 @@ useEffect(() => {
     document.removeEventListener("pointerlockchange", handlePointerLockChange)
   }
 }, [isOrbitControls])
+
+/* incredibly dumb, but do a click first elsewhere before start button to enable frame loop
+useEffect(() => {
+  const handleClick = (e: MouseEvent) => {
+
+    if (showMainMenu) {
+
+       const tryLock = () => {
+          console.log("frame lock attempt")
+          if (plControls.current) {
+            plControls.current.lock()
+            console.log("Pointer locked")
+          } else {
+            requestAnimationFrame(tryLock)
+          }
+        }
+
+        tryLock()
+      }
+  };
+
+
+  document.addEventListener("click", handleClick);
+
+  return () => {
+    document.removeEventListener("click", handleClick);
+  };
+}, [showMainMenu]); */
   
+  //still very sphaget, but works... might still need some sort of cooldown or message for when lock/unlock successively too fast and browser blocks
+  const handleStartClick = () => {
+    setShowMainMenu(false);
+
+    const tryLock = () => {
+      console.log("frame lock attempt")
+      if (plControls.current) {
+        plControls.current.lock()
+        console.log("Pointer locked")
+      } else {
+        requestAnimationFrame(tryLock)
+      }
+    }
+
+    tryLock()
+  }
   return (
     <>
       <KeyboardControls
@@ -105,7 +149,7 @@ useEffect(() => {
                 <Experience />
               </Suspense>
             </group>
-            {!isOrbitControls && (
+            {!isOrbitControls && !showMainMenu && (
               <PointerLockControls ref={plControls}
                 minPolarAngle={Math.PI / 5}
                 maxPolarAngle={Math.PI - Math.PI / 5.5}
@@ -132,7 +176,12 @@ useEffect(() => {
           </Canvas>
           <div className='ui-overlay'>
             {isOrbitControls && !isMoving && currentInteraction !== -1 && (<CurrentOverlayComponent />)}
-            {showMainMenu && (<MainMenu></MainMenu>)}
+            {showMainMenu && (<MainMenu></MainMenu>) && (<button
+              className="startButton"
+              onClick={handleStartClick}
+            >
+              <img className="btn-img" src="../chevron-up.svg" />
+            </button>)}
           </div>
 
         </div>

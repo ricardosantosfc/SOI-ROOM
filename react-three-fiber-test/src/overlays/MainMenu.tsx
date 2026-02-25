@@ -9,12 +9,7 @@ const {  setShowMainMenu} = useStore(useShallow((state) =>({ setShowMainMenu: st
     
    return (
   <div className={styles.menu}>
-    <button
-      className="btn"
-      onClick={() => setShowMainMenu(false)}
-    >
-      <img className="btn-img" src="../chevron-up.svg" />
-    </button>
+    
   </div>
 )
 }
