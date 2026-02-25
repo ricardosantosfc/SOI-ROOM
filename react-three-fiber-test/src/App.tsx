@@ -148,12 +148,16 @@ useEffect(() => {
           </Canvas>
           <div className='ui-overlay'>
             {isOrbitControls && !isMoving && currentInteraction !== -1 && (<CurrentOverlayComponent />)}
-            {showMainMenu && (<MainMenu></MainMenu>) && (<button
-              className="startButton"
-              onClick={handleStartClick}
-            >
-              <img className="btn-img" src="../chevron-up.svg" />
-            </button>)}
+            {showMainMenu && (
+              <>
+              <MainMenu></MainMenu>
+                <button
+                  className="startButton"
+                  onClick={handleStartClick}
+                >
+                  <img className="btn-img" src="../chevron-up.svg" />
+                </button>
+              </>)}
           </div>
 
         </div>

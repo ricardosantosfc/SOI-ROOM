@@ -4,7 +4,7 @@ import styles from "./MainMenu.module.css"
 
 //main menu overlay, when esc is pressed
 export function MainMenu() {
-const {  setShowMainMenu} = useStore(useShallow((state) =>({ setShowMainMenu: state.setShowMainMenu})),)
+
 
     
    return (
