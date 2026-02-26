@@ -63,7 +63,7 @@ export function MainMenu() {
      
 
         <p className={styles.infoText}>
-          I hope you enjoy your visit!
+          I hope you enjoy your visit.
         </p>
         <div className={styles.logoSignatureWrapper} >
           <a className={styles.logoSignature} href="https://www.ricardo-santos.dev/" target="_blank" rel="noopener noreferrer" aria-label="Visit my personal website through this link ">

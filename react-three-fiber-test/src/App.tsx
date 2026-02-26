@@ -101,7 +101,7 @@ useEffect(() => {
     }
 
     tryLock()
-  }
+  } //setting a background color on wrapper div so when menu is unmounted, immediatly on canvas fade start to opacity 1 is more natural than pure white
   return (
     <>
       <KeyboardControls
@@ -111,9 +111,9 @@ useEffect(() => {
           { name: "left", keys: ["ArrowLeft", "a", "A"] },
           { name: "right", keys: ["ArrowRight", "d", "D"] },
         ]}>
-        <div style={{ position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls? "default": isMoving? "grabbing" : "grab"
+        <div style={{ backgroundColor:"rgb(197, 197, 197)", position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls? "default": isMoving? "grabbing" : "grab"
    }}>
-          <Canvas shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
+          <Canvas className={`canvas ${showMainMenu ? "non-opaque" : ""}`}shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
 
             {/*<Perf position="top-left" />*/}
             <group position-y={0}>

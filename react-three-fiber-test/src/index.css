@@ -174,9 +174,7 @@ border: 0.5vh solid #e6e6e6;
   align-items: center;
 }
 
-.startButtonWrapper{
 
-}
 
 .startButton{
   --button-fill: #D1C08D;
@@ -196,4 +194,13 @@ border: 0.5vh solid #e6e6e6;
 
 .startButton svg{
   height: 10vh;
+}
+
+.canvas{
+  opacity: 1;
+   transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.canvas.non-opaque{
+  opacity: 0;
 }
