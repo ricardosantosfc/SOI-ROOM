@@ -8,7 +8,6 @@ export function MainMenu() {
   const [showInfoMenu, setShowInfoMenu] = useState(false)
 
   const handleInfoButtonClick = () => {
-    console.log(showInfoMenu)
     setShowInfoMenu(!showInfoMenu)
   }
 

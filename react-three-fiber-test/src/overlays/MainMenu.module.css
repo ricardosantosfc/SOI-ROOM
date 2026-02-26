@@ -48,7 +48,7 @@
 
 
 .infoButton.active {
-  --icon-fill: black;
+  --icon-fill: #1e1e1e;
   --icon-stroke: rgba(197, 197, 197, 0.973);
 }
 
@@ -89,7 +89,8 @@
 }
 
 .controlChild:first-child img {
-  transform: translateY(-1.3vh);
+  transform: translateY(-1.3vh) translateX(-1.3vh);
+  height: 4.5vh;
 }
 
 .controlChild:first-child {
@@ -133,7 +134,7 @@
 }
 
 .controls,
-.info {
+.info, .logo {
   animation: fadeInUp 0.35s ease;
 }
 
