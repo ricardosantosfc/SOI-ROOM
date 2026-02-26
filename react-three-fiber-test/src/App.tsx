@@ -52,7 +52,7 @@ function App() {
         }
 
         tryLock()
-     } else if(e.code==="Escape" && !showMainMenu){ //is only captured when not pl controls: either in orbit controls, or none at all (ie,when pl contrls are released for menu)
+     } else if(e.code==="Escape" && !showMainMenu && !isCameraAnimating){ //is only captured when not pl controls: either in orbit controls, or none at all (ie,when pl contrls are released for menu)
         setShowMainMenu(true)
       }
     }
