@@ -162,3 +162,30 @@ border: 0.5vh solid #e6e6e6;
 .ui-overlay button {
   pointer-events: auto; 
 }
+
+.menu {
+  width: 100%;
+  height: 100%;
+  background: rgba(197, 197, 197, 0.973);
+  pointer-events: all;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.playButtonWrapper{
+  
+}
+
+.startButton{
+
+  pointer-events: all;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+}
+
+.startButton img{
+  height: 10vh;
+}

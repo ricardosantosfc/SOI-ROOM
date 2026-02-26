@@ -120,6 +120,7 @@ export function useObjectInteractions() {
     //on click on canInteract mesh, 
     useEffect(() => {
   
+        console.log("handle globa click obj intera") //being triggered evytoime is poitning
         
         const handleGlobalClick = (event: PointerEvent) => {
 

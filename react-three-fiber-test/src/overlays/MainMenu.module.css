@@ -1,9 +1,133 @@
-.menu {
-  width: 100%;
-  height: 100%;
-  background: rgba(175, 75, 75, 0.186);
+.main {
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;     
+/*transform: translateY(-10vh);*/
+
+  gap: 7.5vh; 
+  padding-bottom: 8vh;
+}
+
+.topLeft {
+  position: absolute;
+  top: 2vh;
+  left: 0.1vw;
+}
+
+
+.infoButton {
   pointer-events: all;
+  cursor: pointer;
+  background: transparent;
+  border: none;
+  padding: 0.5rem 1rem;
+    --icon-fill: transparent;
+  --icon-stroke: #1E1E1E;
+}
+
+.infoButtonImg{
+  height: 3vh;
+   transition: transform 0.2s ease;
+}
+
+.infoButtonImg path {
+ 
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+
+  transition: all 0.2s ease;
+}
+
+
+.infoButton:hover {
+  --icon-fill: rgb(136, 136, 136);
+  --icon-stroke: rgba(197, 197, 197, 0.973);
+}
+
+
+.infoButton.active {
+  --icon-fill: black;
+  --icon-stroke: rgba(197, 197, 197, 0.973);
+}
+
+
+
+.logo {
   display: flex;
   justify-content: center;
+  height: 13.7vh; 
+}
+
+.bottomArea {
+  min-height: 30vh; 
+  display: flex;
+  justify-content: center;
+}
+
+.controls {
+
+  pointer-events: all;
+  display: flex;
+  flex-direction: column;
+
+  gap: 0.1vh;
+ 
+}
+
+.controlChild {
+  display: flex;
+  justify-content: space-between; 
   align-items: center;
+  width: 100%;
+   gap: 1rem; 
+}
+
+.controlChild img {
+  height: 5.5vh;
+}
+
+.controlChild:first-child img {
+  transform: translateY(-1.3vh);
+}
+
+.controlChild:first-child {
+  padding-top: 1.6vh;
+}
+
+.infoEtymology{
+  padding-bottom: 1.6vh;
+  text-align: center;
+   opacity: 0.7;
+}
+ 
+.infoText{
+    font-size: 1.125rem; 
+     max-width: 50ch; /*65*/
+}
+
+.logoSignatureWrapper{
+  max-width: 66ch;
+  display: flex;
+  justify-content: flex-end; 
+
+}
+
+.logoSignature{
+  pointer-events: all;
+  cursor: pointer; 
+}
+
+.logoSignature img {
+  height: 4vh;
+  opacity: 0.85; 
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+
+
+.logoSignature:hover img {
+  transform: scale(1.1);        
+  opacity: 1;                
 }

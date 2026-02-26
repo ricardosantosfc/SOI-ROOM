@@ -68,7 +68,7 @@ function App() {
 useEffect(() => {
   const handlePointerLockChange = () => {
     if (document.pointerLockElement) {
-      console.log("locked")
+      console.log("locked") //see, being toggle every click
     } else {
       if (isOrbitControls) {
         console.log(" unlocked pointer for ob controls")
@@ -150,13 +150,19 @@ useEffect(() => {
             {isOrbitControls && !isMoving && currentInteraction !== -1 && (<CurrentOverlayComponent />)}
             {showMainMenu && (
               <>
-              <MainMenu></MainMenu>
+             
+              <div className='menu'>
+                <MainMenu></MainMenu>
+                <div className="playButtonWrapper">
                 <button
                   className="startButton"
                   onClick={handleStartClick}
                 >
-                  <img className="btn-img" src="../chevron-up.svg" />
+                  <img  src="../startButton.svg" />
+                  
                 </button>
+                </div>
+                </div>
               </>)}
           </div>
 
