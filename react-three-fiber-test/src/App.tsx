@@ -52,6 +52,8 @@ function App() {
         }
 
         tryLock()
+     } else if(e.code==="Escape" && !showMainMenu){ //is only captured when not pl controls: either in orbit controls, or none at all (ie,when pl contrls are released for menu)
+        setShowMainMenu(true)
       }
     }
 
@@ -90,6 +92,9 @@ useEffect(() => {
   const handleStartClick = () => {
     setShowMainMenu(false);
 
+    if(!isOrbitControls){
+
+    
     const tryLock = () => {
       console.log("frame lock attempt")
       if (plControls.current) {
@@ -101,7 +106,8 @@ useEffect(() => {
     }
 
     tryLock()
-  } //setting a background color on wrapper div so when menu is unmounted, immediatly on canvas fade start to opacity 1 is more natural than pure white
+  } 
+  }//setting a background color on wrapper div so when menu is unmounted, immediatly on canvas fade start to opacity 1 is more natural than pure white
   return (
     <>
       <KeyboardControls
@@ -111,7 +117,7 @@ useEffect(() => {
           { name: "left", keys: ["ArrowLeft", "a", "A"] },
           { name: "right", keys: ["ArrowRight", "d", "D"] },
         ]}>
-        <div style={{ backgroundColor:"rgb(197, 197, 197)", position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls? "default": isMoving? "grabbing" : "grab"
+        <div style={{ backgroundColor:"rgb(197, 197, 197)", position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls || showMainMenu? "default": isMoving? "grabbing" : "grab"
    }}>
           <Canvas className={`canvas ${showMainMenu ? "non-opaque" : ""}`}shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
 
@@ -120,14 +126,14 @@ useEffect(() => {
               <Suspense fallback={null}>
                 <Experience />
               </Suspense>
-            </group>
+            </group> {/**!showMainMenu because if not, any click on the main mennu is going to toggle it  */}
             {!isOrbitControls && !showMainMenu && (
               <PointerLockControls ref={plControls}
                 minPolarAngle={Math.PI / 5}
                 maxPolarAngle={Math.PI - Math.PI / 5.5}
               />
             )}
-            {isOrbitControls && (
+            {isOrbitControls && !showMainMenu &&(
               <OrbitControls ref={(ref) => {
                 setObControls(ref)
               }}
@@ -147,7 +153,7 @@ useEffect(() => {
             )}
           </Canvas>
           <div className='ui-overlay'>
-            {isOrbitControls && !isMoving && currentInteraction !== -1 && (<CurrentOverlayComponent />)}
+            {!showMainMenu && isOrbitControls && !isMoving && currentInteraction !== -1 && (<CurrentOverlayComponent />)}
             {showMainMenu && (
               <>
              
