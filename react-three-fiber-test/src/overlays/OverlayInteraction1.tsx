@@ -65,8 +65,9 @@ export const OverlayInteraction1 = () => {
 
   })),)
 
+  const pageMax = pictures.length/2
   const changePage = (value:number )=>{
-    if((page + value>=0) && (page + value <= pictures.length/2)){
+    if((page + value>=0) && (page + value <= pageMax)){
       setPage(page+value)
     }
   }
@@ -76,11 +77,12 @@ export const OverlayInteraction1 = () => {
       <main className={styles.main} /*className=" pointer-events-none select-none z-10 fixed  inset-0  flex justify-between flex-col" */ >
 
         <div className={styles.controls} /*className="w-full overflow-auto pointer-events-auto flex justify-center"*/>
-          <button className={styles.buttonControl} onClick={() => changePage(-1)}>
+          <button  className={`${styles.buttonControl} ${page - 1 < 0 ? styles.notClickable : ""}`} onClick={() => changePage(-1)}>
             <img src= "../arrow-left.svg"></img>
           </button>
           <input className={styles.pageInput}
             value={page}
+             onFocus={(e) => e.target.select()}
             onChange={(e) => {
               const value = e.target.valueAsNumber;
 
@@ -95,13 +97,14 @@ export const OverlayInteraction1 = () => {
             max={pictures.length / 2}
             min={0}
           ></input>
-          <button className={styles.buttonControl} onClick={() => changePage(1)}>
+          <button  className={`${styles.buttonControl} ${page + 1 > pageMax ? styles.notClickable : ""}`} onClick={() => changePage(1)}>
             <img src= "../arrow-right.svg"></img>
           </button>
         </div>
 
       </main>
-      {!isInfoHidden && page !== 0 && (<div className={styles.information} >
+      {!isInfoHidden && page !== 0 && (
+      <div className={styles.information} >
         <div className={styles.informationChild}>
           <h2 >{informations[(page - 1) * 2].name}</h2>
           <h3>{informations[(page - 1) * 2].mediumYear}</h3>

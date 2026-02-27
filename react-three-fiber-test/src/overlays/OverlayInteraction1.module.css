@@ -5,6 +5,22 @@
       margin: 0;
     }
 
+/*on focus, selection auto*/
+input[type="number"]::selection {
+  background: rgba(94, 94, 94, 0.3);
+  color: #000;
+}
+
+input[type="number"] {
+  border: none;
+  outline: none;
+  
+}
+
+input[type="number"]:focus {
+  box-shadow: 0 0 0 2px rgba(33, 33, 33, 0.5); 
+  border-radius: 4px;
+}
     .main {
   position: fixed;
   inset: 0;
@@ -34,7 +50,7 @@
 
 .buttonControl{
    height: 7vh;
-  
+  opacity: 0.7;
    border: none;
    cursor: pointer;
    background: none;
@@ -42,13 +58,23 @@
   
 }
 
+.buttonControl:not(.notClickable):hover {
+  opacity: 1;
+}
+
 .buttonControl img {
   height: 3.5vh;
 
 }
 
+.notClickable {
+  cursor: default;
+  pointer-events: none;
+  opacity: 0.2; /* entire button fades */
+}
+
 .pageInput{
-  color:#656565;
+  color:#777777;
   cursor:pointer; /*caret color if white hard to read*/
   border: none;
   pointer-events: all;
@@ -60,20 +86,24 @@
    transform: translateY(-1px);
 }
 
+.pageInput:hover{
+  color:#5b5b5b
+}
+
 
 
 .information {
   position: absolute;
-  top: 50%;             
-  left: 0;
-  right: 0;
+  bottom: 20px;             
+  left: 20px;
+  right: 20px;
   display: flex;
   justify-content: space-between; 
   align-items: center;           
   gap: 20px;                    
   padding: 10px 20px;
 
-  transform: translateY(-50%);                             
+                            
 }
 
 .informationChild {
@@ -91,6 +121,10 @@
 
 }
 
+/*
+.informationChild:last-child {
+  text-align: right; 
+}*/
 
 
 .information h2,
