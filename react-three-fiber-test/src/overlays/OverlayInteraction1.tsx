@@ -80,6 +80,7 @@ export const OverlayInteraction1 = () => {
           <button  className={`${styles.buttonControl} ${page - 1 < 0 ? styles.notClickable : ""}`} onClick={() => changePage(-1)}>
             <img src= "../arrow-left.svg"></img>
           </button>
+          <div className={styles.inputWrapper}>
           <input className={styles.pageInput}
             value={page}
              onFocus={(e) => e.target.select()}
@@ -97,6 +98,8 @@ export const OverlayInteraction1 = () => {
             max={pictures.length / 2}
             min={0}
           ></input>
+          <span className={styles.inputPageMax}>/{pageMax}</span>
+          </div>
           <button  className={`${styles.buttonControl} ${page + 1 > pageMax ? styles.notClickable : ""}`} onClick={() => changePage(1)}>
             <img src= "../arrow-right.svg"></img>
           </button>
