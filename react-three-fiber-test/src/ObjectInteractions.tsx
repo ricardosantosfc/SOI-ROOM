@@ -12,7 +12,8 @@ export function useObjectInteractions() {
     const { isInteracting, setIsInteracting, currentInteraction, setCurrentInteraction, isCameraAnimating,
         isPointing, setIsPointing, 
         setIsOnRaisedFloor,
-        setIsInfoHidden
+        setIsInfoHidden,
+        showMainMenu
     } = useStore(useShallow((state) =>
     ({
         isInteracting: state.isInteracting,
@@ -23,7 +24,8 @@ export function useObjectInteractions() {
         isPointing: state.isPointing,
         setIsPointing: state.setIsPointing,
         setIsOnRaisedFloor: state.setIsOnRaisedFloor,
-        setIsInfoHidden: state.setIsInfoHidden
+        setIsInfoHidden: state.setIsInfoHidden,
+        showMainMenu: state.showMainMenu
     })),)
 
     //so showInteract reacts immediatly
@@ -147,7 +149,7 @@ export function useObjectInteractions() {
     useEffect(() => {
         const handleKey = (e: KeyboardEvent) => {
 
-            if (isInteracting && !isCameraAnimating && e.code === "Space") {
+            if (isInteracting && !isCameraAnimating && e.code === "Space" && !showMainMenu) {
 
                 setIsInteracting(false)
                 setCurrentInteraction(-1)
@@ -160,7 +162,7 @@ export function useObjectInteractions() {
         return () => {
             window.removeEventListener("keydown", handleKey)
         }
-    }, [isInteracting, isCameraAnimating, setIsInteracting, setCurrentInteraction])
+    }, [isInteracting, isCameraAnimating, setIsInteracting, setCurrentInteraction, showMainMenu])
 
 
 

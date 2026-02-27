@@ -37,9 +37,9 @@ function App() {
   //on interaction exit, pl auto frame lock. wont work properly outside app, even if curr pl is stored
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
-      if (isInteracting && !isCameraAnimating && e.code === "Space") {
+      if (isInteracting && !isCameraAnimating && e.code === "Space" && !showMainMenu) {
         console.log("Q pressed — locking")
-
+        console.log(showMainMenu)
 
         const tryLock = () => {
           console.log("frame lock attempt")
@@ -53,7 +53,8 @@ function App() {
 
         tryLock()
      } else if(e.code==="Escape" && !showMainMenu && !isCameraAnimating){ //is only captured when not pl controls: either in orbit controls, or none at all (ie,when pl contrls are released for menu)
-        setShowMainMenu(true)
+      console.log("showin main menu due to esc pressed")  
+      setShowMainMenu(true)
       }
     }
 
@@ -62,7 +63,7 @@ function App() {
     return () => {
       document.removeEventListener("keydown", handleKey)
     }
-  }, [isInteracting, isCameraAnimating])
+  }, [isInteracting, isCameraAnimating, showMainMenu])
 
 // for assigning when to show the main menu for pl controls (as esc key press event is not caught when in pl controls)- instead,
 //since pointerlock is unlocked when esc is pressed, listen to it.
