@@ -1,38 +1,9 @@
-/*
-.btn {
-    font-family: inherit;
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 10px 16px;
-    background: white;
-    cursor: pointer;
-    border-radius: 8px;
-}
-
-.information {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: rgba(233, 233, 233, 0.851);
-    color: #2d2d2d;
-    border-radius: 8px;
-    padding: 10px 10px;
-    width: max-content;
-    gap: 2px;
-    position: absolute;
-    bottom: 20px;
-    right: 20px;
-  /* border: 3px solid #2d2d2d;
-}
-
-.information h2,
-h3 {
-    margin: 0;
-
-} 
-    */
+/*for removing input step arrows*/
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
 
     .main {
   position: fixed;
@@ -54,7 +25,41 @@ h3 {
   margin-bottom: 30px;
   overflow-x: auto;
   max-width: 100%;
+  background-color: #d9d9d9ef;
+  border-radius: 6px; /* see radius all all */
+  align-items: center;
+  gap: 2px;
+  padding: 6px;
 }
+
+.buttonControl{
+   height: 7vh;
+  
+   border: none;
+   cursor: pointer;
+   background: none;
+  /*border-radius: 50%;*/
+  
+}
+
+.buttonControl img {
+  height: 3.5vh;
+
+}
+
+.pageInput{
+  color:#656565;
+  cursor:pointer; /*caret color if white hard to read*/
+  border: none;
+  pointer-events: all;
+  background: none;
+   text-align: center;
+   font-size: 2rem;  
+   font-family: inherit;
+   width: 4ch;
+   transform: translateY(-1px);
+}
+
 
 
 .information {
@@ -86,9 +91,6 @@ h3 {
 
 }
 
-.informationChild:last-child {
-  text-align: right; 
-}
 
 
 .information h2,
@@ -96,6 +98,7 @@ h3 {
     margin: 0;
 font-weight: 400;
 }
+
 
 
 
