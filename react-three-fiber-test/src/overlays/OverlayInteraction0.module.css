@@ -5,9 +5,8 @@
     justify-content: center;
     align-items: center;
     background: #d9d9d9ef;
-    color: #2d2d2d;
     border-radius: 8px;
-    padding: 18px 18px;
+    padding: 28px 18px;
     width: max-content;
     gap: 2px;
     position: absolute;
@@ -23,6 +22,7 @@
 
 .information h2{
   font-weight: 400;
+  color:#424242
 }
 
 .information h4{

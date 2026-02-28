@@ -110,11 +110,11 @@ export const OverlayInteraction1 = () => {
       <div className={styles.information} >
         <div className={styles.informationChild}>
           <h2 >{informations[(page - 1) * 2].name}</h2>
-          <h3>{informations[(page - 1) * 2].mediumYear}</h3>
+          <h4>{informations[(page - 1) * 2].mediumYear}</h4>
         </div>
         <div className={styles.informationChild}>
           <h2 >{informations[(page - 1) * 2 + 1].name}</h2>
-          <h3>{informations[(page - 1) * 2 + 1].mediumYear}</h3>
+          <h4>{informations[(page - 1) * 2 + 1].mediumYear}</h4>
         </div>
       </div>)}
       {page !== 0 && (<button className="btn"
