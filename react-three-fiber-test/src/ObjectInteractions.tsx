@@ -19,7 +19,7 @@ export function useObjectInteractions() {
         isInteracting: state.isInteracting,
         setIsInteracting: state.setIsInteracting,
         currentInteraction: state.currentInteraction,
-        setCurrentInteraction: state.setcurrentInteraction,
+        setCurrentInteraction: state.setCurrentInteraction,
         isCameraAnimating: state.shouldAnimateCamera,
         isPointing: state.isPointing,
         setIsPointing: state.setIsPointing,
@@ -121,50 +121,52 @@ export function useObjectInteractions() {
     
     //on click on canInteract mesh, 
     useEffect(() => {
-  
-        console.log("handle globa click obj intera") //being triggered evytoime is poitning
-        
         const handleGlobalClick = (event: PointerEvent) => {
-
-            if(event.button!==0){
-                return 
+            console.log("running handle global click objinteracitons")
+            if (event.button !== 0) {
+                return
             }
-            if (canInteract()) {
 
-                setIsInteracting(true)
-                setCurrentInteraction(isPointing)
-                setIsInfoHidden(false)
+            const state = useStore.getState()
 
+            const canInteract = !state.isInteracting && intersectionSet.has(state.isPointing)
+
+            if (canInteract) {
+                state.setIsInteracting(true)
+                state.setCurrentInteraction(state.isPointing)
+                state.setIsInfoHidden(false)
             }
         }
 
-        window.addEventListener('pointerup', handleGlobalClick)
+        window.addEventListener("pointerup", handleGlobalClick)
 
         return () => {
-            window.removeEventListener('pointerup', handleGlobalClick)
+            window.removeEventListener("pointerup", handleGlobalClick)
         }
-    }, [isInteracting, isPointing, canInteract, setIsInteracting, setCurrentInteraction])
+    }, [intersectionSet]) 
 
     //exit interaction -------------------needs refact ---NO SPACE
-    useEffect(() => {
-        const handleKey = (e: KeyboardEvent) => {
+useEffect(() => {
+  const handleKey = (e: KeyboardEvent) => { 
+    console.log("running space code exit interaciton objinteracitons ")
+    if (e.code !== "Space") return
 
-            if (isInteracting && !isCameraAnimating && e.code === "Space" && !showMainMenu) {
+    const state = useStore.getState()
 
-                setIsInteracting(false)
-                setCurrentInteraction(-1)
+    if (state.isInteracting && !isCameraAnimating && !state.showMainMenu) {
+   
+      state.setIsInteracting(false)
+      state.setCurrentInteraction(-1)
 
-            }
-        }
+    }
+  }
 
-        window.addEventListener("keydown", handleKey)
+  window.addEventListener("keydown", handleKey)
 
-        return () => {
-            window.removeEventListener("keydown", handleKey)
-        }
-    }, [isInteracting, isCameraAnimating, setIsInteracting, setCurrentInteraction, showMainMenu])
-
-
+  return () => {
+    window.removeEventListener("keydown", handleKey)
+  }
+}, [isCameraAnimating])
 
     return {
        

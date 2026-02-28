@@ -8,7 +8,7 @@ interface ExperienceState { //see docs for fixed
   isInteracting: boolean //if curr interaciton !=-1
   setIsInteracting: (fixed: boolean) => void
   currentInteraction: number
-  setcurrentInteraction: (fixed: number) => void //might simplify to single current in = -1,...
+  setCurrentInteraction: (fixed: number) => void //might simplify to single current in = -1,...
   shouldAnimateCamera: boolean
   setShouldAnimateCamera : (fixed: boolean) => void
   isOrbitControls: boolean
@@ -37,7 +37,7 @@ export const useStore = create<ExperienceState>()((set) => ({
   isInteracting: false,
   setIsInteracting: (fixed) => set({ isInteracting: fixed }),
   currentInteraction: -1,
-  setcurrentInteraction: (fixed) => set({ currentInteraction: fixed }),
+  setCurrentInteraction: (fixed) => set({ currentInteraction: fixed }),
   shouldAnimateCamera: false,
   setShouldAnimateCamera: (fixed) => set({ shouldAnimateCamera: fixed }),
   isOrbitControls: false,

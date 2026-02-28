@@ -103,7 +103,7 @@ export function Player() {
       setShouldAnimateCamera(true)
 
     } else {
-      console.log("interacting set to false")
+      console.log("interacting set to false") //triggered on initial render, but not problemctic. restricting to !showMainMenu causes rotation bugs
       setShouldAnimateCamera(true)
     }
   }, [isInteracting])

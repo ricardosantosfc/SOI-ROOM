@@ -37,12 +37,10 @@ function App() {
   //on interaction exit, pl auto frame lock. wont work properly outside app, even if curr pl is stored
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
+      console.log("running key press space pl lock handle app.tsx")
       if (isInteracting && !isCameraAnimating && e.code === "Space" && !showMainMenu) {
-        console.log("Q pressed — locking")
-        console.log(showMainMenu)
 
         const tryLock = () => {
-          console.log("frame lock attempt")
           if (plControls.current) {
             plControls.current.lock()
             console.log("Pointer locked")
@@ -70,8 +68,8 @@ function App() {
 //but poiterlock is alos programmaticaly unlocked when ob controls are set, so must check
 useEffect(() => {
   const handlePointerLockChange = () => {
+    console.log("firing pointerlockchange event") 
     if (document.pointerLockElement) {
-      console.log("locked") //see, being toggle every click
     } else {
       if (isOrbitControls) {
         console.log(" unlocked pointer for ob controls")
@@ -91,16 +89,15 @@ useEffect(() => {
   
   //still very sphaget, but works... might still need some sort of cooldown or message for when lock/unlock successively too fast and browser blocks
   const handleStartClick = () => {
+    console.log("pressed button start main menu")
     setShowMainMenu(false);
 
     if(!isOrbitControls){
 
     
     const tryLock = () => {
-      console.log("frame lock attempt")
       if (plControls.current) {
         plControls.current.lock()
-        console.log("Pointer locked")
       } else {
         requestAnimationFrame(tryLock)
       }
