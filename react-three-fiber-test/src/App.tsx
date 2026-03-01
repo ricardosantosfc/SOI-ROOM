@@ -38,7 +38,17 @@ function App() {
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       console.log("running key press space pl lock handle app.tsx")
-      if (isInteracting && !isCameraAnimating && e.code === "Space" && !showMainMenu) {
+      if(e.code!=="Space" && e.code!=="Escape"){
+        return
+      }
+
+      const state = useStore.getState()
+
+      if (e.code === "Space" && state.isInteracting && !state.shouldAnimateCamera && !state.showMainMenu) {
+        
+        //previously in objInteractions
+         state.setIsInteracting(false)
+         state.setCurrentInteraction(-1)
 
         const tryLock = () => {
           if (plControls.current) {
@@ -50,7 +60,7 @@ function App() {
         }
 
         tryLock()
-     } else if(e.code==="Escape" && !showMainMenu && !isCameraAnimating){ //is only captured when not pl controls: either in orbit controls, or none at all (ie,when pl contrls are released for menu)
+     } else if(e.code==="Escape" && !state.shouldAnimateCamera && !state.showMainMenu){ //is only captured when not pl controls: either in orbit controls, or none at all (ie,when pl contrls are released for menu)
       console.log("showin main menu due to esc pressed")  
       setShowMainMenu(true)
       }
@@ -61,7 +71,7 @@ function App() {
     return () => {
       document.removeEventListener("keydown", handleKey)
     }
-  }, [isInteracting, isCameraAnimating, showMainMenu])
+  }, [])
 
 // for assigning when to show the main menu for pl controls (as esc key press event is not caught when in pl controls)- instead,
 //since pointerlock is unlocked when esc is pressed, listen to it.
@@ -114,6 +124,8 @@ useEffect(() => {
           { name: "backward", keys: ["ArrowDown", "s", "S"] },
           { name: "left", keys: ["ArrowLeft", "a", "A"] },
           { name: "right", keys: ["ArrowRight", "d", "D"] },
+          { name: "exitInteraction", keys: ["Space"] },
+          { name: "menu", keys: ["Escape"] },
         ]}>
         <div style={{ backgroundColor:"rgb(197, 197, 197)", position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls || showMainMenu? "default": isMoving? "grabbing" : "grab"
    }}>

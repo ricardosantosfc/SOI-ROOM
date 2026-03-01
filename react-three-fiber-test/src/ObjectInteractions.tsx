@@ -145,28 +145,7 @@ export function useObjectInteractions() {
         }
     }, [intersectionSet]) 
 
-    //exit interaction -------------------needs refact ---NO SPACE
-useEffect(() => {
-  const handleKey = (e: KeyboardEvent) => { 
-    console.log("running space code exit interaciton objinteracitons ")
-    if (e.code !== "Space") return
-
-    const state = useStore.getState()
-
-    if (state.isInteracting && !isCameraAnimating && !state.showMainMenu) {
-   
-      state.setIsInteracting(false)
-      state.setCurrentInteraction(-1)
-
-    }
-  }
-
-  window.addEventListener("keydown", handleKey)
-
-  return () => {
-    window.removeEventListener("keydown", handleKey)
-  }
-}, [isCameraAnimating])
+    
 
     return {
        
