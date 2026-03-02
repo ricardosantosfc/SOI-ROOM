@@ -1,4 +1,4 @@
-/**player moevement, camera and controls */
+/** handles player moevement,  camera */
 import * as THREE from "three"
 import { useEffect, useRef, useState } from "react"
 import { useFrame, useThree, type RootState } from "@react-three/fiber"
@@ -69,7 +69,7 @@ export function Player() {
   const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.3, 1.5))
   const [currentCameraRotation, setCurrentCameraRotation] = useState(new THREE.Vector3(0, 0, 0))
   const { isInteracting, currentInteraction, shouldAnimateCamera, setShouldAnimateCamera, setIsOrbitControls,
-    isOnRaisedFloor, obControls, showMainMenu, setShowMainMenu
+    isOnRaisedFloor, obControls, showMainMenu
   } = useStore(useShallow((state) =>
   ({
     isInteracting: state.isInteracting,
@@ -93,17 +93,17 @@ export function Player() {
       const body = ref.current
       if (!body) return
 
-      console.log("interacting set true")
+    
       body.setLinvel({ x: 0, y: 0, z: 0 }, true)
 
       setCurrentCameraRotation(
         new THREE.Vector3(camera.rotation.x, camera.rotation.y, camera.rotation.z)
       )
-      console.log(currentCameraRotation);
+      
       setShouldAnimateCamera(true)
 
     } else {
-      console.log("interacting set to false") //triggered on initial render, but not problemctic. restricting to !showMainMenu causes rotation bugs
+      //console.log("interacting set to false") //triggered on initial render, but not problemctic. restricting to !showMainMenu causes rotation bugs
       setShouldAnimateCamera(true)
     }
   }, [isInteracting])

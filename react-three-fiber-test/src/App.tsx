@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useRef, useState, type ComponentType, type JSX } from 'react'
+import { Suspense, useEffect, useRef, useState, type ComponentType} from 'react'
 import { Canvas } from '@react-three/fiber'
 import './App.css'
 import { Experience } from './components/Experience'
@@ -21,9 +21,9 @@ function App() {
 
   //or fov 45
 
-  const { isInteracting, isOrbitControls, isCameraAnimating, setObControls, currentInteraction, showMainMenu, setShowMainMenu } = useStore(useShallow((state) =>
+  const { isOrbitControls, setObControls, currentInteraction, showMainMenu, setShowMainMenu } = useStore(useShallow((state) =>
   ({
-    isInteracting: state.isInteracting, isOrbitControls: state.isOrbitControls, isCameraAnimating: state.shouldAnimateCamera,
+    isOrbitControls: state.isOrbitControls, 
     setObControls: state.setObControls, currentInteraction: state.currentInteraction, showMainMenu : state.showMainMenu,
     setShowMainMenu: state.setShowMainMenu
   })),)
@@ -34,35 +34,37 @@ function App() {
 
   const CurrentOverlayComponent = overlayMap[currentInteraction]
 
-  //on interaction exit, pl auto frame lock. wont work properly outside app, even if curr pl is stored
+  //on interaction or show menu exit while on plControls,
+  const tryLock = () => {
+    if (plControls.current) {
+      plControls.current.lock()
+      console.log("Pointer locked after tryLock")
+    } else {
+      requestAnimationFrame(tryLock)
+    }
+  }
+
+  //on space press, exit interaction and pl auto frame lock. wont work properly outside app, even if curr pl is stored
+  //on esc press, show main menu
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
       console.log("running key press space pl lock handle app.tsx")
-      if(e.code!=="Space" && e.code!=="Escape"){
+      if (e.code !== "Space" && e.code !== "Escape") {
         return
       }
 
       const state = useStore.getState()
 
       if (e.code === "Space" && state.isInteracting && !state.shouldAnimateCamera && !state.showMainMenu) {
-        
+
         //previously in objInteractions
-         state.setIsInteracting(false)
-         state.setCurrentInteraction(-1)
-
-        const tryLock = () => {
-          if (plControls.current) {
-            plControls.current.lock()
-            console.log("Pointer locked")
-          } else {
-            requestAnimationFrame(tryLock)
-          }
-        }
-
+        state.setIsInteracting(false)
+        state.setCurrentInteraction(-1)
         tryLock()
-     } else if(e.code==="Escape" && !state.shouldAnimateCamera && !state.showMainMenu){ //is only captured when not pl controls: either in orbit controls, or none at all (ie,when pl contrls are released for menu)
-      console.log("showin main menu due to esc pressed")  
-      setShowMainMenu(true)
+
+      } else if (e.code === "Escape" && !state.shouldAnimateCamera && !state.showMainMenu) { //is only captured when not pl controls: either in orbit controls, or none at all (ie,when pl contrls are released for menu)
+        console.log("showin main menu due to esc pressed")
+        setShowMainMenu(true)
       }
     }
 
@@ -76,46 +78,39 @@ function App() {
 // for assigning when to show the main menu for pl controls (as esc key press event is not caught when in pl controls)- instead,
 //since pointerlock is unlocked when esc is pressed, listen to it.
 //but poiterlock is alos programmaticaly unlocked when ob controls are set, so must check
-useEffect(() => {
-  const handlePointerLockChange = () => {
-    console.log("firing pointerlockchange event") 
-    if (document.pointerLockElement) {
-    } else {
-      if (isOrbitControls) {
-        console.log(" unlocked pointer for ob controls")
+  useEffect(() => {
+    const handlePointerLockChange = () => {
+
+      if (document.pointerLockElement) { //this is triggered with every click while on plcontrols
+        return
       } else {
-        console.log(" unlocked pointer for show main menu")
-        setShowMainMenu(true)
+        if (isOrbitControls) {
+          console.log(" unlocked pointer for ob controls")
+        } else {
+          console.log(" unlocked pointer for show main menu")
+          setShowMainMenu(true)
+        }
       }
     }
-  }
 
-  document.addEventListener("pointerlockchange", handlePointerLockChange)
+    document.addEventListener("pointerlockchange", handlePointerLockChange)
 
-  return () => {
-    document.removeEventListener("pointerlockchange", handlePointerLockChange)
-  }
-}, [isOrbitControls])
+    return () => {
+      document.removeEventListener("pointerlockchange", handlePointerLockChange)
+    }
+  }, [isOrbitControls])
   
-  //still very sphaget, but works... might still need some sort of cooldown or message for when lock/unlock successively too fast and browser blocks
+  //might still need some sort of cooldown or message for when lock/unlock successively too fast and browser blocks
   const handleStartClick = () => {
     console.log("pressed button start main menu")
     setShowMainMenu(false);
 
-    if(!isOrbitControls){
-
-    
-    const tryLock = () => {
-      if (plControls.current) {
-        plControls.current.lock()
-      } else {
-        requestAnimationFrame(tryLock)
-      }
+    if (!isOrbitControls) {
+      tryLock()
     }
-
-    tryLock()
-  } 
-  }//setting a background color on wrapper div so when menu is unmounted, immediatly on canvas fade start to opacity 1 is more natural than pure white
+  }
+  
+  //setting a background color on wrapper div so when menu is unmounted, immediatly on canvas fade start to opacity 1 is more natural than pure white
   return (
     <>
       <KeyboardControls
@@ -169,8 +164,8 @@ useEffect(() => {
              
               <div className='menu'>
                 <MainMenu></MainMenu>
-                <div className="startButtonWrapper">
-                <button
+                <div className="startButtonWrapper"> {/* startButton isnt on MainMenu as it needs to lock pointer */ }
+                <button 
                   className="startButton"
                   onClick={handleStartClick}
                 >

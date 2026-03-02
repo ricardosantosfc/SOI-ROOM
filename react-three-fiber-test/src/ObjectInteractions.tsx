@@ -1,15 +1,17 @@
 /* handles object interaction through custom hooks and related state : collisons, pointing, object related html toggling,*/
 import type { CollisionPayload } from "@react-three/rapier"
 import type { ThreeEvent } from '@react-three/fiber'
-import { Html, Outlines } from "@react-three/drei"
+import { Html } from "@react-three/drei"
 import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import * as THREE from 'three'
 
 export function useObjectInteractions() {
 
-    const { isInteracting, setIsInteracting, currentInteraction, setCurrentInteraction, isCameraAnimating,
+    const { isInteracting, 
+        setIsInteracting, 
+        setCurrentInteraction,
         isPointing, setIsPointing, 
         setIsOnRaisedFloor,
         setIsInfoHidden,
@@ -17,9 +19,7 @@ export function useObjectInteractions() {
     ({
         isInteracting: state.isInteracting,
         setIsInteracting: state.setIsInteracting,
-        currentInteraction: state.currentInteraction,
         setCurrentInteraction: state.setCurrentInteraction,
-        isCameraAnimating: state.shouldAnimateCamera,
         isPointing: state.isPointing,
         setIsPointing: state.setIsPointing,
         setIsOnRaisedFloor: state.setIsOnRaisedFloor,
@@ -54,14 +54,13 @@ export function useObjectInteractions() {
         if (!player) return
 
         addIntersection(id)
-        console.log("is intersecitng" + id)
+
     }
 
      const handleIntersectionExit = (state: CollisionPayload, id: number): void => {
         const player = state.other.rigidBody
         if (!player) return
 
-        console.log("exits : " + id)
 
         deleteIntersection(id)
    

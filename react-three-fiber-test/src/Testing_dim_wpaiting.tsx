@@ -5,12 +5,11 @@ Files: public/testing_dim_wpaiting.glb [66.64MB] > C:\Users\Ricardo\Documents\Gi
 */
 
 import * as THREE from 'three'
-import React, { useEffect, useRef, useState, type JSX } from 'react'
-import { useGLTF, Outlines, Html } from '@react-three/drei'
+import { useEffect, useRef, type JSX } from 'react'
+import { useGLTF } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
-import { CuboidCollider, RigidBody, type CollisionPayload } from '@react-three/rapier'
+import { CuboidCollider, RigidBody } from '@react-three/rapier'
 import { Select } from '@react-three/postprocessing'
-import type { ThreeEvent } from '@react-three/fiber'
 import { useObjectInteractions } from './ObjectInteractions'
 
 type ActionName = 'flloor' | 'wall left' | 'wall right' | 'wall window.001' | 'paiting rocks frame' | 'paiting rocks glass' | 'wall door l frame fabric only' | 'wall door l frame fabric only.001' | 'wall door' | 'strucutrer wall dor old'
