@@ -57,7 +57,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   // -1 = none , 0 = paitnng , 1 = sketchbook, 2= radio
 
   const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml, canInteractWithMesh, 
-    emissiveHighlightColor, emissiveHighlightIntensity,  setIsOnRaisedFloorImpl } = useObjectInteractions();
+    emissiveHighlightColor, emissiveHighlightIntensity,  setIsOnRaisedFloorImpl, handleMeshClick } = useObjectInteractions();
 
     /* const mat = ref.material as THREE.MeshStandardMaterial;
             mat.emissive = emissiveHighlightColor;
@@ -119,6 +119,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
           onPointerEnter={(event) => { handlePointerChange(event, 0) }}
           onPointerOut={(event) => { handlePointerChange(event, -1) }}
+          onClick={(event)=> {handleMeshClick(event,0)}}
           ref={paintingRef}
 
         />

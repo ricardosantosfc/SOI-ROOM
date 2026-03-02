@@ -186,7 +186,7 @@ interface BookProps {
 
 export function Book(props: BookProps) { //
 
-    const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml, canInteractWithMesh } = useObjectInteractions();
+    const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml, canInteractWithMesh, handleMeshClick } = useObjectInteractions();
     
    const { page
     } = useStore(useShallow((state) =>
@@ -207,6 +207,8 @@ export function Book(props: BookProps) { //
          onPointerEnter={(event) => {handlePointerChange(event, 1)}}
 
          onPointerOut={(event) => {handlePointerChange(event, -1) }}
+
+         onClick={(event) =>(handleMeshClick(event,1))}
 
         >
             {showCanInteractHtml(1)}

@@ -13,7 +13,6 @@ export function useObjectInteractions() {
         isPointing, setIsPointing, 
         setIsOnRaisedFloor,
         setIsInfoHidden,
-        showMainMenu
     } = useStore(useShallow((state) =>
     ({
         isInteracting: state.isInteracting,
@@ -25,7 +24,7 @@ export function useObjectInteractions() {
         setIsPointing: state.setIsPointing,
         setIsOnRaisedFloor: state.setIsOnRaisedFloor,
         setIsInfoHidden: state.setIsInfoHidden,
-        showMainMenu: state.showMainMenu
+
     })),)
 
     //so showInteract reacts immediatly
@@ -118,34 +117,23 @@ export function useObjectInteractions() {
         }
     }
 
-    
-    //on click on canInteract mesh, 
-    useEffect(() => {
-        const handleGlobalClick = (event: PointerEvent) => {
-            console.log("running handle global click objinteracitons")
+    //on click on mesh pointed at, if canInteract mesh,
+    //still capturing while interacting (prob same with other pointer events), so see if disabling raycast has any impact performance wise 
+    //also have to see if should e.stopPropag,
+    const handleMeshClick  = (event: ThreeEvent<MouseEvent>, id:number) => { 
+
             if (event.button !== 0) {
                 return
             }
+            const canInteract = !isInteracting && intersectionSet.has(id) 
 
-            const state = useStore.getState()
-
-            const canInteract = !state.isInteracting && intersectionSet.has(state.isPointing)
-
-            if (canInteract) {
-                state.setIsInteracting(true)
-                state.setCurrentInteraction(state.isPointing)
-                state.setIsInfoHidden(false)
-            }
-        }
-
-        window.addEventListener("pointerup", handleGlobalClick)
-
-        return () => {
-            window.removeEventListener("pointerup", handleGlobalClick)
-        }
-    }, [intersectionSet]) 
-
-    
+             if (canInteract) {
+                event.stopPropagation()
+                setIsInteracting(true)
+                setCurrentInteraction(id)
+                setIsInfoHidden(false)
+             }
+    }
 
     return {
        
@@ -156,7 +144,8 @@ export function useObjectInteractions() {
         handleIntersectionExit,
         emissiveHighlightColor,
         emissiveHighlightIntensity,
-        canInteractWithMesh
+        canInteractWithMesh,
+        handleMeshClick
 
     }
 }
