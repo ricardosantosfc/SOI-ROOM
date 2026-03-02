@@ -7,13 +7,14 @@ import { useStore } from "./store"
 //fucntions from parent app passedas props
 type Props = {
   tryLock: () => void
-  setShowMainMenu: (value: boolean) => void
 }
 
 //on space press, exit interaction and pl auto frame lock. 
   //on esc press, show main menu
-export function KeyboardInputHandler({ tryLock, setShowMainMenu }: Props) {
+export function KeyboardInputHandler({ tryLock}: Props) {
+
   const [sub] = useKeyboardControls()
+   const setShowMainMenu = useStore((state) => state.setShowMainMenu)
 
 useEffect(() => {
     

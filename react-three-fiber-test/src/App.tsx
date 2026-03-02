@@ -71,15 +71,7 @@ function App() {
     }
   }, [isOrbitControls])
   
-  //button might still need some sort of cooldown, or message for when unlock->lock too fast and browser blocks pointerlocking
-  const handleStartClick = () => {
-    console.log("pressed button start main menu")
-    setShowMainMenu(false);
-
-    if (!isOrbitControls) {
-      tryLock()
-    }
-  }
+ 
   
   //setting a background color on wrapper div so when menu is unmounted, immediatly on canvas fade start to opacity 1 is more natural than pure white
   return (
@@ -93,7 +85,7 @@ function App() {
           { name: "space", keys: ["Space"] },
           { name: "esc", keys: ["Escape"] },
         ]}>
-           <KeyboardInputHandler tryLock={tryLock} setShowMainMenu={setShowMainMenu}/>
+           <KeyboardInputHandler tryLock={tryLock} />
         <div style={{ backgroundColor:"rgb(197, 197, 197)", position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls || showMainMenu? "default": isMoving? "grabbing" : "grab"
    }}>
           <Canvas className={`canvas ${showMainMenu ? "non-opaque" : ""}`}shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
@@ -131,26 +123,7 @@ function App() {
           </Canvas>
           <div className='ui-overlay'>
             {!showMainMenu && isOrbitControls && !isMoving && currentInteraction !== -1 && (<CurrentOverlayComponent />)}
-            {showMainMenu && (
-              <>
-             
-              <div className='menu'>
-                <MainMenu></MainMenu>
-                <div className="startButtonWrapper"> {/* startButton isnt on MainMenu as it needs to lock pointer */ }
-                <button 
-                  className="startButton"
-                  onClick={handleStartClick}
-                >
-                      <svg width="104" height="100" viewBox="0 0 104 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <rect x="2" y="2" width="100" height="96" rx="6" fill="var(--button-background)" stroke="#1E1E1E" strokeWidth="4" />
-                        <path d="M40 32L68 50L40 68V32Z" fill="var(--button-fill)" stroke="#1E1E1E" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-
-                  
-                </button>
-                </div>
-                </div>
-              </>)}
+            {showMainMenu && (<MainMenu tryLock={tryLock}/>)}
           </div>
 
         </div>
