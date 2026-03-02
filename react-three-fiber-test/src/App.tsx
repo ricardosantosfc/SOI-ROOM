@@ -34,7 +34,11 @@ function App() {
 
   const CurrentOverlayComponent = overlayMap[currentInteraction]
 
-  //on interaction or show menu exit while on plControls,
+  //on interaction exit, or show menu exit while on plControls,
+  //since plControls mounting isnt immediate after !isOrbitControls is set,
+  //and pointerlocking needs to come from an explicit user input,
+  //try locking for next frames, until its mounteds
+  //wont work properly outside app, even if curr pl is stored
   const tryLock = () => {
     if (plControls.current) {
       plControls.current.lock()
@@ -44,7 +48,7 @@ function App() {
     }
   }
 
-  //on space press, exit interaction and pl auto frame lock. wont work properly outside app, even if curr pl is stored
+  //on space press, exit interaction and pl auto frame lock. 
   //on esc press, show main menu
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -87,8 +91,8 @@ function App() {
         if (isOrbitControls) {
           console.log(" unlocked pointer for ob controls")
         } else {
-          console.log(" unlocked pointer for show main menu")
-          setShowMainMenu(true)
+          console.log(" unlocked pointer for show main menu") 
+          setShowMainMenu(true)  
         }
       }
     }
@@ -100,7 +104,7 @@ function App() {
     }
   }, [isOrbitControls])
   
-  //might still need some sort of cooldown or message for when lock/unlock successively too fast and browser blocks
+  //button might still need some sort of cooldown, or message for when unlock->lock too fast and browser blocks pointerlocking
   const handleStartClick = () => {
     console.log("pressed button start main menu")
     setShowMainMenu(false);
