@@ -10,6 +10,7 @@ import { useShallow } from 'zustand/shallow'
 import { OverlayInteraction0 } from './overlays/OverlayInteraction0'
 import { OverlayInteraction1 } from './overlays/OverlayInteraction1'
 import { MainMenu } from './overlays/MainMenu'
+import { KeyboardInputHandler } from './KeyboardInputHandler'
 
 //  0 = paitnng , 1 = sketchbook, 2= radio
 const overlayMap: Record<number, ComponentType> = {
@@ -31,14 +32,11 @@ function App() {
   const plControls = useRef<PointerLockControlsImpl>(null!)
   const [isMoving, setIsMoving] = useState(false)
 
-
   const CurrentOverlayComponent = overlayMap[currentInteraction]
 
-  //on interaction exit, or show menu exit while on plControls,
-  //since plControls mounting isnt immediate after !isOrbitControls is set,
-  //and pointerlocking needs to come from an explicit user input,
-  //try locking for next frames, until its mounteds
-  //wont work properly outside app, even if curr pl is stored
+  //on interaction exit, or show menu exit while on plControls,since plControls mounting isnt immediate after !isOrbitControls is set,
+  //and pointerlocking needs to come from an explicit user input,try locking for next frames, until its mounteds
+  //wont work properly outside app, even if curr pl is stored. so for this reason, call pass this as prop to child comp so it can be called
   const tryLock = () => {
     if (plControls.current) {
       plControls.current.lock()
@@ -47,38 +45,7 @@ function App() {
       requestAnimationFrame(tryLock)
     }
   }
-
-  //on space press, exit interaction and pl auto frame lock. 
-  //on esc press, show main menu
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      console.log("running key press space pl lock handle app.tsx")
-      if (e.code !== "Space" && e.code !== "Escape") {
-        return
-      }
-
-      const state = useStore.getState()
-
-      if (e.code === "Space" && state.isInteracting && !state.shouldAnimateCamera && !state.showMainMenu) {
-
-        //previously in objInteractions
-        state.setIsInteracting(false)
-        state.setCurrentInteraction(-1)
-        tryLock()
-
-      } else if (e.code === "Escape" && !state.shouldAnimateCamera && !state.showMainMenu) { //is only captured when not pl controls: either in orbit controls, or none at all (ie,when pl contrls are released for menu)
-        console.log("showin main menu due to esc pressed")
-        setShowMainMenu(true)
-      }
-    }
-
-    document.addEventListener("keydown", handleKey)
-
-    return () => {
-      document.removeEventListener("keydown", handleKey)
-    }
-  }, [])
-
+  
 // for assigning when to show the main menu for pl controls (as esc key press event is not caught when in pl controls)- instead,
 //since pointerlock is unlocked when esc is pressed, listen to it.
 //but poiterlock is alos programmaticaly unlocked when ob controls are set, so must check
@@ -123,9 +90,10 @@ function App() {
           { name: "backward", keys: ["ArrowDown", "s", "S"] },
           { name: "left", keys: ["ArrowLeft", "a", "A"] },
           { name: "right", keys: ["ArrowRight", "d", "D"] },
-          { name: "exitInteraction", keys: ["Space"] },
-          { name: "menu", keys: ["Escape"] },
+          { name: "space", keys: ["Space"] },
+          { name: "esc", keys: ["Escape"] },
         ]}>
+           <KeyboardInputHandler tryLock={tryLock} setShowMainMenu={setShowMainMenu}/>
         <div style={{ backgroundColor:"rgb(197, 197, 197)", position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls || showMainMenu? "default": isMoving? "grabbing" : "grab"
    }}>
           <Canvas className={`canvas ${showMainMenu ? "non-opaque" : ""}`}shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
