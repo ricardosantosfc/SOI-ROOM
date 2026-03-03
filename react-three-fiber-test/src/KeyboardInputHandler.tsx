@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useKeyboardControls } from "@react-three/drei"
 import { useStore } from "./store"
-/** for handling specific input: space and esc (non useFrame depndent) */
+/** for handling specific input: space and esc (non useFrame depndent; the ones that are are handled in Player's useFrame) */
 
 
 //fucntions from parent app passedas props

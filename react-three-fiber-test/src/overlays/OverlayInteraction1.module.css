@@ -42,11 +42,13 @@ input[type="number"]:focus {
   margin-bottom: 30px;
   overflow-x: auto;
   max-width: 100%;
-  background-color: #d9d9d9ef;
+  background-color: #d9d9d9fa;
   border-radius: 6px; /* see radius all all */
   align-items: center;
   gap: 2px;
   padding: 6px;
+  box-shadow: 0 2px 6px rgba(42, 42, 42, 0.3);
+  animation: fadeInUp 0.35s ease;
 }
 
 .buttonControl{
@@ -126,13 +128,26 @@ transform: translateY(5px);
     flex-direction: column;
     justify-content: center;
      align-items: center;
-    background: #d9d9d9ef;
+    background: #d9d9d9fa;
     border-radius: 6px;
     padding: 28px 18px;
     width: max-content;
     gap: 2px;
+    box-shadow: 0 2px 6px rgba(42, 42, 42, 0.3);
+    animation: fadeInUp 0.35s ease;
     /*border: 0.4vh solid #494949;*/
 
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .informationChild:first-child {
