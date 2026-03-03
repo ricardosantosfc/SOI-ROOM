@@ -2,6 +2,7 @@ import styles from "./OverlayInteraction1.module.css"
 /* handles book and page ui + state*/
 import { useShallow } from "zustand/shallow";
 import { useStore } from "../store";
+import { AnimatePresence, motion } from "motion/react"
 
 
 const informations = [
@@ -107,16 +108,33 @@ export const OverlayInteraction1 = () => {
 
       </main>
       {!isInfoHidden && page !== 0 && (
-      <div className={styles.information} >
-        <div className={styles.informationChild}>
-          <h2 >{informations[(page - 1) * 2].name}</h2>
-          <h4>{informations[(page - 1) * 2].mediumYear}</h4>
-        </div>
-        <div className={styles.informationChild}>
-          <h2 >{informations[(page - 1) * 2 + 1].name}</h2>
-          <h4>{informations[(page - 1) * 2 + 1].mediumYear}</h4>
-        </div>
-      </div>)}
+        
+        <div className={styles.information} >
+          <AnimatePresence mode="wait">
+            <motion.div
+              className={styles.informationChild}
+              key={informations[(page - 1) * 2].name}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 15 }}
+              transition={{ duration: 0.35 }}
+            >
+              <h2 >{informations[(page - 1) * 2].name}</h2>
+              <h4>{informations[(page - 1) * 2].mediumYear}</h4>
+            </motion.div>
+
+            <motion.div
+              className={styles.informationChild}
+              key={informations[(page - 1) * 2 + 1].name}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 0 }}
+              transition={{ duration: 0.35 }}
+            >
+              <h2 >{informations[(page - 1) * 2 + 1].name}</h2>
+              <h4>{informations[(page - 1) * 2 + 1].mediumYear}</h4>
+            </motion.div>
+          </AnimatePresence>
+
+        </div>)}
       {page !== 0 && (<button className="btn"
         onClick={() => setIsInfoHidden(!isInfoHidden)}
       > <img className="btn-img" src={isInfoHidden ? "../chevron-down.svg" : "../chevron-up.svg"}></img></button>)}
