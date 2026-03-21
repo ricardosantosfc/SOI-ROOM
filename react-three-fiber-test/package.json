@@ -19,6 +19,7 @@
     "r3f-perf": "^7.2.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-h5-audio-player": "^3.10.2",
     "three": "^0.182.0",
     "zustand": "^5.0.11"
   },

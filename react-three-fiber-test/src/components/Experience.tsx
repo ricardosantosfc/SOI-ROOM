@@ -1,7 +1,7 @@
 import { Center, Environment, Sky} from "@react-three/drei";
 import { Physics } from "@react-three/rapier";
 import { Player } from "../Player";
-import { Model } from "../Testing_dim_wpaiting";
+import { Model } from "../Tree_spha1";
 import { Book } from "./Book";
 
 export const Experience = () => {

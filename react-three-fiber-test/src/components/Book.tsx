@@ -201,7 +201,9 @@ export function Book(props: BookProps) { //
         scale={0.2} 
             rotation-y={-Math.PI/2}
             rotation-x={-Math.PI/2}
-            position-y={-0.3}
+            position-y={0.01}
+            position-x={-0.016}
+            position-z={0.5}
         /*rotation-y = {-Math.PI/2}*/
 
          onPointerEnter={(event) => {handlePointerChange(event, 1)}}

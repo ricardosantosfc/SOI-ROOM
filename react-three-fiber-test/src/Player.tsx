@@ -41,7 +41,7 @@ const interactionCameraMap = new Map<number, InteractionCameraSettings>([
   }],
   [1, { 
     cameraPosition: new THREE.Vector3(0.1, 0, 0.3), 
-    meshPosition: new THREE.Vector3(0.00108,-0.3,0),
+    meshPosition: new THREE.Vector3(0.0108,0.01,0.5),
     maxAzimuthAngle: Math.PI/3,
     minAzimuthAngle: -Math.PI/3,
     maxPolarAngle: Math.PI/2.5,
@@ -66,7 +66,7 @@ export function Player() {
   const ref = useRef<RapierRigidBody | null>(null)
   const [, get] = useKeyboardControls()
   const { camera } = useThree()
-  const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.3, 1.5))
+  const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.7, 1.5))
   const [currentCameraRotation, setCurrentCameraRotation] = useState(new THREE.Vector3(0, 0, 0))
   const { isInteracting, currentInteraction, shouldAnimateCamera, setShouldAnimateCamera, setIsOrbitControls,
     isOnRaisedFloor, obControls, showMainMenu
