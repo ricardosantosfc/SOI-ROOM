@@ -1,3 +1,4 @@
+
 .container{
       pointer-events: auto;
   cursor: default;
@@ -8,6 +9,7 @@
   animation: fadeInUp 0.35s ease;
 
 }
+
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -21,11 +23,12 @@
 
 .container h2{
   font-weight: 400;
-    color: #424242;
+    color: var(--name-color);
+    
 }
 
 .container  h4{
-font-weight: 300;
+font-weight: 400;
 color: #656565;
 }
 
@@ -35,7 +38,38 @@ color: #656565;
   border-radius: 6px; /* see radius all all */
 
   background-color: #d9d9d9fa;
+  box-shadow: 0 2px 6px rgba(42, 42, 42, 0.3);
+  
  
+}
+
+.audioPlayerHeader{
+    text-align: center;
+}
+
+
+
+/* background + download (same color)   background-color: #7c4545 */
+:global(.rhap_progress-bar),
+:global(.rhap_progress-bar-show-download),
+:global(.rhap_download-progress) {
+background-color:#acacac;
+height: 18px;
+}
+
+
+:global(.rhap_progress-filled) {
+  background-color: #777777 ;
+}
+
+
+:global(.rhap_progress-indicator) {
+  background: #777777  ;
+width: 10px;       
+  height: 25px;    
+  border-radius: 2px; 
+   margin-left: -5px;
+   top: -4px;
 }
 
 :global(.rhap_main-controls-button) svg {
@@ -45,4 +79,101 @@ color: #656565;
 :global(.rhap_main-controls-button:hover ) svg {
  color:#5b5b5b
 }
+
+:global(.rhap_volume-bar ){
+
+ background:#acacac;
+
+}
+
+:global(.rhap_volume-bar-area) {
+  width: 100%;
+}
+:global(.rhap_volume-indicator){
+   width: 6px;          
+  height: 15px;        
+  border-radius: 2px;   
+  
+  margin-left: -3px;    
+  top: -5.5px;     
+}
+
+.stationControls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.buttonControl{
+   height: 7vh;
+  opacity: 0.7;
+   border: none;
+   cursor: pointer;
+   background: none;
+  /*border-radius: 50%;*/
+  
+}
+
+.buttonControl img {
+  height: 3.5vh;
+
+}
+.buttonControl:hover {
+  opacity: 1;
+}
+
+.trackRow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+
+.equalizer {
+  display: flex;
+  gap: 3px;
+  height: 40px;
+}
+
+.equalizer span {
+  transform: scaleY(0.4);
+  width: 5px;
+  height: 100%;
+  background: var(--bg-color);
+  transition: background-color 0.5s ease;
+  opacity: 0.7;
+  animation: none;
+
+}
+
+.active span {
+  animation: bounce 1s infinite ease-in-out;
+ 
+}
+
+@keyframes bounce {
+  0%, 100% {
+    transform: scaleY(0.4);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+
+.equalizer span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.equalizer span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+.equalizer span:nth-child(4) {
+  animation-delay: 0.6s;
+}
+.equalizer span:nth-child(5) {
+  animation-delay: 0.8s;
+}
+
+
 

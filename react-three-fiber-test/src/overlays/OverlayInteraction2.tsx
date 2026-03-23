@@ -1,62 +1,135 @@
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import AudioPlayer, { RHAP_UI } from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css';
 import styles from "./OverlayInteraction2.module.css"
+
+
+const radio = [
+  {
+    name: "saveDforest FM ", color: "#A2AA91", nameColor:"#444B3A",
+    tracks: [
+      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"song 1" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-2-p1.mp3', name: "Main Theme" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-1.mp3', name: "Scene 1" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-2-p2.mp3', name: "Scene 2" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-3.mp3', name: "Scene 3" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-4.mp3', name: "Scene 4" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-5.mp3', name: "Scene 5" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-6.mp3', name: "Scene 6" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-7.mp3', name: "Scene 7" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-8.mp3', name: "Scene 8" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-9.mp3', name: "Scene 9" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Quiz" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/minigame.mp3', name: "Minigame" },
+    ]
+  },
+  {
+    name: "otherFM", color: "#AA9191",nameColor:"#4B3A3A",
+    tracks: [
+      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', name:"sosdaasdsdasdasdascxcxz" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Quiz" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/minigame.mp3', name: "Minigame" },
+    ]
+  },
+   {
+    name: "AndOther", color: "#91A2AA",nameColor:"#3A454B",
+    tracks: [
+      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"sonaasdsad" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Quizasdas" },
+      { src: 'https://r2-worker.media-soi-room.workers.dev/minigame.mp3', name: "Minigamed" },
+    ]
+  }
+]
+
 export function OverlayInteraction2 ({ visible }: { visible: boolean }){
 
 
 
-const playlist = [
-  { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"song 1" },
-  { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', name:"song 2" },
-  { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-8.mp3', name:"song 3" },
-]
-
-  const [currentTrack, setTrackIndex] = useState(0)
-  const handleClickNext = () => {
+  const [currentStationIndex, setStationIndex] = useState(0);
+  const [currentTrackIndex, setTrackIndex] = useState(0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const currentStation = radio[currentStationIndex];
+  const currentTrack = currentStation.tracks[currentTrackIndex];
+  //const currentTrackData = useMemo(() => playlist[currentTrack], [currentTrack]); 
+  const handleClickNextTrack = () => {
       console.log('click next')
         setTrackIndex((currentTrack) =>
-            currentTrack < playlist.length - 1 ? currentTrack + 1 : 0
+            currentTrack < currentStation.tracks.length - 1 ? currentTrack + 1 : 0
         );
     };
 
-    const handleClickPrevious = () => {
+    const handleClickPreviousTrack = () => {
       console.log('click next')
         setTrackIndex((currentTrack) =>
-            currentTrack -1 > -1 ? currentTrack -1 : playlist.length-1
+            currentTrack -1 > -1 ? currentTrack -1 : currentStation.tracks.length-1
         );
     };
   
   const handleEnd = () => {
     console.log('end')
     setTrackIndex((currentTrack) =>
-            currentTrack < playlist.length - 1 ? currentTrack + 1 : 0
+            currentTrack < currentStation.tracks.length - 1 ? currentTrack + 1 : 0
         );
     
   }
+
+   const handleClickNextStation = () => {
+      console.log('click next playslist')
+      setTrackIndex(0)
+        setStationIndex((currentStationIndex) =>
+            currentStationIndex < radio.length - 1 ? currentStationIndex + 1 : 0
+        );
+    };
+
+    const handleClickPreviousStation = () => {
+      console.log('click previous playsii')
+      setTrackIndex(0)
+        setStationIndex((currentStationIndex) => {
+          console.log(currentStationIndex)
+            return currentStationIndex -1 > -1 ? currentStationIndex -1 : radio.length-1
+    }) 
+    };
+   
   return (
     <>
       <div className={styles.container} style={{ display: visible ? 'block' : 'none' }}>
         
         <AudioPlayer
-         className={''}
-         header={<div className={styles.playerHeader}>
-            <h2>{playlist[currentTrack].name}</h2>
+         
+         header={<div className={styles.audioPlayerHeader}>
+          <div className={styles.stationControls} >
+           <button className={styles.buttonControl} onClick={handleClickPreviousStation}>
+             <img src= "../arrow-left.svg"></img>
+           </button>
+            <h2 style={{ color: currentStation.nameColor }}>{currentStation.name} </h2>
+             <button className={styles.buttonControl} onClick={handleClickNextStation}>
+               <img src= "../arrow-right.svg"></img>
+             </button>
+            </div>
+            <div className={styles.trackRow}>
+  <div className={`${styles.equalizer} ${ isPlaying? styles.active : ""}`}  style={{ "--bg-color": currentStation.color } as React.CSSProperties}>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+  </div> </div>
+            <h4>{currentTrack.name}</h4>
+              <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>
+    {currentTrackIndex + 1} / {currentStation.tracks.length}
+  </div>
          </div>}
-          src={playlist[currentTrack].src}
+          src={currentTrack.src}
           showSkipControls={true}
           showJumpControls={false}
-          onClickNext={handleClickNext}
-          onClickPrevious={handleClickPrevious}
+          onClickNext={handleClickNextTrack}
+          onClickPrevious={handleClickPreviousTrack}
           onEnded={handleEnd}
-          customProgressBarSection={[
-  RHAP_UI.PROGRESS_BAR,
-  <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>
-    {currentTrack + 1} / {playlist.length}
-  </div>
-]}
+          customProgressBarSection={[RHAP_UI.PROGRESS_BAR]}
           hasDefaultKeyBindings={false}
           autoPlayAfterSrcChange={true}
+          onPlay={() => setIsPlaying(true)}
+  onPause={() => setIsPlaying(false)}
           onError={()=> {console.log('play error')}}
           // Try other props!
         />
