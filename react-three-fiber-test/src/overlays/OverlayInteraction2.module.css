@@ -2,11 +2,12 @@
 .container{
       pointer-events: auto;
   cursor: default;
-  width: 20%;
+  width: 30%;
 
    font-family: inherit;
 
   animation: fadeInUp 0.35s ease;
+  
 
 }
 
@@ -22,14 +23,14 @@
 }
 
 .container h2{
-  font-weight: 400;
-    color: var(--name-color);
+  font-weight: 600;
+    color: var(--dark-color);
     
 }
 
 .container  h4{
-font-weight: 400;
-color: #656565;
+font-weight: 600;
+color: var(--dark-color);
 }
 
 
@@ -37,14 +38,15 @@ color: #656565;
 
   border-radius: 6px; /* see radius all all */
 
-  background-color: #d9d9d9fa;
+  background-color: #d9d9d9;
   box-shadow: 0 2px 6px rgba(42, 42, 42, 0.3);
-  
+  padding: 45px 45px;
  
 }
 
 .audioPlayerHeader{
     text-align: center;
+   
 }
 
 
@@ -53,47 +55,66 @@ color: #656565;
 :global(.rhap_progress-bar),
 :global(.rhap_progress-bar-show-download),
 :global(.rhap_download-progress) {
-background-color:#acacac;
+background-color:#c3c3c3;
 height: 18px;
 }
 
 
 :global(.rhap_progress-filled) {
-  background-color: #777777 ;
+    background-color:var(--dark-color);
+    transition: background-color 0.5s ease;
 }
 
 
 :global(.rhap_progress-indicator) {
-  background: #777777  ;
+  background:var(--dark-color);
+
 width: 10px;       
   height: 25px;    
   border-radius: 2px; 
    margin-left: -5px;
    top: -4px;
 }
+:global(.rhap_repeat-button) {
+  color:var(--dark-color);
+  transform: translateX(8px);
+}
 
 :global(.rhap_main-controls-button) svg {
-  color:#777777;
+  color:var(--dark-color);
+    transition: color 0.5s ease;
 }
 
 :global(.rhap_main-controls-button:hover ) svg {
- color:#5b5b5b
+ color:var(--dark-color);
 }
+
 
 :global(.rhap_volume-bar ){
 
- background:#acacac;
+ background:#c3c3c3;
 
 }
 
 :global(.rhap_volume-bar-area) {
-  width: 100%;
+  width: 54%;
 }
+
+:global(.rhap_volume-filled) {
+ background-color:var(--dark-color);
+}
+
+
+:global(.rhap_volume-button) {
+    color:var(--dark-color);
+    transition: color 0.5s ease;
+}
+
 :global(.rhap_volume-indicator){
    width: 6px;          
   height: 15px;        
   border-radius: 2px;   
-  
+   background-color:var(--dark-color);
   margin-left: -3px;    
   top: -5.5px;     
 }
@@ -127,27 +148,70 @@ width: 10px;
   align-items: center;
   justify-content: center;
   gap: 10px;
+  
+
+}
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+
+/*on focus, selection auto*/
+input[type="number"]::selection {
+  background: rgba(94, 94, 94, 0.3);
+  color: #000;
+}
+
+input[type="number"] {
+  border: none;
+  outline: none;
+  
+}
+
+input[type="number"]:focus {
+  box-shadow: 0 0 0 2px rgba(33, 33, 33, 0.5); 
+  border-radius: 4px;
+}
+
+.trackInput{
+  color:var(--dark-color);
+  cursor:pointer; /*caret color if white hard to read*/
+  border: none;
+  pointer-events: all;
+  background: none;
+   text-align: right;
+    width: 3ch;
+    font-weight: 600;
+
+}
+
+.trackInput:hover{
+  opacity: 0.8;
 }
 
 
 .equalizer {
   display: flex;
   gap: 3px;
-  height: 40px;
+  height: 5px;
+  transform: translateY(1px);
 }
 
 .equalizer span {
   transform: scaleY(0.4);
   width: 5px;
   height: 100%;
-  background: var(--bg-color);
-  transition: background-color 0.5s ease;
-  opacity: 0.7;
+  background: var(--light-color);
+  transition: background-color, opacity 0.5s ease;
+  opacity: 0;
   animation: none;
+ 
 
 }
 
 .active span {
+  opacity: 0.7;
   animation: bounce 1s infinite ease-in-out;
  
 }
@@ -175,5 +239,17 @@ width: 10px;
   animation-delay: 0.8s;
 }
 
+.mirrored {
+  transform: translateY(1px) scaleX(-1);
+}
 
 
+.audioPlayerFooter{
+    text-align: center;
+      font-size: 0.8rem;
+  font-weight: 600;
+  padding-top:5px; 
+  padding-right: 1.5ch;
+  padding-bottom: 15px;
+  color: var(--dark-color);
+}

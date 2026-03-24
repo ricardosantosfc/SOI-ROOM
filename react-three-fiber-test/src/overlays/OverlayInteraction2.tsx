@@ -6,9 +6,9 @@ import styles from "./OverlayInteraction2.module.css"
 
 const radio = [
   {
-    name: "saveDforest FM ", color: "#A2AA91", nameColor:"#444B3A",
+    name: "saveDforest FM ", lightColor: "#A2AA91", darkColor:"#8D9778",
     tracks: [
-      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"song 1" },
+      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"Scene 8" },
       { src: 'https://r2-worker.media-soi-room.workers.dev/scene-2-p1.mp3', name: "Main Theme" },
       { src: 'https://r2-worker.media-soi-room.workers.dev/scene-1.mp3', name: "Scene 1" },
       { src: 'https://r2-worker.media-soi-room.workers.dev/scene-2-p2.mp3', name: "Scene 2" },
@@ -24,15 +24,15 @@ const radio = [
     ]
   },
   {
-    name: "otherFM", color: "#AA9191",nameColor:"#4B3A3A",
+    name: "otherFM", lightColor: "#AA9191",darkColor:"#977878",
     tracks: [
-      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', name:"sosdaasdsdasdasdascxcxz" },
+      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', name:"Water Ambience" },
       { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Quiz" },
       { src: 'https://r2-worker.media-soi-room.workers.dev/minigame.mp3', name: "Minigame" },
     ]
   },
    {
-    name: "AndOther", color: "#91A2AA",nameColor:"#3A454B",
+    name: "AndOther", lightColor: "#91A2AA",darkColor:"#788C96",
     tracks: [
       { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"sonaasdsad" },
       { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Quizasdas" },
@@ -89,10 +89,11 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
             return currentStationIndex -1 > -1 ? currentStationIndex -1 : radio.length-1
     }) 
     };
-   
+    /* >*/
   return (
     <>
-      <div className={styles.container} style={{ display: visible ? 'block' : 'none' }}>
+      <div className={styles.container}   style={{ display: visible ? 'block' : 'none', "--light-color": currentStation.lightColor,
+        "--dark-color": currentStation.darkColor} as React.CSSProperties}>
         
         <AudioPlayer
          
@@ -101,33 +102,61 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
            <button className={styles.buttonControl} onClick={handleClickPreviousStation}>
              <img src= "../arrow-left.svg"></img>
            </button>
-            <h2 style={{ color: currentStation.nameColor }}>{currentStation.name} </h2>
+            <h2 >{currentStation.name} </h2>
              <button className={styles.buttonControl} onClick={handleClickNextStation}>
                <img src= "../arrow-right.svg"></img>
              </button>
             </div>
-            <div className={styles.trackRow}>
-  <div className={`${styles.equalizer} ${ isPlaying? styles.active : ""}`}  style={{ "--bg-color": currentStation.color } as React.CSSProperties}>
+             <div className={styles.trackRow}>
+               <div className={`${styles.equalizer} ${ isPlaying? styles.active : ""}`}>
     <span></span>
     <span></span>
+
+    </div>
+               <h4>{currentTrack.name}</h4>
+                <div className={`${styles.equalizer} ${styles.mirrored} ${ isPlaying? styles.active : ""}`}>
     <span></span>
     <span></span>
-    <span></span>
-  </div> </div>
-            <h4>{currentTrack.name}</h4>
-              <div style={{ fontSize: '0.8rem', opacity: 0.7 }}>
-    {currentTrackIndex + 1} / {currentStation.tracks.length}
-  </div>
+    
+  </div>       
+ </div>
+           
          </div>}
+         footer={ <div className={styles.audioPlayerFooter}>
+           <input className={styles.trackInput}
+            value={currentTrackIndex+1}
+             onFocus={(e) => e.target.select()}
+            onChange={(e) => {
+              const value = e.target.valueAsNumber;
+
+              if (Number.isNaN(value)) {
+                setTrackIndex(0);
+                return;
+              }
+              const clamped = Math.min(
+      currentStation.tracks.length,
+      Math.max(1, value)
+    );
+
+    setTrackIndex(clamped - 1); // convert back to 0-based
+  }}
+            type="number"
+            max={currentStation.tracks.length}
+            min={1}
+          ></input>
+/ {currentStation.tracks.length}
+  </div>}
           src={currentTrack.src}
           showSkipControls={true}
           showJumpControls={false}
+          volume={0.3}
           onClickNext={handleClickNextTrack}
           onClickPrevious={handleClickPreviousTrack}
           onEnded={handleEnd}
-          customProgressBarSection={[RHAP_UI.PROGRESS_BAR]}
+          customProgressBarSection={[RHAP_UI.PROGRESS_BAR,]}
           hasDefaultKeyBindings={false}
           autoPlayAfterSrcChange={true}
+          showFilledVolume={true}
           onPlay={() => setIsPlaying(true)}
   onPause={() => setIsPlaying(false)}
           onError={()=> {console.log('play error')}}
