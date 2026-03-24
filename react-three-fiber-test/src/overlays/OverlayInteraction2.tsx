@@ -6,7 +6,7 @@ import styles from "./OverlayInteraction2.module.css"
 
 const radio = [
   {
-    name: "saveDforest FM ", lightColor: "#A2AA91", darkColor:"#8D9778",
+    name: "saveDforest FM", lightColor: "#A2AA91", darkColor:"#8D9778",
     tracks: [
       { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"Scene 8" },
       { src: 'https://r2-worker.media-soi-room.workers.dev/scene-2-p1.mp3', name: "Main Theme" },
@@ -89,63 +89,61 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
             return currentStationIndex -1 > -1 ? currentStationIndex -1 : radio.length-1
     }) 
     };
-    /* >*/
+
   return (
     <>
-      <div className={styles.container}   style={{ display: visible ? 'block' : 'none', "--light-color": currentStation.lightColor,
+      <div className={styles.container} style={{display: visible ? 'block' : 'none', "--light-color": currentStation.lightColor,
         "--dark-color": currentStation.darkColor} as React.CSSProperties}>
-        
         <AudioPlayer
-         
-         header={<div className={styles.audioPlayerHeader}>
-          <div className={styles.stationControls} >
-           <button className={styles.buttonControl} onClick={handleClickPreviousStation}>
-             <img src= "../arrow-left.svg"></img>
-           </button>
-            <h2 >{currentStation.name} </h2>
-             <button className={styles.buttonControl} onClick={handleClickNextStation}>
-               <img src= "../arrow-right.svg"></img>
-             </button>
+          header={<div className={styles.audioPlayerHeader}>
+            <div className={styles.stationControls} >
+              <button className={styles.buttonControl} onClick={handleClickPreviousStation}>
+                <img src="../arrow-left.svg"></img>
+              </button>
+              <h2 >{currentStation.name} </h2>
+              <button className={styles.buttonControl} onClick={handleClickNextStation}>
+                <img src="../arrow-right.svg"></img>
+              </button>
             </div>
-             <div className={styles.trackRow}>
-               <div className={`${styles.equalizer} ${ isPlaying? styles.active : ""}`}>
-    <span></span>
-    <span></span>
+            <div className={styles.trackRow}>
+              <div className={`${styles.equalizer} ${isPlaying ? styles.active : ""}`}>
+                <span></span>
+                <span></span>
 
-    </div>
-               <h4>{currentTrack.name}</h4>
-                <div className={`${styles.equalizer} ${styles.mirrored} ${ isPlaying? styles.active : ""}`}>
-    <span></span>
-    <span></span>
-    
-  </div>       
- </div>
-           
-         </div>}
-         footer={ <div className={styles.audioPlayerFooter}>
-           <input className={styles.trackInput}
-            value={currentTrackIndex+1}
-             onFocus={(e) => e.target.select()}
-            onChange={(e) => {
-              const value = e.target.valueAsNumber;
+              </div>
+              <h4>{currentTrack.name}</h4>
+              <div className={`${styles.equalizer} ${styles.mirrored} ${isPlaying ? styles.active : ""}`}>
+                <span></span>
+                <span></span>
 
-              if (Number.isNaN(value)) {
-                setTrackIndex(0);
-                return;
-              }
-              const clamped = Math.min(
-      currentStation.tracks.length,
-      Math.max(1, value)
-    );
+              </div>
+            </div>
 
-    setTrackIndex(clamped - 1); // convert back to 0-based
-  }}
-            type="number"
-            max={currentStation.tracks.length}
-            min={1}
-          ></input>
-/ {currentStation.tracks.length}
-  </div>}
+          </div>}
+          footer={<div className={styles.audioPlayerFooter}>
+            <input className={styles.trackInput}
+              value={currentTrackIndex + 1}
+              onFocus={(e) => e.target.select()}
+              onChange={(e) => {
+                const value = e.target.valueAsNumber;
+
+                if (Number.isNaN(value)) {
+                  setTrackIndex(0);
+                  return;
+                }
+                const clamped = Math.min(
+                  currentStation.tracks.length,
+                  Math.max(1, value)
+                );
+
+                setTrackIndex(clamped - 1); // convert back to 0-based
+              }}
+              type="number"
+              max={currentStation.tracks.length}
+              min={1}
+            ></input>
+            / {currentStation.tracks.length}
+          </div>}
           src={currentTrack.src}
           showSkipControls={true}
           showJumpControls={false}
@@ -158,11 +156,10 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
           autoPlayAfterSrcChange={true}
           showFilledVolume={true}
           onPlay={() => setIsPlaying(true)}
-  onPause={() => setIsPlaying(false)}
-          onError={()=> {console.log('play error')}}
-          // Try other props!
+          onPause={() => setIsPlaying(false)}
+          onError={() => { console.log('play error') }}
         />
       </div>
-      </>
-    );
+    </>
+  );
 }
