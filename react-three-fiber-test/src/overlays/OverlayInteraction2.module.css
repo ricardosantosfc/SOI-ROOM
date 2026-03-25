@@ -29,8 +29,14 @@
 }
 
 .container  h4{
-font-weight: 600;
+font-weight: 500;
 color: var(--dark-color);
+}
+
+.container  h6{
+font-weight: 400;
+color: var(--light-color);
+margin: 0.5em;
 }
 
 
