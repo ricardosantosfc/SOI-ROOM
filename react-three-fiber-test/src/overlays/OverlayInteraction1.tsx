@@ -25,17 +25,72 @@ const informations = [
   },
 
   {
-    name: "Musashi (Takehiko Inoue study)",
-    mediumYear: "Ink and digital, 2016 "
-  }
+    name: "Lucky1",
+    mediumYear: "Charcoal, 2021 "
+  },
+  {
+    name: "Lucky2",
+    mediumYear: "Charcoal, 2021 "
+  },
+
+  {
+    name: "Lucky3",
+    mediumYear: "Charcoal, 2021 "
+  },
+  
+  {
+    name: "Lucky4",
+    mediumYear: "Charcoal, 2021 "
+  },
+
+   {
+    name: "Lucky5",
+    mediumYear: "Charcoal, 2021 "
+  },
+   {
+    name: "Lucky6",
+    mediumYear: "Charcoal, 2021 "
+  },
+  {
+    name: "Lucky7",
+    mediumYear: "Charcoal, 2021 "
+  },
+   {
+    name: "Lucky8",
+    mediumYear: "Charcoal, 2021 "
+  },
+  {
+    name: "Lucky9",
+    mediumYear: "Charcoal, 2021 "
+  },
+
+  {
+    name: "Lucky10",
+    mediumYear: "Charcoal, 2021 "
+  },
+  
+  {
+    name: "Luck11",
+    mediumYear: "Charcoal, 2021 "
+  },
+
+   {
+    name: "Lucky12",
+    mediumYear: "Charcoal, 2021 "
+  },
+   {
+    name: "Lucky13",
+    mediumYear: "Charcoal, 2021 "
+  },
+  {
+    name: "Lucky14",
+    mediumYear: "Charcoal, 2021 "
+  },
 
 
 ]
 const pictures = [
-  "p1",
-  "p2",
-  "p3",
-  "p4",
+  "p1","p2","p3","p4","p5","p6","p7","p8","p9","p10", "p11", "p12","p13", "p14", "p15","p16","p17","p18"
 ];
 
 export const pages = [
@@ -53,7 +108,7 @@ for (let i = 1; i < pictures.length - 1; i += 2) {
 
 pages.push({
   front: pictures[pictures.length - 1],
-  back: "back",
+  back: "front",
 });
 
 export const OverlayInteraction1 = () => {
@@ -92,7 +147,8 @@ export const OverlayInteraction1 = () => {
                 setPage(0);
                 return;
               }
-              const clamped = Math.min(2, Math.max(0, value));
+              const clamped = Math.min(pictures.length/2, Math.max(0, value));
+              console.log(clamped)
               setPage(clamped);
             }}
             type="number"
@@ -115,7 +171,7 @@ export const OverlayInteraction1 = () => {
               className={styles.informationChild}
               key={informations[(page - 1) * 2].name}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: 15 }}
+              exit={{ opacity: 0, y: 0 }} //y:15
               transition={{ duration: 0.35 }}
             >
               <h2 >{informations[(page - 1) * 2].name}</h2>

@@ -9,7 +9,9 @@ import * as THREE from 'three'
 import { useObjectInteractions } from "../ObjectInteractions";
 import { useFrame } from "@react-three/fiber";
 import { degToRad } from "three/src/math/MathUtils.js";
+import { useControls } from "leva";
 
+//`https://r2-worker.media-soi-room.workers.dev/${front}.png`
 const lerpFactor = 0.05;
 const PAGE_WIDTH = 1.28;
 const PAGE_HEIGHT = 1.71;
@@ -59,7 +61,7 @@ const pageMaterials = [
     color: whiteColor,
   }),
   new MeshStandardMaterial({
-    color: "#111",
+    color: "#2F2F2D",
   }),
   new MeshStandardMaterial({
     color: whiteColor,
@@ -71,8 +73,8 @@ const pageMaterials = [
 ];
 
 pages.forEach((page) => {
-    useTexture.preload(`/textures/${page.front }.jpg`)
-    useTexture.preload(`/textures/${page.back }.jpg`)
+    useTexture.preload(`/textures/${page.front }.png`)
+    useTexture.preload(`/textures/${page.back }.png`)
 })
 
 interface PageProps {
@@ -100,8 +102,8 @@ function Page({ number, front, back,page, opened, isHighlighted, ...props }: Pag
     }, [isHighlighted])
     
     const[picture, picture2] = useTexture([
-    `/textures/${front}.jpg`,
-    `/textures/${back}.jpg`, 
+    `/textures/${front}.png`,
+    `/textures/${back}.png`, 
     ])
 
     picture.colorSpace = picture2.colorSpace = SRGBColorSpace // ------------see
@@ -130,14 +132,14 @@ function Page({ number, front, back,page, opened, isHighlighted, ...props }: Pag
         const materials = [...pageMaterials, 
             new MeshStandardMaterial({
                 color: whiteColor,
-                map: picture, roughness: 0.8,
+                map: picture, roughness: 1,
                 emissive: emissiveHighlightColor,
                 emissiveIntensity: 0
 
             }),
             new MeshStandardMaterial({
                 color: whiteColor,
-                map: picture2, roughness: 0.8,
+                map: picture2, roughness: 1,
                 emissive: emissiveHighlightColor, 
                 emissiveIntensity: 0
             })
@@ -162,7 +164,7 @@ function Page({ number, front, back,page, opened, isHighlighted, ...props }: Pag
         }
 
         let targetRotation = opened ? -Math.PI /2 : Math.PI /2 
-        targetRotation +=degToRad(number* 0.8)
+        targetRotation +=degToRad(number* 0.1)
 
         const bones = skinnedMeshRef.current.skeleton.bones
         bones[0].rotation.y = THREE.MathUtils.lerp(bones[0].rotation.y, targetRotation, lerpFactor)
@@ -186,6 +188,19 @@ interface BookProps {
 
 export function Book(props: BookProps) { //
 
+    /*
+    const { bookcolliderargs, bookcolliderposition } = useControls("book", {
+        bookcolliderargs: {
+            value: [0.9, 3, 2],
+            step: 0.001,
+        },
+        bookcolliderposition: {
+            value: [0, -8, 0],
+            step: 0.001,
+        },
+    }
+    ) */
+
     const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml, canInteractWithMesh, handleMeshClick } = useObjectInteractions();
     
    const { page
@@ -201,7 +216,7 @@ export function Book(props: BookProps) { //
         scale={0.2} 
             rotation-y={-Math.PI/2}
             rotation-x={-Math.PI/2}
-            position-y={0.01}
+            position-y={0.04}
             position-x={-0.016}
             position-z={0.5}
         /*rotation-y = {-Math.PI/2}*/
@@ -214,7 +229,7 @@ export function Book(props: BookProps) { //
 
         >
             {showCanInteractHtml(1)}
-             <CuboidCollider args={[0.9, 3, 2]} position={[0, -6, 0]}
+             <CuboidCollider args={[1.24,3.62,2.77]} position={[0, -8, 0]}
             
                 sensor onIntersectionEnter={(state) => { handleIntersectionEnter(state, 1) }}
                  onIntersectionExit={(state) => { handleIntersectionExit(state, 1) }}
