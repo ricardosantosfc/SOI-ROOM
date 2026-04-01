@@ -11,8 +11,9 @@ import { OverlayInteraction0 } from './overlays/OverlayInteraction0'
 import { OverlayInteraction1 } from './overlays/OverlayInteraction1'
 import { MainMenu } from './overlays/MainMenu'
 import { KeyboardInputHandler } from './KeyboardInputHandler'
-import { Loader } from './Loader'
 import { OverlayInteraction2 } from './overlays/OverlayInteraction2'
+import * as THREE from 'three'
+import { Loader } from './Loader'
 
 //  0 = paitnng , 1 = sketchbook, 2= radio
 const overlayMap: Record<number, ComponentType> = {
@@ -73,11 +74,20 @@ function App() {
     }
   }, [isOrbitControls])
   
- //TODO: initial loading - maybe jsut swap main menu button for loading spinner
+ //TODO
  //check is mobile
- //cdn assets
   
-  //setting a background color on wrapper div so when menu is unmounted, immediatly on canvas fade start to opacity 1 is more natural than pure white
+  //setting a background color on wrapper div so when menu is unmounted, 
+  // immediatly on canvas fade start to opacity 1 is more natural than pure white
+  /*about loading: 
+  three-drei/loader doesnt seem to be working properly, stuck at 0. couldnt find any proper soultion for it 
+  <Suspense fallback={<Loader/>}> , renders a div on the canvas, progresss amount isnt properly updtated, 
+  but it auto unmmounts once loading is over => good.
+  but uses the canvas, which is opaque while loading + has mainmenu overlaid on top. 
+  so kinda iffy solution, but works - make loader fallback rneder nothing, just set zustand bool on unmount, 
+  which is then read by main menu 
+  additonally could also be used for timeout preventing play clisk too fast and not toggling pointerlock
+  */ 
   return (
     <>
       <KeyboardControls
@@ -92,11 +102,16 @@ function App() {
            <KeyboardInputHandler tryLock={tryLock} />
         <div style={{ backgroundColor:"rgb(197, 197, 197)", position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls || showMainMenu? "default": isMoving? "grabbing" : "grab"
    }}>
-          <Canvas  className={`canvas ${showMainMenu ? "non-opaque" : ""}`}shadows camera={{ position: [0, 0.3, 3], fov: 55 }}>
+          <Canvas  className={`canvas ${showMainMenu ? "non-opaque" : ""}`}shadows camera={{ position: [0, 0.3, 3], fov: 55 }}
+          gl={{
+    toneMapping: THREE.NeutralToneMapping,
+    toneMappingExposure: 0.85
+  }}
+          >
 
             {<Perf position="top-left" />}
             <group position-y={0}>
-              <Suspense fallback={<Loader />}>
+              <Suspense fallback={<Loader/>}> 
                 <Experience />
               </Suspense>
             </group> {/**!showMainMenu because if not, any click on the main mennu is going to toggle it  */}
@@ -126,9 +141,9 @@ function App() {
             )}
           </Canvas>
           <div className='ui-overlay'>
-            <OverlayInteraction2 visible={!showMainMenu && isOrbitControls && !isMoving && currentInteraction !==-1 }/>
+            {<OverlayInteraction2 visible={!showMainMenu && isOrbitControls && !isMoving && currentInteraction ==2 }/>}
            
-            {!showMainMenu && isOrbitControls && !isMoving && currentInteraction !== -1 && (<CurrentOverlayComponent />)}
+            {!showMainMenu && isOrbitControls && !isMoving && currentInteraction !== -1 && currentInteraction !== 2 && (<CurrentOverlayComponent />)}
             {showMainMenu && (<MainMenu tryLock={tryLock}/>)}
           </div>
 
