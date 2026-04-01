@@ -1,7 +1,7 @@
 .menu {
   width: 100%;
   height: 100%;
-  background: rgb(197, 197, 197);
+  background: rgba(197, 197, 197, 0); /*see alpha not needed, because of canvas backgorund*/
   pointer-events: all;
   display: flex;
   flex-direction: column;
@@ -179,4 +179,20 @@
 
 .startButton svg{
   height: 10vh;
+}
+
+/* Spinner sized to match */
+.spinner {
+  width: 10.6vh;
+  height: 10.6vh;
+  border: 0.5vh solid rgb(136, 136, 136);
+  border-top: 0.5vh solid #1e1e1e;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
 }

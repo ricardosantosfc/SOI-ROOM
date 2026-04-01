@@ -12,8 +12,8 @@ type Props = {
 
 export function MainMenu({ tryLock }: Props) {
 
- const { isOrbitControls, setShowMainMenu } = useStore(useShallow((state) =>
-  ({isOrbitControls: state.isOrbitControls,setShowMainMenu: state.setShowMainMenu})),)
+ const { isOrbitControls, setShowMainMenu, isLoading } = useStore(useShallow((state) =>
+  ({isOrbitControls: state.isOrbitControls,setShowMainMenu: state.setShowMainMenu, isLoading:state.isLoading})),)
 
   const [showInfoMenu, setShowInfoMenu] = useState(false)
 
@@ -93,8 +93,8 @@ export function MainMenu({ tryLock }: Props) {
             </div>
           </div>)}
         </div>
-        <div className="startButtonWrapper">
-          <button
+        <div >
+         {!isLoading ? ( <button
             className={styles.startButton}
             onClick={handleStartClick}
           >
@@ -104,6 +104,9 @@ export function MainMenu({ tryLock }: Props) {
             </svg>
 
           </button>
+          ) : (
+        <div className={styles.spinner}></div>
+      )}
         </div>
       </div>
     </div>

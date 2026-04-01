@@ -31,6 +31,9 @@ interface ExperienceState { //see docs for fixed
 
   showMainMenu: boolean
   setShowMainMenu: (fixed: boolean) => void
+
+  isLoading: boolean
+  setIsLoading: (fixed: boolean) => void
 }
 
 export const useStore = create<ExperienceState>()((set) => ({
@@ -60,5 +63,10 @@ export const useStore = create<ExperienceState>()((set) => ({
 
   showMainMenu: true,
   setShowMainMenu: (fixed) => set({showMainMenu: fixed }),
+
+  isLoading: true,
+  setIsLoading: (fixed) => set({isLoading: fixed }),
+
+
 
 }))
