@@ -23,37 +23,52 @@ interface InteractionCameraSettings {
   initialAzimuthalAngle?: number
 
 }
-
+//{x: -1.2060902118682861, y: 0.7310000061988831, z: 0.4509589076042175
 //  0 = paitnng , 1 = sketchbook, 2= radio
 const interactionCameraMap = new Map<number, InteractionCameraSettings>([
   [0, {
-    cameraPosition: new THREE.Vector3(-0.3, 0.2, -0.61),
-    meshPosition: new THREE.Vector3(-1.185, 0.190, -0.591),
+    cameraPosition: new THREE.Vector3(-0.3, 0.7310000061988831, 0.4509589076042175),
+    meshPosition: new THREE.Vector3(-1.2060902118682861, 0.7310000061988831, 0.4509589076042175),
     maxAzimuthAngle: (Math.PI - (Math.PI / 12)),
     minAzimuthAngle: Math.PI / 12,
     maxPolarAngle: (Math.PI - (Math.PI / 12)),
-    minPolarAngle: Math.PI / 12,
-    minDistance: 0.4,
+    minPolarAngle: Math.PI / 10,
+    minDistance: 0.6,
     maxDistance: 1,
+    
 
 
 
-  }],
+  }], //x: -0.01708, y: 2.398081733190338e-19, z: 0.5
   [1, { 
-    cameraPosition: new THREE.Vector3(0.1, 0, 0.3), 
-    meshPosition: new THREE.Vector3(0.0108,0.01,0.5),
+    cameraPosition: new THREE.Vector3(0.3, 0, -0.02), 
+    meshPosition: new THREE.Vector3(-0.01708,2.398081733190338e-19,0.5),
     maxAzimuthAngle: Math.PI/3,
     minAzimuthAngle: -Math.PI/3,
     maxPolarAngle: Math.PI/2.5,
     minPolarAngle: 0,
-    minDistance: 0.3,
+    minDistance: 0.4,
     maxDistance: 0.7,
     initialPolarAngle: 0,
     initialAzimuthalAngle: 0
+    }],
+
+    /** x: 0.8659097669424373 y: 0.2009999957084656 z: -0.9220410861321143*/
+    [2, { 
+    cameraPosition: new THREE.Vector3(0.865, 0.2, -0.2), 
+    meshPosition: new THREE.Vector3(0.8659097669424373,0.2009999957084656,-0.9220410861321143),
+    maxAzimuthAngle: Math.PI/8,
+    minAzimuthAngle: -Math.PI/2,
+    maxPolarAngle: Math.PI/2.2,
+    minPolarAngle: Math.PI/14,
+    minDistance: 0.5,
+    maxDistance: 0.7,
+
     }]
+
 ])
 
-
+const CAMERA_VIEW_HEIGHT = 0.78
 const SPEED = 1.9
 const direction = new THREE.Vector3()
 const frontVector = new THREE.Vector3()
@@ -66,7 +81,7 @@ export function Player() {
   const ref = useRef<RapierRigidBody | null>(null)
   const [, get] = useKeyboardControls()
   const { camera } = useThree()
-  const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, 0.7, 1.5))
+  const [currentCameraPosition, setCurrentCameraPosition] = useState(new THREE.Vector3(0, CAMERA_VIEW_HEIGHT, 1.5))
   const [currentCameraRotation, setCurrentCameraRotation] = useState(new THREE.Vector3(0, 0, 0))
   const { isInteracting, currentInteraction, shouldAnimateCamera, setShouldAnimateCamera, setIsOrbitControls,
     isOnRaisedFloor, obControls, showMainMenu
