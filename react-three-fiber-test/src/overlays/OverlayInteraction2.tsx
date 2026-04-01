@@ -1,6 +1,8 @@
 import { useMemo, useState } from 'react';
 import AudioPlayer, { RHAP_UI } from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css';
+import { useStore } from "../store"
+import { useShallow } from "zustand/shallow"
 import styles from "./OverlayInteraction2.module.css"
 
 
@@ -66,6 +68,13 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
   const [isPlaying, setIsPlaying] = useState(false);
   const currentStation = radio[currentStationIndex];
   const currentTrack = currentStation.tracks[currentTrackIndex];
+
+  const { isInfoHidden, setIsInfoHidden } = useStore(useShallow((state) => ({
+  
+        isInfoHidden: state.isInfoHidden,
+        setIsInfoHidden: state.setIsInfoHidden
+    
+      })),)
   //const currentTrackData = useMemo(() => playlist[currentTrack], [currentTrack]); 
   const handleClickNextTrack = () => {
       console.log('click next')
@@ -108,7 +117,7 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
 
   return (
     <>
-      <div className={styles.container} style={{display: visible ? 'block' : 'none', "--light-color": currentStation.lightColor,
+      <div className={styles.container} style={{display: visible && !isInfoHidden ? 'block' : 'none', "--light-color": currentStation.lightColor,
         "--dark-color": currentStation.darkColor} as React.CSSProperties}>
         <AudioPlayer
           header={<div className={styles.audioPlayerHeader}>
@@ -176,7 +185,11 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
           onPause={() => setIsPlaying(false)}
           onError={() => { console.log('play error') }}
         />
-      </div>
+      </div>  
+       {visible && ( <button className="btn"
+        onClick={() => setIsInfoHidden(!isInfoHidden)}
+      ><img className ="btn-img" src = {isInfoHidden? "../chevron-down.svg" : "../chevron-up.svg"}></img>
+      </button> )}
     </>
   );
-}
+} // btn should be global isntead of this mess prob
