@@ -6,13 +6,9 @@ export function Loader() {
   const setIsLoading = useStore((state) => state.setIsLoading)
   
     useEffect(() => {
-    // This runs when Loader mounts
-    console.log('Loader mounted')
 
-    // Cleanup runs when Loader unmounts
     return () => {
       setIsLoading(false)
-      console.log('Loader unmounted ')
     }
   }, [setIsLoading])
   

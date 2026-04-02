@@ -73,9 +73,24 @@
 }
 
 .bottomArea {
+  margin: 30px;
+  margin-top: auto;
+  margin-bottom: auto;
   min-height: 30vh; 
   display: flex;
   justify-content: center;
+}
+
+.mobileWarning {
+
+ margin-top: auto;
+  margin-bottom: auto;
+  min-height: 30vh;
+  width: 75%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+
 }
 
 .controls {

@@ -12,8 +12,10 @@ type Props = {
 
 export function MainMenu({ tryLock }: Props) {
 
- const { isOrbitControls, setShowMainMenu, isLoading } = useStore(useShallow((state) =>
-  ({isOrbitControls: state.isOrbitControls,setShowMainMenu: state.setShowMainMenu, isLoading:state.isLoading})),)
+ const { isOrbitControls, setShowMainMenu, isLoading, isMobile } = useStore(useShallow((state) =>
+  ({isOrbitControls: state.isOrbitControls,setShowMainMenu: state.setShowMainMenu, 
+  isLoading:state.isLoading,
+  isMobile: state.isMobile})),)
 
   const [showInfoMenu, setShowInfoMenu] = useState(false)
 
@@ -46,32 +48,43 @@ export function MainMenu({ tryLock }: Props) {
           <img src="../logo4.svg" alt="logo" />
         </div>
         <div className={styles.bottomArea}>
-          {!showInfoMenu && (<div className={styles.controls}>
-            <div className={styles.controlChild}>
-              <span>walk</span>
-              <img src="../walk.svg" alt="walk" />
-            </div>
+          {!showInfoMenu &&
+            (!isMobile ?
+              (<div className={styles.controls}>
+                <div className={styles.controlChild}>
+                  <span>walk</span>
+                  <img src="../walk.svg" alt="walk" />
+                </div>
 
-            <div className={styles.controlChild}>
-              <span>look around</span>
-              <img src="../look_around.svg" alt="look around" />
-            </div>
+                <div className={styles.controlChild}>
+                  <span>look around</span>
+                  <img src="../look_around.svg" alt="look around" />
+                </div>
 
-            <div className={styles.controlChild}>
-              <span>interact</span>
-              <img src="../interact.svg" alt="interact" />
-            </div>
+                <div className={styles.controlChild}>
+                  <span>interact</span>
+                  <img src="../interact.svg" alt="interact" />
+                </div>
 
-            <div className={styles.controlChild}>
-              <span>exit interaction</span>
-              <img src="../exit_interaction.svg" alt="exit interaction" />
-            </div>
+                <div className={styles.controlChild}>
+                  <span>exit interaction</span>
+                  <img src="../exit_interaction.svg" alt="exit interaction" />
+                </div>
 
-            <div className={styles.controlChild}>
-              <span>main menu</span>
-              <img src="../main_menu(1).svg" alt="main menu" />
-            </div>
-          </div>)}
+                <div className={styles.controlChild}>
+                  <span>main menu</span>
+                  <img src="../main_menu(1).svg" alt="main menu" />
+                </div>
+              </div>) 
+            : <div className={styles.mobileWarning}>
+                <p>Hello there!</p>
+                <p>Thank you for your interest in the SÓI ROOM!</p>
+                <p>Touchscreen support is still in development.</p>
+                <p>For now, a keyboard and mouse are required to fully enjoy the app.</p>
+                <p>Sorry for the inconvenience.</p>
+              </div>
+            )
+          }
           {showInfoMenu && (<div className={styles.info}>
             <p className={styles.infoEtymology}>
               <strong><em>sói</em></strong>: archaic Portuguese, from the verb{" "}
@@ -93,7 +106,7 @@ export function MainMenu({ tryLock }: Props) {
             </div>
           </div>)}
         </div>
-        <div >
+        {!isMobile && (<div >
          {!isLoading ? ( <button
             className={styles.startButton}
             onClick={handleStartClick}
@@ -107,7 +120,7 @@ export function MainMenu({ tryLock }: Props) {
           ) : (
         <div className={styles.spinner}></div>
       )}
-        </div>
+        </div>)}
       </div>
     </div>
 

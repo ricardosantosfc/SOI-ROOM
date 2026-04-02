@@ -24,13 +24,26 @@ const overlayMap: Record<number, ComponentType> = {
 function App() {
 
   //or fov 45
+ 
 
-  const { isOrbitControls, setObControls, currentInteraction, showMainMenu, setShowMainMenu } = useStore(useShallow((state) =>
+  const { isOrbitControls, setObControls, currentInteraction, showMainMenu, setShowMainMenu, isMobile, setIsMobile} = useStore(useShallow((state) =>
   ({
     isOrbitControls: state.isOrbitControls, 
     setObControls: state.setObControls, currentInteraction: state.currentInteraction, showMainMenu : state.showMainMenu,
-    setShowMainMenu: state.setShowMainMenu
+    setShowMainMenu: state.setShowMainMenu,
+    isMobile: state.isMobile,
+    setIsMobile: state.setIsMobile
   })),)
+
+
+
+useEffect(() => {
+    // Detect mobile device
+    const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
+
+    // Update the store
+    setIsMobile(isMobile);
+  }, [setIsMobile]);
 
   const plControls = useRef<PointerLockControlsImpl>(null!)
   const [isMoving, setIsMoving] = useState(false)
@@ -102,7 +115,7 @@ function App() {
            <KeyboardInputHandler tryLock={tryLock} />
         <div style={{ backgroundColor:"rgb(197, 197, 197)", position: "relative", width: "100vw", height: "100vh", cursor: !isOrbitControls || showMainMenu? "default": isMoving? "grabbing" : "grab"
    }}>
-          <Canvas  className={`canvas ${showMainMenu ? "non-opaque" : ""}`}shadows camera={{ position: [0, 0.3, 3], fov: 55 }}
+        {!isMobile &&  (<Canvas  className={`canvas ${showMainMenu ? "non-opaque" : ""}`}shadows camera={{ position: [0, 0.3, 3], fov: 55 }}
           gl={{
     toneMapping: THREE.NeutralToneMapping,
     toneMappingExposure: 0.85
@@ -139,7 +152,7 @@ function App() {
           
                />
             )}
-          </Canvas>
+          </Canvas>)}
           <div className='ui-overlay'>
             {<OverlayInteraction2 visible={!showMainMenu && isOrbitControls && !isMoving && currentInteraction ==2 }/>}
            

@@ -34,6 +34,9 @@ interface ExperienceState { //see docs for fixed
 
   isLoading: boolean
   setIsLoading: (fixed: boolean) => void
+  
+  isMobile: boolean
+  setIsMobile: (fixed: boolean) => void
 }
 
 export const useStore = create<ExperienceState>()((set) => ({
@@ -66,6 +69,9 @@ export const useStore = create<ExperienceState>()((set) => ({
 
   isLoading: true,
   setIsLoading: (fixed) => set({isLoading: fixed }),
+
+  isMobile:false,
+  setIsMobile: (fixed) => set({isMobile: fixed }),
 
 
 
