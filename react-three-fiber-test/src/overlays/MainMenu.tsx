@@ -76,12 +76,14 @@ export function MainMenu({ tryLock }: Props) {
                   <img src="../main_menu(1).svg" alt="main menu" />
                 </div>
               </div>) 
-            : <div className={styles.mobileWarning}>
+            : <div className={styles.info}> 
+            <div className={styles.infoText}>
                 <p>Hello there!</p>
                 <p>Thank you for your interest in the SÓI ROOM!</p>
                 <p>Touchscreen support is still in development.</p>
                 <p>For now, a keyboard and mouse are required to fully enjoy the app.</p>
                 <p>Sorry for the inconvenience.</p>
+              </div>
               </div>
             )
           }
