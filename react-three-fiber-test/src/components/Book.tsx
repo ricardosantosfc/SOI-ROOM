@@ -56,6 +56,15 @@ pageGeometry.setAttribute("skinWeight",
 
 const whiteColor = new Color("white");
 
+const baseColor = new THREE.Color("rgba(222, 222, 222, 1)") ;
+const highlightColor = new THREE.Color("rgba(186, 186, 186, 1)") ;
+//const emissiveHighlightColor = new THREE.Color("rgba(111, 111, 111, 1)");
+//const emissiveHighlightColorOpened = new THREE.Color("rgba(75, 75, 75, 1)");
+//const baseColor = new THREE.Color("rgb(255, 255, 255)");
+//const highlightColor = new THREE.Color("rgba(196, 196, 196, 1)") ;
+//const emissiveHighlightIntensity = 0.22
+
+
 const pageMaterials = [
   new MeshStandardMaterial({
     color: whiteColor,
@@ -73,8 +82,8 @@ const pageMaterials = [
 ];
 
 pages.forEach((page) => {
-    useTexture.preload(`/textures/${page.front }.png`)
-    useTexture.preload(`/textures/${page.back }.png`)
+    useTexture.preload(`/textures/${page.front }.jpg`)
+    useTexture.preload(`/textures/${page.back }.jpg`)
 })
 
 interface PageProps {
@@ -86,7 +95,7 @@ interface PageProps {
 
 function Page({ number, front, back,page, opened, isHighlighted, ...props }: PageProps) {
     
-     const { emissiveHighlightIntensity, emissiveHighlightColor } = useObjectInteractions();
+  
 
     useEffect(() => {
         if (!skinnedMeshRef.current) return
@@ -95,15 +104,26 @@ function Page({ number, front, back,page, opened, isHighlighted, ...props }: Pag
 
         const mats = material as MeshStandardMaterial[]
 
+        /*
+        if(page>0){
+        mats[4].color = isHighlighted ? highlightColor: baseColor
+        mats[5].color = isHighlighted ? highlightColor: baseColor
+        }
+        */
+       
+            mats[4].color = isHighlighted ? highlightColor: baseColor
+        mats[5].color = isHighlighted ? highlightColor: baseColor
+        
+
         //only wil change on front and back of pages, not other faces
-        mats[4].emissiveIntensity = isHighlighted ? emissiveHighlightIntensity : 0
-        mats[5].emissiveIntensity = isHighlighted ? emissiveHighlightIntensity : 0
+       // mats[4].emissiveIntensity = isHighlighted ? emissiveHighlightIntensity : 0
+        //mats[5].emissiveIntensity = isHighlighted ? emissiveHighlightIntensity : 0
 
     }, [isHighlighted])
     
     const[picture, picture2] = useTexture([
-    `/textures/${front}.png`,
-    `/textures/${back}.png`, 
+    `/textures/${front}.jpg`,
+    `/textures/${back}.jpg`, 
     ])
 
     picture.colorSpace = picture2.colorSpace = SRGBColorSpace // ------------see
@@ -133,15 +153,15 @@ function Page({ number, front, back,page, opened, isHighlighted, ...props }: Pag
             new MeshStandardMaterial({
                 color: whiteColor,
                 map: picture, roughness: 1,
-                emissive: emissiveHighlightColor,
-                emissiveIntensity: 0
+                //emissive: emissiveHighlightColor,
+                //emissiveIntensity: 0
 
             }),
             new MeshStandardMaterial({
                 color: whiteColor,
                 map: picture2, roughness: 1,
-                emissive: emissiveHighlightColor, 
-                emissiveIntensity: 0
+                //emissive: emissiveHighlightColor, 
+                //emissiveIntensity: 0
             })
             
         ];
@@ -228,7 +248,7 @@ export function Book(props: BookProps) { //
          onClick={(event) =>(handleMeshClick(event,1))}
 
         >
-            {showCanInteractHtml(1)}
+            {showCanInteractHtml(1, /*page>=1*/)}
              <CuboidCollider args={[1.24,3.62,2.77]} position={[0, -8, 0]}
             
                 sensor onIntersectionEnter={(state) => { handleIntersectionEnter(state, 1) }}

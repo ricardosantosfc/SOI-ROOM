@@ -85,10 +85,13 @@ type GLTFResult = GLTF & {
   animations: GLTFAction[]
 }
 
+  const baseColor = new THREE.Color("rgb(255, 255, 255)");
+  const highlightColor = new THREE.Color("rgba(222, 222, 222, 1)") ;
+
 export function Model(props: JSX.IntrinsicElements['group']) {
 
      const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml, canInteractWithMesh, 
-     emissiveHighlightColor, emissiveHighlightIntensity,  setIsOnRaisedFloorImpl, handleMeshClick } = useObjectInteractions();
+  setIsOnRaisedFloorImpl, handleMeshClick } = useObjectInteractions();
  
      /* leva controls
     const { boatposition, boatscale, boatrotation, oceanposition, colliderposition, colliderargs } = useControls('', {
@@ -120,6 +123,28 @@ export function Model(props: JSX.IntrinsicElements['group']) {
  }) */
 
   const paintingRef = useRef<THREE.Mesh>(null);
+  const radioRef = useRef<THREE.Mesh>(null);
+  
+
+  
+  useEffect(() => {
+    if (!paintingRef.current) return;
+
+    const paintingMat = paintingRef.current.material as THREE.MeshBasicMaterial;
+    paintingMat.color = canInteractWithMesh(0) ? highlightColor : baseColor;
+    paintingMat.needsUpdate = true;
+
+}, [canInteractWithMesh(0)]);
+
+useEffect(() => {
+    if (!radioRef.current) return;
+
+    const radioMat = radioRef.current.material as THREE.MeshBasicMaterial;
+    radioMat.color = canInteractWithMesh(2) ? highlightColor : baseColor;
+    radioMat.needsUpdate = true;
+
+}, [ canInteractWithMesh(2)]);
+  
 
   const boatRef = useRef<THREE.Mesh>(null!)
   const oceanRef = useRef<THREE.Mesh>(null!)
@@ -134,6 +159,8 @@ export function Model(props: JSX.IntrinsicElements['group']) {
    //const min = 0.87
    //const max = 0.952
    //const direction = useRef(1) // 1 = up, -1 = down
+
+
  
    useFrame((state) => {
       const t = state.clock.getElapsedTime()
@@ -167,6 +194,8 @@ export function Model(props: JSX.IntrinsicElements['group']) {
      actions['gull shadowAction']?.play()
      
    })
+
+   
   return (
      <group ref={group} {...props} dispose={null}>
           <group name="Scene">
@@ -234,7 +263,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
                 sensor onIntersectionEnter={(state) => { handleIntersectionEnter(state, 2) }}
                 onIntersectionExit={(state) => { handleIntersectionExit(state, 2) }}
               ></CuboidCollider>
-              <mesh name="radio_w_radio_mat" geometry={nodes.radio_w_radio_mat.geometry} material={materials.radio} position={[0.866, 0.784, -0.922]}
+              <mesh ref= {radioRef} name="radio_w_radio_mat" geometry={nodes.radio_w_radio_mat.geometry} material={materials.radio} position={[0.866, 0.784, -0.922]}
                 onPointerEnter={(event) => { handlePointerChange(event, 2) }}
                 onPointerOut={(event) => { handlePointerChange(event, -1) }}
                 onClick={(event) => { handleMeshClick(event, 2) }}
