@@ -38,10 +38,6 @@ export function useObjectInteractions() {
     return next;
     });
 
-    //for emissivehighlight to work correctly on the gtlf,interactbale objects must have their own spearate mats
-    const emissiveHighlightColor = new THREE.Color("orange") 
-    const emissiveHighlightIntensity = 0.22
-
     //a bit dumb, but considering modularity + separation of concerns
     const setIsOnRaisedFloorImpl= (bool: boolean): void =>{
         setIsOnRaisedFloor(bool)
@@ -98,7 +94,8 @@ export function useObjectInteractions() {
     }
 
     //when can interact with mesh, show prompt --- should be specific comp
-    const showCanInteractHtml = (id: number) => {
+    //openedBook for different , more readable when pages are opneded, but only really needed if chanig emissiveness, not color
+    const showCanInteractHtml = (id: number, /* openedBook? : boolean*/) => {
         if (canInteractWithMesh(id)) {
             return (
                 <>
@@ -106,8 +103,10 @@ export function useObjectInteractions() {
                     <Html>
                         <div className="interact-message">
                             <div className="pulse-circle">
-                                <div className="inner-dot" />
-                                <div className="outer-ring" />
+                                <div className="inner-dot"></div>
+                                <div className="outer-ring"></div>
+                                {/*<div className={`inner-dot ${openedBook ? 'inner-dot-openbook' : ''}`} />
+                                <div className={`outer-ring ${openedBook ? 'outer-ring-openbook' : ''}`} /> */}
                             </div>
                         </div>
                     </Html>
@@ -141,8 +140,6 @@ export function useObjectInteractions() {
         setIsOnRaisedFloorImpl,
         handleIntersectionEnter,
         handleIntersectionExit,
-        emissiveHighlightColor,
-        emissiveHighlightIntensity,
         canInteractWithMesh,
         handleMeshClick
 
