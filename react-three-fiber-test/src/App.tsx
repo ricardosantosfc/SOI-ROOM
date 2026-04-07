@@ -56,7 +56,6 @@ useEffect(() => {
   const tryLock = () => {
     if (plControls.current) {
       plControls.current.lock()
-      console.log("Pointer locked after tryLock")
     } else {
       requestAnimationFrame(tryLock)
     }
@@ -71,12 +70,9 @@ useEffect(() => {
       if (document.pointerLockElement) { //this is triggered with every click while on plcontrols
         return
       } else {
-        if (isOrbitControls) {
-          console.log(" unlocked pointer for ob controls")
-        } else {
-          console.log(" unlocked pointer for show main menu") 
+        if (!isOrbitControls) {
           setShowMainMenu(true)  
-        }
+        } 
       }
     }
 
@@ -139,11 +135,9 @@ useEffect(() => {
                 setObControls(ref)
               }}
                 onStart={() => {
-                  console.log("mving")
                   setIsMoving(true)
                 }}
                 onEnd={() => {
-                  console.log("stop")
                   setIsMoving(false)
                 }
 

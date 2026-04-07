@@ -77,21 +77,18 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
       })),)
   //const currentTrackData = useMemo(() => playlist[currentTrack], [currentTrack]); 
   const handleClickNextTrack = () => {
-      console.log('click next')
         setTrackIndex((currentTrack) =>
             currentTrack < currentStation.tracks.length - 1 ? currentTrack + 1 : 0
         );
     };
 
     const handleClickPreviousTrack = () => {
-      console.log('click next')
         setTrackIndex((currentTrack) =>
             currentTrack -1 > -1 ? currentTrack -1 : currentStation.tracks.length-1
         );
     };
   
   const handleEnd = () => {
-    console.log('end')
     setTrackIndex((currentTrack) =>
             currentTrack < currentStation.tracks.length - 1 ? currentTrack + 1 : 0
         );
@@ -99,7 +96,6 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
   }
 
    const handleClickNextStation = () => {
-      console.log('click next playslist')
       setTrackIndex(0)
         setStationIndex((currentStationIndex) =>
             currentStationIndex < radio.length - 1 ? currentStationIndex + 1 : 0
@@ -107,10 +103,8 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
     };
 
     const handleClickPreviousStation = () => {
-      console.log('click previous playsii')
       setTrackIndex(0)
         setStationIndex((currentStationIndex) => {
-          console.log(currentStationIndex)
             return currentStationIndex -1 > -1 ? currentStationIndex -1 : radio.length-1
     }) 
     };

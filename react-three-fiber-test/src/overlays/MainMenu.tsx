@@ -25,7 +25,6 @@ export function MainMenu({ tryLock }: Props) {
 
    //button might still need some sort of cooldown, or message for when unlock->lock too fast and browser blocks pointerlocking
     const handleStartClick = () => {
-      console.log("pressed button start main menu")
       setShowMainMenu(false);
   
       if (!isOrbitControls) {

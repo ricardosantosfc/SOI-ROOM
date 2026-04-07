@@ -148,7 +148,6 @@ export const OverlayInteraction1 = () => {
                 return;
               }
               const clamped = Math.min(pictures.length/2, Math.max(0, value));
-              console.log(clamped)
               setPage(clamped);
             }}
             type="number"
