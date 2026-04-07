@@ -13,7 +13,7 @@ export function OverlayInteraction0 () {
     return(
         <>
          {!isInfoHidden && (<div className={styles.information}>
-            <h2>Meoto Iwa (monochrome edit)</h2>
+            <h2>Futamigaura (monochrome edit)</h2>
             <h4>Watercolor and gouache, 2025</h4>
           </div>)}
        <button className="btn"

@@ -73,7 +73,7 @@ export function MainMenu({ tryLock }: Props) {
 
                 <div className={styles.controlChild}>
                   <span>main menu</span>
-                  <img src="../main_menu(1).svg" alt="main menu" />
+                  <img src="../main_menu.svg" alt="main menu" />
                 </div>
               </div>) 
             : <div className={styles.info}> 
