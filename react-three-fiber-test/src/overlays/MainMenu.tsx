@@ -1,9 +1,8 @@
-
+//main menu overlay, when esc is pressed
 import { useShallow } from "zustand/shallow"
 import { useStore } from "../store"
 import styles from "./MainMenu.module.css"
 import { useState } from "react"
-//main menu overlay, when esc is pressed
 
 type Props = {
   tryLock: () => void
@@ -13,9 +12,11 @@ type Props = {
 export function MainMenu({ tryLock }: Props) {
 
  const { isOrbitControls, setShowMainMenu, isLoading, isMobile } = useStore(useShallow((state) =>
-  ({isOrbitControls: state.isOrbitControls,setShowMainMenu: state.setShowMainMenu, 
-  isLoading:state.isLoading,
-  isMobile: state.isMobile})),)
+  ({isOrbitControls: state.isOrbitControls,
+    setShowMainMenu: state.setShowMainMenu, 
+    isLoading:state.isLoading,
+    isMobile: state.isMobile})
+  ),)
 
   const [showInfoMenu, setShowInfoMenu] = useState(false)
 
@@ -23,7 +24,7 @@ export function MainMenu({ tryLock }: Props) {
     setShowInfoMenu(!showInfoMenu)
   }
 
-   //button might still need some sort of cooldown, or message for when unlock->lock too fast and browser blocks pointerlocking
+   //button could still use some sort of cooldown->lock too fast and browser blocks pointerlocking
     const handleStartClick = () => {
       setShowMainMenu(false);
   
@@ -32,7 +33,6 @@ export function MainMenu({ tryLock }: Props) {
       }
     }
 
-  //can be a bit simplified now that contains starbutton, seee menu, main, buttonwrapper
   return (
     <div className={styles.menu}>
       <div className={styles.main}>
@@ -80,7 +80,7 @@ export function MainMenu({ tryLock }: Props) {
                 <p>Hello there!</p>
                 <p>Thank you for your interest in the SÓI ROOM!</p>
                 <p>Touchscreen support is still in development.</p>
-                <p>For now, a keyboard and mouse are required to fully enjoy the app.</p>
+                <p>For now, a device with keyboard and mouse is required to fully enjoy the app.</p>
                 <p>Sorry for the inconvenience.</p>
               </div>
               </div>

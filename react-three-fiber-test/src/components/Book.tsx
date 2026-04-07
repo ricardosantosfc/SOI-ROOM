@@ -9,7 +9,7 @@ import * as THREE from 'three'
 import { useObjectInteractions } from "../ObjectInteractions";
 import { useFrame } from "@react-three/fiber";
 import { degToRad } from "three/src/math/MathUtils.js";
-import { useControls } from "leva";
+
 
 //`https://r2-worker.media-soi-room.workers.dev/${front}.png`
 const lerpFactor = 0.05;
@@ -27,63 +27,59 @@ const pageGeometry = new BoxGeometry(
     2
 )
 
-pageGeometry.translate(PAGE_WIDTH / 2,0,0)
+pageGeometry.translate(PAGE_WIDTH / 2, 0, 0)
 
 const position = pageGeometry.attributes.position;
 const vertex = new Vector3();
 const skinIndexes = []
 const skinWeights = []
 
-for(let i = 0; i< position.count; i++){
+for (let i = 0; i < position.count; i++) {
 
-    vertex.fromBufferAttribute(position,i)
+    vertex.fromBufferAttribute(position, i)
     const x = vertex.x;
 
-    const skinIndex = Math.max(0,Math.floor(x/ SEGMENT_WIDTH))
-    let skinWeight = (x %SEGMENT_WIDTH) /SEGMENT_WIDTH;
+    const skinIndex = Math.max(0, Math.floor(x / SEGMENT_WIDTH))
+    let skinWeight = (x % SEGMENT_WIDTH) / SEGMENT_WIDTH;
 
-    skinIndexes.push(skinIndex, skinIndex +1, 0,0);
-    skinWeights.push(1-skinWeight, skinWeight,0,0)
+    skinIndexes.push(skinIndex, skinIndex + 1, 0, 0);
+    skinWeights.push(1 - skinWeight, skinWeight, 0, 0)
 }
 
-pageGeometry.setAttribute("skinIndex", 
-    new Uint16BufferAttribute(skinIndexes,4)
+pageGeometry.setAttribute("skinIndex",
+    new Uint16BufferAttribute(skinIndexes, 4)
 )
 
 pageGeometry.setAttribute("skinWeight",
-    new Float32BufferAttribute(skinWeights,4)
+    new Float32BufferAttribute(skinWeights, 4)
 )
 
 const whiteColor = new Color("white");
 
-const baseColor = new THREE.Color("rgba(222, 222, 222, 1)") ;
-const highlightColor = new THREE.Color("rgba(186, 186, 186, 1)") ;
-//const emissiveHighlightColor = new THREE.Color("rgba(111, 111, 111, 1)");
-//const emissiveHighlightColorOpened = new THREE.Color("rgba(75, 75, 75, 1)");
-//const baseColor = new THREE.Color("rgb(255, 255, 255)");
-//const highlightColor = new THREE.Color("rgba(196, 196, 196, 1)") ;
-//const emissiveHighlightIntensity = 0.22
+const baseColor = new THREE.Color("rgba(222, 222, 222, 1)");
+const highlightColor = new THREE.Color("rgba(186, 186, 186, 1)");
+//const highlightColorOpened = new THREE.Color("rgba(75, 75, 75, 1)"); //for different color if opened/closed
 
 
 const pageMaterials = [
-  new MeshStandardMaterial({
-    color: whiteColor,
-  }),
-  new MeshStandardMaterial({
-    color: "#2F2F2D",
-  }),
-  new MeshStandardMaterial({
-    color: whiteColor,
-  }),
-  new MeshStandardMaterial({
-    color: whiteColor,
-  }),
-  
+    new MeshStandardMaterial({
+        color: whiteColor,
+    }),
+    new MeshStandardMaterial({
+        color: "#2F2F2D",
+    }),
+    new MeshStandardMaterial({
+        color: whiteColor,
+    }),
+    new MeshStandardMaterial({
+        color: whiteColor,
+    }),
+
 ];
 
 pages.forEach((page) => {
-    useTexture.preload(`/textures/${page.front }.jpg`)
-    useTexture.preload(`/textures/${page.back }.jpg`)
+    useTexture.preload(`/textures/${page.front}.jpg`)
+    useTexture.preload(`/textures/${page.back}.jpg`)
 })
 
 interface PageProps {
@@ -93,9 +89,8 @@ interface PageProps {
     [key: string]: any; // allow any extra props
 }
 
-function Page({ number, front, back,page, opened, isHighlighted, ...props }: PageProps) {
-    
-  
+function Page({ number, front, back, page, opened, isHighlighted, ...props }: PageProps) {
+
 
     useEffect(() => {
         if (!skinnedMeshRef.current) return
@@ -104,87 +99,73 @@ function Page({ number, front, back,page, opened, isHighlighted, ...props }: Pag
 
         const mats = material as MeshStandardMaterial[]
 
-        /*
-        if(page>0){
-        mats[4].color = isHighlighted ? highlightColor: baseColor
-        mats[5].color = isHighlighted ? highlightColor: baseColor
-        }
-        */
-       
-            mats[4].color = isHighlighted ? highlightColor: baseColor
-        mats[5].color = isHighlighted ? highlightColor: baseColor
-        
 
-        //only wil change on front and back of pages, not other faces
-       // mats[4].emissiveIntensity = isHighlighted ? emissiveHighlightIntensity : 0
-        //mats[5].emissiveIntensity = isHighlighted ? emissiveHighlightIntensity : 0
+        mats[4].color = isHighlighted ? highlightColor : baseColor
+        mats[5].color = isHighlighted ? highlightColor : baseColor
+
 
     }, [isHighlighted])
-    
-    const[picture, picture2] = useTexture([
-    `/textures/${front}.jpg`,
-    `/textures/${back}.jpg`, 
+
+    const [picture, picture2] = useTexture([
+        `/textures/${front}.jpg`,
+        `/textures/${back}.jpg`,
     ])
 
-    picture.colorSpace = picture2.colorSpace = SRGBColorSpace // ------------see
+    picture.colorSpace = picture2.colorSpace = SRGBColorSpace
 
     const group = useRef<Group>(null);
 
     const skinnedMeshRef = useRef<SkinnedMesh | null>(null)
 
-    const manualSkinnedMesh = useMemo( () => {
-        
+    const manualSkinnedMesh = useMemo(() => {
+
         const bones = [];
-        for (let i = 0; i<= PAGE_SEGMENTS; i++){
+        for (let i = 0; i <= PAGE_SEGMENTS; i++) {
             let bone = new Bone();
             bones.push(bone)
-            if(i===0){
+            if (i === 0) {
                 bone.position.x = 0;
-            } else{
+            } else {
                 bone.position.x = SEGMENT_WIDTH
             }
-            if (i > 0){
+            if (i > 0) {
                 bones[i - 1].add(bone)
             }
         }
         const skeleton = new Skeleton(bones)
 
-        const materials = [...pageMaterials, 
-            new MeshStandardMaterial({
-                color: whiteColor,
-                map: picture, roughness: 1,
-                //emissive: emissiveHighlightColor,
-                //emissiveIntensity: 0
+        const materials = [...pageMaterials,
+        new MeshStandardMaterial({
+            color: whiteColor,
+            map: picture, roughness: 1,
+        }),
 
-            }),
-            new MeshStandardMaterial({
-                color: whiteColor,
-                map: picture2, roughness: 1,
-                //emissive: emissiveHighlightColor, 
-                //emissiveIntensity: 0
-            })
-            
+        new MeshStandardMaterial({
+            color: whiteColor,
+            map: picture2, roughness: 1,
+        })
+
         ];
 
 
-        const mesh = new SkinnedMesh(pageGeometry,materials)
+        const mesh = new SkinnedMesh(pageGeometry, materials)
         mesh.castShadow = true
         mesh.receiveShadow = true
-        mesh.frustumCulled = false //---------------------see
+        mesh.frustumCulled = false
         mesh.add(skeleton.bones[0])
         mesh.bind(skeleton)
         return mesh;
 
-    },[])
+    }, [])
 
-    useFrame(() =>{
+    useFrame(() => {
 
-        if(!skinnedMeshRef.current){
+        if (!skinnedMeshRef.current) {
             return
         }
 
-        let targetRotation = opened ? -Math.PI /2 : Math.PI /2 
-        targetRotation +=degToRad(number* 0.1)
+        let targetRotation = opened ? -Math.PI / 2 : Math.PI / 2
+        targetRotation += degToRad(number * 0.1)
 
         const bones = skinnedMeshRef.current.skeleton.bones
         bones[0].rotation.y = THREE.MathUtils.lerp(bones[0].rotation.y, targetRotation, lerpFactor)
@@ -193,11 +174,9 @@ function Page({ number, front, back,page, opened, isHighlighted, ...props }: Pag
 
     return (
         <group {...props} ref={group}>
-            <primitive  object = {manualSkinnedMesh}
-            
-            
-            ref={skinnedMeshRef }
-            position-z = {-0.1 * PAGE_DEPTH + page * PAGE_DEPTH}/>
+            <primitive object={manualSkinnedMesh}
+                ref={skinnedMeshRef}
+                position-z={-0.1 * PAGE_DEPTH + page * PAGE_DEPTH} />
         </group>
     )
 }
@@ -206,82 +185,59 @@ interface BookProps {
     [key: string]: any;
 }
 
-export function Book(props: BookProps) { //
+export function Book(props: BookProps) { 
 
-    /*
-    const { bookcolliderargs, bookcolliderposition } = useControls("book", {
-        bookcolliderargs: {
-            value: [0.9, 3, 2],
-            step: 0.001,
-        },
-        bookcolliderposition: {
-            value: [0, -8, 0],
-            step: 0.001,
-        },
-    }
-    ) */
+    const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange, showCanInteractHtml, 
+        canInteractWithMesh, handleMeshClick } = useObjectInteractions();
 
-    const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml, canInteractWithMesh, handleMeshClick } = useObjectInteractions();
-    
-   const { page
+    const { page
     } = useStore(useShallow((state) =>
     ({
-      page: state.page,
+        page: state.page,
     })),)
-    
+
 
     return (
-        
-        <group {...props} 
-        scale={0.2} 
-            rotation-y={-Math.PI/2}
-            rotation-x={-Math.PI/2}
+
+        <group {...props}
+            scale={0.2}
+            rotation-y={-Math.PI / 2}
+            rotation-x={-Math.PI / 2}
             position-y={0.04}
             position-x={-0.016}
             position-z={0.5}
-        /*rotation-y = {-Math.PI/2}*/
 
-         onPointerEnter={(event) => {handlePointerChange(event, 1)}}
 
-         onPointerOut={(event) => {handlePointerChange(event, -1) }}
+            onPointerEnter={(event) => { handlePointerChange(event, 1) }}
 
-         onClick={(event) =>(handleMeshClick(event,1))}
+            onPointerOut={(event) => { handlePointerChange(event, -1) }}
+
+            onClick={(event) => (handleMeshClick(event, 1))}
 
         >
             {showCanInteractHtml(1, /*page>=1*/)}
-             <CuboidCollider args={[1.24,3.62,2.77]} position={[0, -8, 0]}
-            
+            <CuboidCollider args={[1.24, 3.62, 2.77]} position={[0, -8, 0]}
+
                 sensor onIntersectionEnter={(state) => { handleIntersectionEnter(state, 1) }}
-                 onIntersectionExit={(state) => { handleIntersectionExit(state, 1) }}
-            
+                onIntersectionExit={(state) => { handleIntersectionExit(state, 1) }}
+
             ></CuboidCollider>
 
-        
-            
-            {pages.map((pageData, index) => 
+
+
+            {pages.map((pageData, index) =>
                 <Page
                     key={index}
                     page={page}
                     number={index}
-                    opened = {page > index}
-                    isHighlighted = {canInteractWithMesh(1)} //to be used as useEffect hook by pages
+                    opened={page > index}
+                    isHighlighted={canInteractWithMesh(1)} //to be used as useEffect hook by pages
                     {...pageData}
-                    
-                    />
-            
-        ) }
 
-{/*
-        <mesh  scale={0.2} 
-            rotation={[-Math.PI / 2, 0,0]}
-            position-y={-0.31}
-      
-            position-z = {-0.1 * PAGE_DEPTH + page * PAGE_DEPTH}>
+                />
 
-  <boxGeometry args={[PAGE_WIDTH, PAGE_HEIGHT, PAGE_DEPTH]}  />
-  <meshPhongMaterial color="#f1f1f107" opacity={0} transparent/>
- 
-</mesh> */}
+            )}
+
         </group>
     );
 }

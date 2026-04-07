@@ -4,6 +4,7 @@ import 'react-h5-audio-player/lib/styles.css';
 import { useStore } from "../store"
 import { useShallow } from "zustand/shallow"
 import styles from "./OverlayInteraction2.module.css"
+import { ChevronToggleButton } from './ChevronToggleButton';
 
 
 const radio = [
@@ -69,12 +70,12 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
   const currentStation = radio[currentStationIndex];
   const currentTrack = currentStation.tracks[currentTrackIndex];
 
-  const { isInfoHidden, setIsInfoHidden } = useStore(useShallow((state) => ({
+  const { isInfoHidden} = useStore(useShallow((state) => ({
   
         isInfoHidden: state.isInfoHidden,
-        setIsInfoHidden: state.setIsInfoHidden
     
-      })),)
+  })),)
+
   //const currentTrackData = useMemo(() => playlist[currentTrack], [currentTrack]); 
   const handleClickNextTrack = () => {
         setTrackIndex((currentTrack) =>
@@ -180,10 +181,7 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
           onError={() => { console.log('play error') }}
         />
       </div>  
-       {visible && ( <button className="btn"
-        onClick={() => setIsInfoHidden(!isInfoHidden)}
-      ><img className ="btn-img" src = {isInfoHidden? "../chevron-down.svg" : "../chevron-up.svg"}></img>
-      </button> )}
+       {visible && ( <ChevronToggleButton/> )}
     </>
   );
-} // btn should be global isntead of this mess prob
+} 

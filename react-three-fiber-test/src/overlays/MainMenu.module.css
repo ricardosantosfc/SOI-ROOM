@@ -15,8 +15,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;     
-/*transform: translateY(-10vh);*/
-
   gap: 7.5vh; 
   padding-bottom: 8vh;
 }
@@ -196,7 +194,6 @@
   height: 10vh;
 }
 
-/* Spinner sized to match */
 .spinner {
   width: 10.6vh;
   height: 10.6vh;
