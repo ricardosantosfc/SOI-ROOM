@@ -11,9 +11,12 @@ input[type="number"]::selection {
   color: #000;
 }
 
+
+
 input[type="number"] {
   border: none;
   outline: none;
+  -moz-appearance:textfield;
   
 }
 
