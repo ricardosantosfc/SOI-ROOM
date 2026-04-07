@@ -9,82 +9,82 @@ const informations = [
 
   {
     name: "Lucky",
-    mediumYear: "Charcoal, 2021 "
+    mediumYear: "Charcoal, 2021"
   },
   {
-    name: "Musashi (Takehiko Inoue study)",
-    mediumYear: "Ink, watercolor, and gouache, 2016 "
+    name: "Hakuho",
+    mediumYear: "Charcoal, 2022"
   },
   {
-    name: "Tormenta",
-    mediumYear: "Charcoal,  "
+    name: "La Brasserie",
+    mediumYear: "Watercolor and gouache, 2025"
   },
   {
-    name: "Fräulein Bürstner",
+    name: "A Walk",
+    mediumYear: "Watercolor, 2021"
+  },
+
+  {
+    name: "Animal studies",
+    mediumYear: "Watercolor, 2022"
+  },
+  {
+    name: "Futamigaura",
+    mediumYear: "Watercolor and gouache, 2025"
+  },
+
+  {
+    name: "Ink & wash sketches",
+    mediumYear: "Ink, watercolor, and gouache, 2025"
+  },
+  
+  {
+    name: "Tiny landscapes",
+    mediumYear: "Watercolor, 2020"
+  },
+
+   {
+    name: "Hanadriel",
+    mediumYear: "Charcoal, 2019 "
+  },
+   {
+    name: "Girl portrait",
+    mediumYear: "Charcoal, 2023"
+  },
+  {
+    name: "Sunset studies",
     mediumYear: "Watercolor, 2021 "
   },
-
-  {
-    name: "Lucky1",
-    mediumYear: "Charcoal, 2021 "
+   {
+    name: "Twilight Sailing",
+    mediumYear: "Watercolor, 2025"
   },
   {
-    name: "Lucky2",
-    mediumYear: "Charcoal, 2021 "
+    name: "Small portraits",
+    mediumYear: "Charcoal, 2021"
   },
 
   {
-    name: "Lucky3",
-    mediumYear: "Charcoal, 2021 "
+    name: "Musashi",
+    mediumYear: "Charcoal, 2017"
   },
   
   {
-    name: "Lucky4",
-    mediumYear: "Charcoal, 2021 "
+    name: "Shadows of the Sun",
+    mediumYear: "Ink and digital, 2024"
   },
 
    {
-    name: "Lucky5",
-    mediumYear: "Charcoal, 2021 "
+    name: "Fräulein Bürstner",
+    mediumYear: "Watercolor, 2022"
   },
    {
-    name: "Lucky6",
-    mediumYear: "Charcoal, 2021 "
+    name: "Murmúrio da Tormenta",
+    mediumYear: "Watercolor, 2021"
   },
   {
-    name: "Lucky7",
-    mediumYear: "Charcoal, 2021 "
-  },
-   {
-    name: "Lucky8",
-    mediumYear: "Charcoal, 2021 "
-  },
-  {
-    name: "Lucky9",
-    mediumYear: "Charcoal, 2021 "
-  },
-
-  {
-    name: "Lucky10",
-    mediumYear: "Charcoal, 2021 "
-  },
-  
-  {
-    name: "Luck11",
-    mediumYear: "Charcoal, 2021 "
-  },
-
-   {
-    name: "Lucky12",
-    mediumYear: "Charcoal, 2021 "
-  },
-   {
-    name: "Lucky13",
-    mediumYear: "Charcoal, 2021 "
-  },
-  {
-    name: "Lucky14",
-    mediumYear: "Charcoal, 2021 "
+    name: "Meoto Iwa",
+    mediumYear: "Watercolor, 2025"
   },
 
 
