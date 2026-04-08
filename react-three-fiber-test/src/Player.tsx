@@ -76,8 +76,13 @@ const sideVector = new THREE.Vector3()
 
 const RAISED_LEVEL_YSTEP = 0.02
 
+ const audio = new Audio("/sfx/footsteps.mp3");
+ audio.loop=true;
+
 export function Player() {
 
+  const movingRef = useRef(false);
+  
   const ref = useRef<RapierRigidBody | null>(null)
   const [, get] = useKeyboardControls()
   const { camera } = useThree()
@@ -275,6 +280,18 @@ export function Player() {
       sideVector.set(side, 0, 0)
       direction.subVectors(frontVector, sideVector).normalize().multiplyScalar(SPEED).applyEuler(state.camera.rotation)
       body.setLinvel({ x: direction.x, y: velocity.y, z: direction.z }, true)
+
+       const EPS = 0.01; //threshold
+    const isMoving = Math.abs(velocity.x) > EPS || Math.abs(velocity.z) > EPS
+
+    if (isMoving && !movingRef.current) {
+      movingRef.current = true;
+      audio.play(); 
+    } else if (!isMoving && movingRef.current) {
+      movingRef.current = false;
+      audio.pause();
+    }
+
     }
   })
   return (

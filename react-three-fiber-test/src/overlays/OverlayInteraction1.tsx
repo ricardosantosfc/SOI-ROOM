@@ -93,6 +93,7 @@ const informations = [
 const pictures = [
   "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "p15", "p16", "p17", "p18"
 ];
+ const audio = new Audio("/sfx/page-flip-01a.mp3");
 
 export const pages = [
   {
@@ -126,6 +127,8 @@ export const OverlayInteraction1 = () => {
   const changePage = (value: number) => {
     if ((page + value >= 0) && (page + value <= pageMax)) {
       setPage(page + value)
+      audio.currentTime = 0; 
+      audio.play();
     }
   }
 
@@ -150,6 +153,8 @@ export const OverlayInteraction1 = () => {
                 }
                 const clamped = Math.min(pictures.length / 2, Math.max(0, value));
                 setPage(clamped);
+                audio.currentTime = 0; 
+                audio.play();
               }}
               type="number"
               max={pictures.length / 2}
