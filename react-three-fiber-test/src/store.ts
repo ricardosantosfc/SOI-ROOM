@@ -3,7 +3,6 @@ import { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { create } from 'zustand'
 
 interface ExperienceState { //see docs for fixed
-//review, objectinteractions ones, a fewbe should to be rmeov might 
 
   isInteracting: boolean //if curr interaciton !=-1
   setIsInteracting: (fixed: boolean) => void

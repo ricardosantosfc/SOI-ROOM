@@ -3,7 +3,7 @@ import { useEffect } from 'react'
 import * as THREE from 'three'
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js'
 
-//match environment used by the online editor (uses exported RoomEnvironment)
+//match environment map thats used by the online editor (uses exported env texture RoomEnvironment)
 export function DefaultEnvironment() {
   const { gl, scene } = useThree()
 

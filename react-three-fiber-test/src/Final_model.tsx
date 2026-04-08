@@ -9,10 +9,9 @@ import { useEffect, useRef, type JSX } from 'react'
 import { useAnimations, useGLTF } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 import { CuboidCollider, RigidBody } from '@react-three/rapier'
-import { Select } from '@react-three/postprocessing'
 import { useObjectInteractions } from './ObjectInteractions'
 import { useFrame } from '@react-three/fiber'
-import { useControls } from 'leva'
+//import { useControls } from 'leva'
 
 type ActionName = 'gltf joined final pls.001' | 'gull shadowAction' | 'boat' | 'Sphere ocean shallow' | 'gull|gull|gullAction' | 'Key.002|gull|gullAction' | 'radio w radio mat' | 'paiting rocks joined' | 'floor shoji'
 

@@ -5,7 +5,6 @@ import { Html } from "@react-three/drei"
 import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
 import { useState } from "react"
-import * as THREE from 'three'
 
 export function useObjectInteractions() {
 
@@ -73,8 +72,7 @@ export function useObjectInteractions() {
             //event.object.getWorldPosition(worldPos)
             //console.log(worldPos)
             setIsPointing(id)
-           //have to see docs 
-            //console.log("is pointing" + id)
+   
         }
          event.stopPropagation() 
        

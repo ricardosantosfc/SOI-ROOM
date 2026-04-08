@@ -1,4 +1,4 @@
-//import { Html, useProgress } from '@react-three/drei'
+//fallback loader, purely for setting isLoading. explanation in app.tsx
 import { useEffect } from 'react'
 import { useStore } from './store'
 
@@ -12,6 +12,6 @@ export function Loader() {
     }
   }, [setIsLoading])
   
-  //const { progress } = useProgress() //see if actually rendered, as canvas is set opaque
+  //const { progress } = useProgress() //doesnt update correctly 
   return null;
 }
