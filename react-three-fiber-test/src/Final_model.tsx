@@ -6,11 +6,13 @@ Files: public/final_model.glb [55.32MB] > C:\Users\Ricardo\Documents\GitHub\reac
 
 import * as THREE from 'three'
 import { useEffect, useRef, type JSX } from 'react'
-import { useAnimations, useGLTF } from '@react-three/drei'
+import { PositionalAudio, useAnimations, useGLTF } from '@react-three/drei'
 import type { GLTF } from 'three-stdlib'
 import { CuboidCollider, RigidBody } from '@react-three/rapier'
 import { useObjectInteractions } from './ObjectInteractions'
 import { useFrame } from '@react-three/fiber'
+import { useStore } from './store'
+import { useShallow } from 'zustand/react/shallow'
 //import { useControls } from 'leva'
 
 type ActionName = 'gltf joined final pls.001' | 'gull shadowAction' | 'boat' | 'Sphere ocean shallow' | 'gull|gull|gullAction' | 'Key.002|gull|gullAction' | 'radio w radio mat' | 'paiting rocks joined' | 'floor shoji'
@@ -91,6 +93,11 @@ export function Model(props: JSX.IntrinsicElements['group']) {
 
      const { handleIntersectionEnter, handleIntersectionExit, handlePointerChange,showCanInteractHtml, canInteractWithMesh, 
   setIsOnRaisedFloorImpl, handleMeshClick } = useObjectInteractions();
+
+   const {showMainMenu} = useStore(useShallow((state) =>
+    ({
+      showMainMenu: state.showMainMenu,
+    })),)
  
      /* leva controls
     const { boatposition, boatscale, boatrotation, oceanposition, colliderposition, colliderargs } = useControls('', {
@@ -200,7 +207,9 @@ useEffect(() => {
           <group name="Scene">
             <group name="gltf_joined_final_pls001" position={[-0.021, 1.155, -1.138]}>
               <mesh name="Cube003" geometry={nodes.Cube003.geometry} material={materials['concrete.003']} />
-              <mesh name="Cube003_1" geometry={nodes.Cube003_1.geometry} material={materials['wood windowdark noise.002']} />
+              <mesh name="Cube003_1" geometry={nodes.Cube003_1.geometry} material={materials['wood windowdark noise.002']}>
+                {!showMainMenu && <PositionalAudio autoplay loop url="/sfx/amb-001.mp3" distance={1} /> }</mesh> 
+             
               <mesh name="Cube003_2" geometry={nodes.Cube003_2.geometry} > <meshBasicMaterial
                                             depthWrite={false}  // transparency rendering without popping like deitor
                                             side={THREE.DoubleSide}  // render front and back faces
