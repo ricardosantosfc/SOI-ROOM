@@ -98,6 +98,20 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     ({
       showMainMenu: state.showMainMenu,
     })),)
+
+    const ambRef = useRef<THREE.PositionalAudio>(null)
+
+  useEffect(() => {
+    if (ambRef.current) {
+      if(!showMainMenu){
+        ambRef.current.play()
+      }
+      
+    else{ //is triggered on initial load
+      ambRef.current.pause();
+    }
+  }
+  }, [showMainMenu])
  
      /* leva controls
     const { boatposition, boatscale, boatrotation, oceanposition, colliderposition, colliderargs } = useControls('', {
@@ -208,7 +222,7 @@ useEffect(() => {
             <group name="gltf_joined_final_pls001" position={[-0.021, 1.155, -1.138]}>
               <mesh name="Cube003" geometry={nodes.Cube003.geometry} material={materials['concrete.003']} />
               <mesh name="Cube003_1" geometry={nodes.Cube003_1.geometry} material={materials['wood windowdark noise.002']}>
-                {!showMainMenu && <PositionalAudio autoplay loop url="/sfx/amb-001.mp3" distance={1} /> }</mesh> 
+                <PositionalAudio ref={ambRef} loop url="/sfx/amb-001.mp3" distance={1}/></mesh> 
              
               <mesh name="Cube003_2" geometry={nodes.Cube003_2.geometry} > <meshBasicMaterial
                                             depthWrite={false}  // transparency rendering without popping like deitor
