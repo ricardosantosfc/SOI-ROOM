@@ -80,15 +80,6 @@ const RAISED_LEVEL_YSTEP = 0.02
  audio.loop=true;
  audio.volume=0.6;
 
- const FOOTSTEPS = [
-  "/sfx/footsteps0.mp3",
-  "/sfx/footsteps1.mp3",
-  "/sfx/footsteps2.mp3",
-  "/sfx/footsteps3.mp3",
-  "/sfx/footsteps4.mp3",
-  "/sfx/footsteps5.mp3",
-];
-
 export function Player() {
 
   const movingRef = useRef(false); // track movement state
