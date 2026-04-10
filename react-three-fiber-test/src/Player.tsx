@@ -76,13 +76,22 @@ const sideVector = new THREE.Vector3()
 
 const RAISED_LEVEL_YSTEP = 0.02
 
- const audio = new Audio("/sfx/footsteps.mp3");
+ const audio = new Audio("/sfx/footstepsonlytwo-006.mp3");
  audio.loop=true;
+ audio.volume=0.6;
+
+ const FOOTSTEPS = [
+  "/sfx/footsteps0.mp3",
+  "/sfx/footsteps1.mp3",
+  "/sfx/footsteps2.mp3",
+  "/sfx/footsteps3.mp3",
+  "/sfx/footsteps4.mp3",
+  "/sfx/footsteps5.mp3",
+];
 
 export function Player() {
 
-  const movingRef = useRef(false);
-  
+  const movingRef = useRef(false); // track movement state
   const ref = useRef<RapierRigidBody | null>(null)
   const [, get] = useKeyboardControls()
   const { camera } = useThree()
@@ -286,10 +295,11 @@ export function Player() {
 
     if (isMoving && !movingRef.current) {
       movingRef.current = true;
+      audio.currentTime=0;
       audio.play(); 
     } else if (!isMoving && movingRef.current) {
       movingRef.current = false;
-      audio.pause();
+      audio.pause(); // stop footsteps
     }
 
     }
