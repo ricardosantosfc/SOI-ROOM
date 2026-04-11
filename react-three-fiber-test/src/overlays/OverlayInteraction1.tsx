@@ -93,8 +93,8 @@ const informations = [
 const pictures = [
   "p1", "p2", "p3", "p4", "p5", "p6", "p7", "p8", "p9", "p10", "p11", "p12", "p13", "p14", "p15", "p16", "p17", "p18"
 ];
- const audio = new Audio("/sfx/pageflip-001.mp3");
- audio.volume= 0.3;
+ const audio = new Audio("/sfx/pageflipcover-001.mp3");
+ audio.volume= 0.5;
 
 export const pages = [
   {
