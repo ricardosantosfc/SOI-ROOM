@@ -16,6 +16,7 @@ input[type="number"]::selection {
 input[type="number"] {
   border: none;
   outline: none;
+  appearance: textfield;
   -moz-appearance:textfield;
   
 }

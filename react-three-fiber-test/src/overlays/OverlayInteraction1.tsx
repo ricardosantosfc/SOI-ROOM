@@ -1,5 +1,5 @@
 /* handles book and page ui + state*/
-import styles from "./OverlayInteraction1.module.css"
+import styles from "./styles/OverlayInteraction1.module.css"
 import { useShallow } from "zustand/shallow";
 import { useStore } from "../store";
 import { AnimatePresence, motion } from "motion/react"

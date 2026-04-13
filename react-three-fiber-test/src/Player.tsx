@@ -78,7 +78,7 @@ const RAISED_LEVEL_YSTEP = 0.02
 
  const audio = new Audio("/sfx/footstepsnewnew-009.mp3");
  audio.loop=true;
- audio.volume=0.7;
+ audio.volume=0.6;
 
 export function Player() {
 

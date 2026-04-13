@@ -1,0 +1,42 @@
+.btnChevron {
+  font-family: inherit;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  height: 7vh;
+  width: 8.5vh;
+  border: none;
+  /*border-radius: 50%;*/
+  border-radius: 6px;
+  cursor: pointer;
+  background: #d9d9d9ef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 6px rgba(42, 42, 42, 0.3);
+  transition: all 0.2s ease;
+  animation: fadeInUp 0.35s ease;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+.btnChevron:hover {
+  background: #b5b5b5ef;
+  box-shadow: 0 2px 6px rgba(42, 42, 42, 0.3), inset 0 2px 3px rgba(45, 45, 45, 0.2);
+}
+
+.btnChevronImg {
+  height: 3vh;
+  width: 3vh;
+}

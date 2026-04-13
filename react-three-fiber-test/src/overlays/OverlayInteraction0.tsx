@@ -1,5 +1,5 @@
 //ui overlay for painting
-import styles from "./OverlayInteraction0.module.css"
+import styles from "./styles/OverlayInteraction0.module.css"
 import { useStore } from "../store"
 import { useShallow } from "zustand/shallow"
 import { ChevronToggleButton } from "./ChevronToggleButton"

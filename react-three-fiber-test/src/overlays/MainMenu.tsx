@@ -1,7 +1,7 @@
 //main menu overlay, when esc is pressed
 import { useShallow } from "zustand/shallow"
 import { useStore } from "../store"
-import styles from "./MainMenu.module.css"
+import styles from "./styles/MainMenu.module.css"
 import { useState } from "react"
 
 type Props = {

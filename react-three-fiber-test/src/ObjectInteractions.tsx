@@ -1,10 +1,10 @@
 /* handles object interaction through custom hooks and related state : collisons, pointing, object related html toggling,*/
 import type { CollisionPayload } from "@react-three/rapier"
 import type { ThreeEvent } from '@react-three/fiber'
-import { Html } from "@react-three/drei"
 import { useStore } from "./store"
 import { useShallow } from "zustand/shallow"
 import { useState } from "react"
+import { InteractionPrompt } from "./overlays/InteractionPrompt"
 
 export function useObjectInteractions() {
 
@@ -64,7 +64,7 @@ export function useObjectInteractions() {
 
     //handle hovering enter/exit with interactable mesh
     //gets worldPosition to be set in the  Player interactionCameraMap meshPositions.
-    //do dynamically-------------------------------------------------
+    //though it often needs to fine tuning. hence why camera mesh pos isnt dynamically set
     const handlePointerChange = (event: ThreeEvent<PointerEvent>, id: number): void => {
 
         if(!isInteracting){
@@ -91,25 +91,12 @@ export function useObjectInteractions() {
         return canInteract() && isPointing === id
     }
 
-    //when can interact with mesh, show prompt --- should be specific comp
+    //when can interact with mesh, show prompt 
     //openedBook for different , more readable when pages are opneded, but only really needed if chanig emissiveness, not color
     const showCanInteractHtml = (id: number, /* openedBook? : boolean*/) => {
-        if (canInteractWithMesh(id)) {
-            return (
-                <>
-                    {/*<Outlines thickness={20} />*/}
-                    <Html>
-                        <div className="interact-message">
-                            <div className="pulse-circle">
-                                <div className="inner-dot"></div>
-                                <div className="outer-ring"></div>
-                                {/*<div className={`inner-dot ${openedBook ? 'inner-dot-openbook' : ''}`} />
-                                <div className={`outer-ring ${openedBook ? 'outer-ring-openbook' : ''}`} /> */}
-                            </div>
-                        </div>
-                    </Html>
-                </>
-            )
+
+        if (canInteractWithMesh(id)){ 
+            return <InteractionPrompt/>
         }
     }
 
