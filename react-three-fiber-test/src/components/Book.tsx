@@ -6,7 +6,7 @@ import { useStore } from "../store";
 import { useShallow } from "zustand/shallow";
 import { CuboidCollider } from "@react-three/rapier";
 import * as THREE from 'three'
-import { useObjectInteractions } from "../ObjectInteractions";
+import { useObjectInteractions } from "./ObjectInteractions";
 import { useFrame } from "@react-three/fiber";
 import { degToRad } from "three/src/math/MathUtils.js";
 

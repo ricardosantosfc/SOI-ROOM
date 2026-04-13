@@ -1,10 +1,10 @@
 /* handles object interaction through custom hooks and related state : collisons, pointing, object related html toggling,*/
 import type { CollisionPayload } from "@react-three/rapier"
 import type { ThreeEvent } from '@react-three/fiber'
-import { useStore } from "./store"
+import { useStore } from "../store"
 import { useShallow } from "zustand/shallow"
 import { useState } from "react"
-import { InteractionPrompt } from "./overlays/InteractionPrompt"
+import { InteractionPrompt } from "../overlays/InteractionPrompt"
 
 export function useObjectInteractions() {
 

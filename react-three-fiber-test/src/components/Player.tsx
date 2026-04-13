@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react"
 import { useFrame, useThree, type RootState } from "@react-three/fiber"
 import { useKeyboardControls } from "@react-three/drei"
 import { CapsuleCollider, RapierRigidBody, RigidBody } from "@react-three/rapier"
-import { useStore } from "./store"
+import { useStore } from "../store"
 import { useShallow } from "zustand/shallow"
 import type { Vector } from "three/examples/jsm/physics/RapierPhysics.js"
 

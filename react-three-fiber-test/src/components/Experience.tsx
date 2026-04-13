@@ -1,10 +1,10 @@
 import { Center} from "@react-three/drei";
 import { Physics } from "@react-three/rapier"; //throws  warning - https://github.com/dimforge/rapier/issues/811
-import { Player } from "../Player";
-import { Model } from "../Final_model";
+import { Player } from "./Player";
+import { Model } from "./Final_model";
 import { Book } from "./Book";
-import { DefaultEnvironment } from "../DefaultEnvironment";
-import { Skydome } from "../Skydome_only";
+import { DefaultEnvironment } from "./DefaultEnvironment";
+import { Skydome } from "./Skydome_only";
 
 
 export const Experience = () => {

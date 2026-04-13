@@ -11,7 +11,7 @@ import type { GLTF } from 'three-stdlib'
 import { CuboidCollider, RigidBody } from '@react-three/rapier'
 import { useObjectInteractions } from './ObjectInteractions'
 import { useFrame } from '@react-three/fiber'
-import { useStore } from './store'
+import { useStore } from '../store'
 import { useShallow } from 'zustand/react/shallow'
 //import { useControls } from 'leva'
 
