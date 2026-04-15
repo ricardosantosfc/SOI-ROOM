@@ -1,0 +1,52 @@
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./repo-assets/logo_dark.png">
+  <img alt="SÓI ROOM logo." src="./repo-assets/logo_light.png">
+</picture>
+
+![React](https://img.shields.io/badge/React-%2320232a.svg?logo=react&logoColor=%2361DAFB)
+![Three.js](https://img.shields.io/badge/Three.js-000?logo=threedotjs&logoColor=fff)
+
+SÓI ROOM is a virtual space built to showcase works resulting from my creative hobbies, while also serving as a React and Three.js exploration project.
+ 
+Source code is located in the [`/homepage`](https://github.com/ricardosantosfc/personal-website/tree/main/homepage) directory.
+
+## Installing, running and building
+
+Refer to the README in [`/homepage`](https://github.com/ricardosantosfc/personal-website/tree/main/homepage#homepage).
+
+## Tools, libraries, credits and mentions
+
+- Built with [Vite](https://vite.dev/).
+
+- Most Three.js logic is handled via [React-Three-fiber](https://r3f.docs.pmnd.rs/getting-started/introduction) and [Drei](https://drei.docs.pmnd.rs/getting-started/introduction) wrappers and hooks. 
+
+- State management via [Zustand](https://zustand.docs.pmnd.rs/learn/getting-started/introduction).
+
+- Physics powered by [Three-Rapier](https://github.com/pmndrs/react-three-rapier). 
+
+- [gltfjsx](https://github.com/pmndrs/gltfjsx) for optimizing the GLB models for the web and turning them into JSX components.
+
+- Radio UI driven by [react-h5-audio-player](https://www.npmjs.com/package/react-h5-audio-player).
+
+- [Leva](https://github.com/pmndrs/leva) generated control panels helped me easily tweak mesh colliders and animations.
+
+- [r3f-perf](https://github.com/utsuboco/r3f-perf) helped me monitor and debug performance-related issues.
+
+- I used [motion](https://motion.dev/) for animating sketchbook descriptions' exits.
+
+- I borrowed quite a bit of the logic from [Wawa sensei's book tutorial](https://www.youtube.com/watch?v=b7a_Y1Ja6js) for my sketchbook.
+
+- Hosted on [Cloudlflare Pages](https://pages.cloudflare.com/). Sketchbook textures and radio songs are also fetched from a [R2 bucket](https://www.cloudflare.com/developer-platform/products/r2/) bound to a [worker](https://workers.cloudflare.com/product/workers). 
+
+- GLB models created, textured, and baked in [Blender 3.2](https://www.blender.org/).
+
+- [Plant](https://polyhaven.com/a/potted_plant_01) and [tree](https://polyhaven.com/a/island_tree_02) meshes originally from Polyhaven, as well as most GLB meshes' textures.
+
+- UIs and icons designed in [Figma](https://www.figma.com/). 
+
+- Sound effects sourced from Pixabay. I've modified and used the following:
+  
+  - [seagulls](https://pixabay.com/sound-effects/seagulls-435999/), [distant ocean](https://pixabay.com/sound-effects/nature-distant-gentle-ocean-dawn-chorus-23535/), [morning birds](https://pixabay.com/sound-effects/nature-a-beautiful-morning-concert-by-birds-16042017-haar-germany-461378/)
+  - [button toggle](https://pixabay.com/sound-effects/film-special-effects-button-press-85188/) 
+  - [footsteps](https://pixabay.com/sound-effects/film-special-effects-walking-on-wood-363349/) 
+  - [page flip](https://pixabay.com/sound-effects/household-closing-a-book-14771/)
