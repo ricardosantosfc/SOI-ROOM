@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import AudioPlayer, { RHAP_UI } from 'react-h5-audio-player'
 import 'react-h5-audio-player/lib/styles.css';
 import { useStore } from "../store"
@@ -26,18 +26,18 @@ const radio = [
     name: "saveDforest FM", lightColor: "#A2AA91", darkColor:"#8D9778",
     tracks: [
       { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"Scene 8", date:"2024" },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-2-p1.mp3', name: "Main Theme", date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-1.mp3', name: "Scene 1", date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-2-p2.mp3', name: "Scene 2", date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-3.mp3', name: "Scene 3", date:"2024" },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-4.mp3', name: "Scene 4" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-5.mp3', name: "Scene 5" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-6.mp3', name: "Scene 6" , date:"2024" },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-7.mp3', name: "Scene 7" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-8.mp3', name: "Scene 8" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-9.mp3', name: "Scene 9" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Quiz" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/minigame.mp3', name: "Minigame" , date:"2024" },
+      { src: '/tempMusic/scene-2-p1.mp3', name: "Main Theme", date:"2024"  },
+      { src: '/tempMusic/scene-1.mp3', name: "Scene 1", date:"2024"  },
+      { src: '/tempMusic/scene-2-p2.mp3', name: "Scene 2", date:"2024"  },
+      { src: '/tempMusic/scene-3.mp3', name: "Scene 3", date:"2024" },
+      { src: '/tempMusic/scene-4.mp3', name: "Scene 4" , date:"2024"  },
+      { src: '/tempMusic/scene-5.mp3', name: "Scene 5" , date:"2024"  },
+      { src: '/tempMusic/scene-6.mp3', name: "Scene 6" , date:"2024" },
+      { src: '/tempMusic/scene-7.mp3', name: "Scene 7" , date:"2024"  },
+      { src: '/tempMusic/scene-8.mp3', name: "Scene 8" , date:"2024"  },
+      { src: '/tempMusic/scene-9.mp3', name: "Scene 9" , date:"2024"  },
+      { src: '/tempMusic/quiz.mp3', name: "Quiz" , date:"2024"  },
+      { src: '/tempMusic/minigame.mp3', name: "Minigame" , date:"2024" },
     ]
   },
   {
@@ -58,20 +58,43 @@ const radio = [
 export function OverlayInteraction2 ({ visible }: { visible: boolean }){
 
 
-
+  const player = useRef<AudioPlayer>(null);
   const [currentStationIndex, setStationIndex] = useState(0);
   const [currentTrackIndex, setTrackIndex] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
+  const wasPlayingRef = useRef(false); 
   const currentStation = radio[currentStationIndex];
   const currentTrack = currentStation.tracks[currentTrackIndex];
 
-  const { isInfoHidden} = useStore(useShallow((state) => ({
+  const { isInfoHidden, showMainMenu} = useStore(useShallow((state) => ({
   
         isInfoHidden: state.isInfoHidden,
+        showMainMenu: state.showMainMenu
     
   })),)
 
-  //const currentTrackData = useMemo(() => playlist[currentTrack], [currentTrack]); 
+  //to resume playing once main menu is dismissed
+  useEffect(() => {
+    const audio = player.current?.audio.current;
+    if (!audio) return;
+
+
+    if (showMainMenu) {
+      if (isPlaying) {
+        audio.pause();
+        wasPlayingRef.current = true;
+      }
+    } else {
+      if (wasPlayingRef.current) {
+        audio.play();
+        wasPlayingRef.current = false;
+      }
+    }
+
+  }
+    , [showMainMenu, isPlaying])
+
+
   const handleClickNextTrack = () => {
         setTrackIndex((currentTrack) =>
             currentTrack < currentStation.tracks.length - 1 ? currentTrack + 1 : 0
@@ -160,6 +183,7 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
             ></input>
             / {currentStation.tracks.length}
           </div>}
+          ref={player}
           src={currentTrack.src}
           showSkipControls={true}
           showJumpControls={false}
