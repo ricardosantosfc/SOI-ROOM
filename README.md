@@ -8,7 +8,7 @@
 
 SÓI ROOM is a virtual space built to showcase works resulting from my creative hobbies, while also serving as a React and Three.js exploration project.
  
-Source code is located in the [`/homepage`](https://github.com/ricardosantosfc/personal-website/tree/main/homepage) directory.
+
 
 ## Installing, running and building
 
