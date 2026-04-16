@@ -40,12 +40,7 @@ const radio = [
       { src: '/tempMusic/minigame.mp3', name: "Minigame" , date:"2024" },
     ]
   },
-  {
-    name: "Indie Signal", lightColor: "#AA9191",darkColor:"#977878",
-    tracks: [
-      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', name:"undrunk my moustache", date: "2023" },
-    ]
-  },
+
    {
     name: "CRUNCH-WAVE99", lightColor: "#91A2AA",darkColor:"#788C96",
     tracks: [
@@ -187,7 +182,7 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
           src={currentTrack.src}
           showSkipControls={true}
           showJumpControls={false}
-          volume={0.3}
+          volume={0.1}
           onClickNext={handleClickNextTrack}
           onClickPrevious={handleClickPreviousTrack}
           onEnded={handleEnd}

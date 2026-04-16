@@ -323,7 +323,7 @@ useEffect(() => {
       /></mesh> */ } 
             </group>
              <RigidBody  type="fixed"  colliders={false}>
-               <CuboidCollider args={[1, 0.2, 0.7]} position={[-0.021, 0.6, 2.901]}
+               <CuboidCollider args={[1, 0.2, 0.7]} position={[-0.021, 0.6, 2.95]}
                 
                 sensor onIntersectionEnter={() => { setIsOnRaisedFloorImpl(true)}}
                 onIntersectionExit={() => { setIsOnRaisedFloorImpl(false) }}
