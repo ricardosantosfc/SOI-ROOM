@@ -174,7 +174,7 @@ export const OverlayInteraction1 = () => {
       {!isInfoHidden && page !== 0 && (
 
         <div className={styles.information} >
-          <AnimatePresence mode="wait">
+          <AnimatePresence mode="wait"> {/* throws warning due to multiple children, but is working nicely so far*/}
             <motion.div
               className={styles.informationChild}
               key={informations[(page - 1) * 2].name}

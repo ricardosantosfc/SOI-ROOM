@@ -56,6 +56,7 @@ pageGeometry.setAttribute("skinWeight",
 
 const whiteColor = new Color("white");
 
+
 const baseColor = new THREE.Color("rgba(222, 222, 222, 1)");
 const highlightColor = new THREE.Color("rgba(186, 186, 186, 1)");
 //const highlightColorOpened = new THREE.Color("rgba(75, 75, 75, 1)"); //for different color if opened/closed
@@ -63,16 +64,16 @@ const highlightColor = new THREE.Color("rgba(186, 186, 186, 1)");
 
 const pageMaterials = [
     new MeshStandardMaterial({
-        color: whiteColor,
+        color: highlightColor,
     }),
     new MeshStandardMaterial({
         color: "#2F2F2D",
     }),
     new MeshStandardMaterial({
-        color: whiteColor,
+        color: highlightColor,
     }),
     new MeshStandardMaterial({
-        color: whiteColor,
+        color: highlightColor,
     }),
 
 ];
@@ -100,8 +101,8 @@ function Page({ number, front, back, page, opened, isHighlighted, ...props }: Pa
         const mats = material as MeshStandardMaterial[]
 
 
-        mats[4].color = isHighlighted ? highlightColor : baseColor
-        mats[5].color = isHighlighted ? highlightColor : baseColor
+        mats[4].color.copy(isHighlighted ? highlightColor : baseColor)
+        mats[5].color.copy(isHighlighted ? highlightColor : baseColor)
 
 
     }, [isHighlighted])

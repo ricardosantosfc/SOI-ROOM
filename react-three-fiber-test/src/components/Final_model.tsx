@@ -155,7 +155,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
     if (!paintingRef.current) return;
 
     const paintingMat = paintingRef.current.material as THREE.MeshBasicMaterial;
-    paintingMat.color = canInteractWithMesh(0) ? highlightColor : baseColor;
+    paintingMat.color.copy(canInteractWithMesh(0) ? highlightColor : baseColor);
     paintingMat.needsUpdate = true;
 
 }, [canInteractWithMesh(0)]);
@@ -164,7 +164,7 @@ useEffect(() => {
     if (!radioRef.current) return;
 
     const radioMat = radioRef.current.material as THREE.MeshBasicMaterial;
-    radioMat.color = canInteractWithMesh(2) ? highlightColor : baseColor;
+    radioMat.color.copy (canInteractWithMesh(2) ? highlightColor : baseColor);
     radioMat.needsUpdate = true;
 
 }, [ canInteractWithMesh(2)]);
