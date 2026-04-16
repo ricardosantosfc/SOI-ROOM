@@ -177,7 +177,7 @@ useEffect(() => {
   const treeRef = useRef<THREE.Mesh>(null!)
  
    const group = useRef<THREE.Group>(null)
-   const { nodes, materials, animations } = useGLTF('/final_model-transformed.glb') as unknown as GLTFResult
+   const { nodes, materials, animations } = useGLTF('/final_model1-transformed.glb') as unknown as GLTFResult
    const { actions } = useAnimations(animations, group)
  
    //const min = 0.87
@@ -337,4 +337,4 @@ useEffect(() => {
       )
     }
 
-useGLTF.preload('/final_model-transformed.glb')
+useGLTF.preload('/final_model1-transformed.glb')
