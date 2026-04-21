@@ -84,8 +84,8 @@ const pageMaterials = [
 //`https://r2-worker.media-soi-room.workers.dev/${front}.jpg`
 
 pages.forEach((page) => {
-    useTexture.preload(`/textures/${page.front}.jpg`)
-    useTexture.preload(`/textures/${page.back}.jpg`)
+    useTexture.preload(`https://r2-worker.media-soi-room.workers.dev/${page.front}.jpg`)
+    useTexture.preload(`https://r2-worker.media-soi-room.workers.dev/${page.back}.jpg`)
 })
 
 interface PageProps {
@@ -113,8 +113,8 @@ function Page({ number, front, back, page, opened, isHighlighted, ...props }: Pa
     }, [isHighlighted])
 
     const [picture, picture2] = useTexture([
-        `/textures/${front}.jpg`,
-        `/textures/${back}.jpg`,
+        `https://r2-worker.media-soi-room.workers.dev/${front}.jpg`,
+        `https://r2-worker.media-soi-room.workers.dev/${back}.jpg`,
     ])
 
     picture.colorSpace = picture2.colorSpace = SRGBColorSpace
