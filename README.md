@@ -18,29 +18,29 @@ Refer to the README in [`/homepage`](https://github.com/ricardosantosfc/personal
 
 - Built with [Vite](https://vite.dev/).
 
-- Most Three.js logic is handled via [React-Three-fiber](https://r3f.docs.pmnd.rs/getting-started/introduction) and [Drei](https://drei.docs.pmnd.rs/getting-started/introduction) wrappers and hooks. 
+- Most of the Three.js logic is handled via [React-Three-fiber](https://r3f.docs.pmnd.rs/getting-started/introduction) and [Drei](https://drei.docs.pmnd.rs/getting-started/introduction) wrappers and hooks. 
 
 - State management via [Zustand](https://zustand.docs.pmnd.rs/learn/getting-started/introduction).
 
-- Physics powered by [Three-Rapier](https://github.com/pmndrs/react-three-rapier). 
+- Physics via [Three-Rapier](https://github.com/pmndrs/react-three-rapier). 
 
-- [gltfjsx](https://github.com/pmndrs/gltfjsx) for optimizing the GLB models for the web and turning them into JSX components.
+-  The GLB models were turned into JSX components and optimized for the web using [gltfjsx](https://github.com/pmndrs/gltfjsx).
 
-- Radio UI driven by [react-h5-audio-player](https://www.npmjs.com/package/react-h5-audio-player).
+- The app's radio is driven by [react-h5-audio-player](https://www.npmjs.com/package/react-h5-audio-player).
 
 - [Leva](https://github.com/pmndrs/leva) generated control panels helped me easily tweak mesh colliders and animations.
 
 - [r3f-perf](https://github.com/utsuboco/r3f-perf) helped me monitor and debug performance-related issues.
 
-- I used [motion](https://motion.dev/) for animating sketchbook descriptions' exits.
+- I used [motion](https://motion.dev/) to animate a couple divs' exits.
 
-- I borrowed quite a bit of the logic from [Wawa sensei's book tutorial](https://www.youtube.com/watch?v=b7a_Y1Ja6js) for my sketchbook.
+- Sketchbook logic is partially based on [Wawa sensei's book tutorial](https://www.youtube.com/watch?v=b7a_Y1Ja6js).
 
 - Hosted on [Cloudlflare Pages](https://pages.cloudflare.com/). Sketchbook textures and radio songs are also fetched from a [R2 bucket](https://www.cloudflare.com/developer-platform/products/r2/) bound to a [worker](https://workers.cloudflare.com/product/workers). 
 
 - GLB models created, textured, and baked in [Blender 3.2](https://www.blender.org/).
 
-- [Plant](https://polyhaven.com/a/potted_plant_01) and [tree](https://polyhaven.com/a/island_tree_02) meshes originally from Polyhaven, as well as most GLB meshes' textures.
+- [Plant](https://polyhaven.com/a/potted_plant_01) and [tree](https://polyhaven.com/a/island_tree_02) meshes originally from Poly Haven, as well as most GLB meshes' textures.
 
 - UIs and icons designed in [Figma](https://www.figma.com/). 
 
