@@ -12,7 +12,7 @@ SÓI ROOM is a virtual space built to showcase works resulting from my creative 
 
 ## Installing, running and building
 
-Refer to the README in [`/homepage`](https://github.com/ricardosantosfc/personal-website/tree/main/homepage#homepage).
+Refer to the README in [`/app`](https://github.com/ricardosantosfc/SOI-ROOM/tree/main/app).
 
 ## Tools, libraries, credits and mentions
 

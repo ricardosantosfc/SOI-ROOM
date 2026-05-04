@@ -41,7 +41,7 @@ function App() {
 
     const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent);
     setIsMobile(isMobile);
-    console.log(isMobile);
+
   }, [setIsMobile]);
 
   const plControls = useRef<PointerLockControlsImpl>(null!)

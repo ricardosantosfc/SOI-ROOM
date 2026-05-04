@@ -6,13 +6,14 @@ import { useShallow } from "zustand/shallow"
 import styles from "./styles/OverlayInteraction2.module.css"
 import { ChevronToggleButton } from './ChevronToggleButton';
 
+const radioSrc ="https://r2-worker.media-soi-room.workers.dev/"
 
 const radio = [
   {
     name: "AMB-FM", lightColor: "#91A2AA",darkColor:"#788C96",
     tracks: [
       { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', name:"Water Ambience", date:"2025" },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Quiz" },
+      { src: `${radioSrc}quiz.mp3`, name: "Quiz" },
     ]
   },
   {
@@ -20,25 +21,25 @@ const radio = [
     tracks: [
       { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', name:"Navegar", date:"2025" },
       { src: '/tempMusic/oldschool-192-lessdr-eq.mp3', name:"Oldshcol", date:"2026" },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Entropy" },
+      { src: `${radioSrc}quiz.mp3`, name: "Entropy" },
     ]
   },
   {
     name: "saveDforest FM", lightColor: "#A2AA91", darkColor:"#8D9778",
     tracks: [
       { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"Scene 8", date:"2024" },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-2-p1.mp3', name: "Main Theme", date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-1.mp3', name: "Scene 1", date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-2-p2.mp3', name: "Scene 2", date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-3.mp3', name: "Scene 3", date:"2024" },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-4.mp3', name: "Scene 4" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-5.mp3', name: "Scene 5" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-6.mp3', name: "Scene 6" , date:"2024" },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-7.mp3', name: "Scene 7" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-8.mp3', name: "Scene 8" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/scene-9.mp3', name: "Scene 9" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Quiz" , date:"2024"  },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/minigame.mp3', name: "Minigame" , date:"2024" },
+      { src: `${radioSrc}scene-2-p1.mp3`, name: "Main Theme", date:"2024"  },
+      { src: `${radioSrc}scene-1.mp3`, name: "Scene 1", date:"2024"  },
+      { src: `${radioSrc}scene-2-p2.mp3`, name: "Scene 2", date:"2024"  },
+      { src: `${radioSrc}scene-3.mp3`, name: "Scene 3", date:"2024" },
+      { src: `${radioSrc}scene-4.mp3`, name: "Scene 4" , date:"2024"  },
+      { src: `${radioSrc}scene-5.mp3`, name: "Scene 5" , date:"2024"  },
+      { src: `${radioSrc}scene-6.mp3`, name: "Scene 6" , date:"2024" },
+      { src: `${radioSrc}scene-7.mp3`, name: "Scene 7" , date:"2024"  },
+      { src: `${radioSrc}scene-8.mp3`, name: "Scene 8" , date:"2024"  },
+      { src: `${radioSrc}scene-9.mp3`, name: "Scene 9" , date:"2024"  },
+      { src: `${radioSrc}quiz.mp3`, name: "Quiz" , date:"2024"  },
+      { src: `${radioSrc}minigame.mp3`, name: "Minigame" , date:"2024" },
     ]
   },
 
@@ -46,7 +47,7 @@ const radio = [
     name: "CRUNCH-WAVE99", lightColor: "#91A2AA",darkColor:"#788C96",
     tracks: [
       { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"sonaasdsad" },
-      { src: 'https://r2-worker.media-soi-room.workers.dev/quiz.mp3', name: "Quizasdas" },
+      { src: `${radioSrc}quiz.mp3`, name: "Quizasdas" },
     ]
   }
 ]

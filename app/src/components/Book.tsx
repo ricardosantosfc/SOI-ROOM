@@ -11,7 +11,7 @@ import { useFrame } from "@react-three/fiber";
 import { degToRad } from "three/src/math/MathUtils.js";
 
 
-//`https://r2-worker.media-soi-room.workers.dev/${front}.jpg`
+const textureSrc = "https://r2-worker.media-soi-room.workers.dev/"
 const lerpFactor = 0.05;
 const PAGE_WIDTH = 1.28;
 const PAGE_HEIGHT = 1.71;
@@ -78,14 +78,11 @@ const pageMaterials = [
 
 ];
 
-// preload `/textures/${page.front}.jpg`
-// useTexture `/textures/${front}.jpg`
-//`https://r2-worker.media-soi-room.workers.dev/${page.front}.jpg`
-//`https://r2-worker.media-soi-room.workers.dev/${front}.jpg`
+
 
 pages.forEach((page) => {
-    useTexture.preload(`https://r2-worker.media-soi-room.workers.dev/${page.front}.jpg`)
-    useTexture.preload(`https://r2-worker.media-soi-room.workers.dev/${page.back}.jpg`)
+    useTexture.preload(`${textureSrc}${page.front}.jpg`)
+    useTexture.preload(`${textureSrc}${page.back}.jpg`)
 })
 
 interface PageProps {
@@ -113,8 +110,8 @@ function Page({ number, front, back, page, opened, isHighlighted, ...props }: Pa
     }, [isHighlighted])
 
     const [picture, picture2] = useTexture([
-        `https://r2-worker.media-soi-room.workers.dev/${front}.jpg`,
-        `https://r2-worker.media-soi-room.workers.dev/${back}.jpg`,
+        `${textureSrc}${front}.jpg`,
+        `${textureSrc}${back}.jpg`,
     ])
 
     picture.colorSpace = picture2.colorSpace = SRGBColorSpace
