@@ -6,7 +6,7 @@ import { useShallow } from "zustand/shallow"
 import styles from "./styles/OverlayInteraction2.module.css"
 import { ChevronToggleButton } from './ChevronToggleButton';
 
-const radioSrc ="https://r2-worker.media-soi-room.workers.dev/"
+const radioSrc = import.meta.env.VITE_MEDIA_SRC
 
 const radio = [
   {

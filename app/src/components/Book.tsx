@@ -11,7 +11,7 @@ import { useFrame } from "@react-three/fiber";
 import { degToRad } from "three/src/math/MathUtils.js";
 
 
-const textureSrc = "https://r2-worker.media-soi-room.workers.dev/"
+const textureSrc = import.meta.env.VITE_MEDIA_SRC
 const lerpFactor = 0.05;
 const PAGE_WIDTH = 1.28;
 const PAGE_HEIGHT = 1.71;
