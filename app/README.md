@@ -8,7 +8,7 @@ To install project dependecies, run:
 npm install
 ```
 ## Before running/building
-The app is currently configured to access images and audio from a source provided via the Vite environment variable `VITE_MEDIA_SRC`; without it the app will not load correctly.
+The app is currently configured to access images and audio from a source provided via a Vite environment variable, `VITE_MEDIA_SRC`; without it the app will not load correctly.
 
 This variable must thus be defined before running/building, through a `.env` file (not included in this repo) for local development, and/or configured directly in the production environment at build time: 
 
