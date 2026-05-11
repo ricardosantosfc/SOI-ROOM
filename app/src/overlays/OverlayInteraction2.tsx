@@ -7,27 +7,43 @@ import styles from "./styles/OverlayInteraction2.module.css"
 import { ChevronToggleButton } from './ChevronToggleButton';
 
 const radioSrc = import.meta.env.VITE_MEDIA_SRC
+const stationChangeAudio = new Audio("/sfx/stationChange-004.mp3");
+stationChangeAudio.volume= 0.6
+
+const LoopCustomIcon = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 24 24"
+    width="1em"
+    height="1em"
+    fill="currentColor"
+  >
+    <path d="M13,15V9H12L10,10V11H11.5V15M17,17H7V14L3,18L7,22V19H19V13H17M7,7H17V10L21,6L17,2V5H5V11H7V7Z" /></svg>
+);
 
 const radio = [
   {
-    name: "AMB-FM", lightColor: "#91A2AA",darkColor:"#788C96",
+    name: "PLACID FM", lightColor: "#91A2AA",darkColor:"#788C96",
     tracks: [
-      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', name:"Water Ambience", date:"2025" },
-      { src: `${radioSrc}quiz.mp3`, name: "Quiz" },
+      { src: '/tempMusic/ambthing-001.mp3', name:"Teshima", date:"2026" },
+      { src: '/tempMusic/crystalppaino256-eqmids.mp3', name: "Machair", date:"2026" },
     ]
   },
   {
-    name: "91 Electron", lightColor: "#AA9191",darkColor:"#977878",
+    name: "91 Electron", lightColor: "#AA9E91",darkColor:"#968878",
     tracks: [
-      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-4.mp3', name:"Navegar", date:"2025" },
-      { src: '/tempMusic/oldschool-192-lessdr-eq.mp3', name:"Oldshcol", date:"2026" },
-      { src: `${radioSrc}quiz.mp3`, name: "Entropy" },
+      { src: '/tempMusic/oldschool-256-ozone-lowpass.mp3', name:"blu3_sk135.mp3", date:"2026" },
+    ]
+  },
+  {
+    name: "Crunch Wave 99.8", lightColor: "#AA9191",darkColor:"#977878",
+    tracks: [
+      { src: '/tempMusic/chugs256.mp3', name:"january chugs", date:"2026" },
     ]
   },
   {
     name: "saveDforest FM", lightColor: "#A2AA91", darkColor:"#8D9778",
     tracks: [
-      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"Scene 8", date:"2024" },
       { src: `${radioSrc}scene-2-p1.mp3`, name: "Main Theme", date:"2024"  },
       { src: `${radioSrc}scene-1.mp3`, name: "Scene 1", date:"2024"  },
       { src: `${radioSrc}scene-2-p2.mp3`, name: "Scene 2", date:"2024"  },
@@ -43,13 +59,6 @@ const radio = [
     ]
   },
 
-   {
-    name: "CRUNCH-WAVE99", lightColor: "#91A2AA",darkColor:"#788C96",
-    tracks: [
-      { src: 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-9.mp3', name:"sonaasdsad" },
-      { src: `${radioSrc}quiz.mp3`, name: "Quizasdas" },
-    ]
-  }
 ]
 
 export function OverlayInteraction2 ({ visible }: { visible: boolean }){
@@ -116,6 +125,7 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
         setStationIndex((currentStationIndex) =>
             currentStationIndex < radio.length - 1 ? currentStationIndex + 1 : 0
         );
+        playSfx()
     };
 
     const handleClickPreviousStation = () => {
@@ -123,7 +133,16 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
         setStationIndex((currentStationIndex) => {
             return currentStationIndex -1 > -1 ? currentStationIndex -1 : radio.length-1
     }) 
+    playSfx()
     };
+
+    const playSfx = () => {
+      if(!stationChangeAudio.paused){
+        stationChangeAudio.pause();
+        stationChangeAudio.currentTime =0;
+      }
+      stationChangeAudio.play();
+    }
 
   return (
     <>
@@ -182,7 +201,7 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
           </div>}
           ref={player}
           src={currentTrack.src}
-          showSkipControls={true}
+          showSkipControls={currentStation.tracks.length > 1 }
           showJumpControls={false}
           volume={0.1}
           onClickNext={handleClickNextTrack}
@@ -195,6 +214,7 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
           onPlay={() => setIsPlaying(true)}
           onPause={() => setIsPlaying(false)}
           onError={() => { console.log('play error') }}
+          customIcons={{ loop: <LoopCustomIcon />, loopOff: <LoopCustomIcon/>}}
         />
       </div>  
        {visible && ( <ChevronToggleButton/> )}

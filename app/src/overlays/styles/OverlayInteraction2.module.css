@@ -86,6 +86,15 @@ width: 10px;
   transform: translateX(8px);
 }
 
+:global(.rhap_loop--off .rhap_repeat-button) {
+  color: #abababff;
+}
+
+:global(.rhap_loop--off .rhap_repeat-button):hover {
+  color: var(--light-color);
+}
+
+
 :global(.rhap_main-controls-button) svg {
   color:var(--dark-color);
     transition: color 0.5s ease;
