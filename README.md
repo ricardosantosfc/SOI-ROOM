@@ -50,3 +50,4 @@ Refer to the README in [`/app`](https://github.com/ricardosantosfc/SOI-ROOM/tree
   - [button toggle](https://pixabay.com/sound-effects/film-special-effects-button-press-85188/) 
   - [footsteps](https://pixabay.com/sound-effects/film-special-effects-walking-on-wood-363349/) 
   - [page flip](https://pixabay.com/sound-effects/household-closing-a-book-14771/)
+  - [radio switch](https://pixabay.com/sound-effects/film-special-effects-radio-switch-83014/), [radio noise](https://pixabay.com/sound-effects/film-special-effects-old-radio-noise-46734/)
