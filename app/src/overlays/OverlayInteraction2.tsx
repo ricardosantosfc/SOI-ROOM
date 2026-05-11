@@ -25,20 +25,20 @@ const radio = [
   {
     name: "PLACID FM", lightColor: "#91A2AA",darkColor:"#788C96",
     tracks: [
-      { src: '/tempMusic/ambthing-001.mp3', name:"Teshima", date:"2026" },
-      { src: '/tempMusic/crystalppaino256-eqmids.mp3', name: "Machair", date:"2026" },
+      { src: `${radioSrc}teshima.mp3`, name:"Teshima", date:"2026" },
+      { src: `${radioSrc}machair.mp3`, name: "Machair", date:"2026" }, 
     ]
   },
   {
     name: "91 Electron", lightColor: "#AA9E91",darkColor:"#968878",
     tracks: [
-      { src: '/tempMusic/oldschool-256-ozone-lowpass.mp3', name:"blu3_sk135.mp3", date:"2026" },
+      { src: `${radioSrc}blue-skies.mp3`, name:"blu3_sk135.mp3", date:"2026" },
     ]
   },
   {
     name: "Crunch Wave 99.8", lightColor: "#AA9191",darkColor:"#977878",
     tracks: [
-      { src: '/tempMusic/chugs256.mp3', name:"january chugs", date:"2026" },
+      { src: `${radioSrc}january-chugs.mp3`, name:"january chugs", date:"2026" },
     ]
   },
   {
