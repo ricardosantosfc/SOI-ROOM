@@ -42,7 +42,7 @@ Refer to the README in [`/app`](https://github.com/ricardosantosfc/SOI-ROOM/tree
 
 - [Plant](https://polyhaven.com/a/potted_plant_01) and [tree](https://polyhaven.com/a/island_tree_02) meshes originally from Poly Haven, as well as most GLB meshes' textures.
 
-- UIs and icons designed in [Figma](https://www.figma.com/). 
+- UIs and icons designed in [Figma](https://www.figma.com/). Additional icons from [Simple Design System](https://www.figma.com/community/file/1380235722331273046) and [Material Design](https://www.figma.com/community/file/1014241558898418245).
 
 - Sound effects sourced from Pixabay. I've modified and used the following:
   
