@@ -7,15 +7,17 @@ To install project dependecies, run:
 ```bash
 npm install
 ```
-## Before running/building
-The app is currently configured to access images and audio from a source provided via a Vite environment variable, `VITE_MEDIA_SRC`; without it the app will not load correctly.
+## Before running
+The app is currently configured to access images and audio from a source path defined in a Vite environment variable, `VITE_MEDIA_SRC`; without it the app will not load correctly.
 
-This variable must thus be defined before running/building, through a `.env` file (not included in this repo) for local development, and/or configured directly in the production environment at build time: 
-
+This variable must therefore be defined in a local `.env` file (not included in this repo) before starting a local development server:
 ```bash
 #.env (local file)
-VITE_MEDIA_SRC = path_to_files
+VITE_MEDIA_SRC = your_source_path
 ```
+It must also be configured manually in the production environment.
+
+Alternatively, for quick local testing, update the variables in `/components/Book.tsx` and `/overlays/OverlayInteraction2.tsx` to point to accessible resources.
 
 
 ## Development server
