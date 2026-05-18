@@ -1,4 +1,4 @@
-The app's source code is contained in this directory.
+The app is contained in this directory.
 
 ## Install dependencies
 
@@ -17,7 +17,7 @@ VITE_MEDIA_SRC = your_source_path
 ```
 It must also be configured manually in the production environment.
 
-Likewise, the data structures defined in `/data/BookData.tsx` and `/data/RadioData.tsx` must also point to accessible resources.
+Likewise, the data structures defined in `src/data/BookData.tsx` and `src/data/RadioData.tsx` must also point to accessible resources.
 
 
 ## Development server
