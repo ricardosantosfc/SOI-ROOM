@@ -22,8 +22,10 @@ interface ExperienceState { //see docs for fixed
   isPointing: number;
   setIsPointing: (fixed: number) => void 
 
-  isInfoHidden: boolean
-  setIsInfoHidden: (fixed: boolean) => void
+  //is current active interaction overlay collapsed (fully hidden or partially ) through chevron button?
+  //also set to false upon starting new interaction by ObjectInteractions.handleMeshClick
+  isOverlayCollapsed: boolean 
+  setIsOverlayCollapsed: (fixed: boolean) => void
 
   isOnRaisedFloor: boolean
   setIsOnRaisedFloor: (fixed: boolean) => void
@@ -57,8 +59,8 @@ export const useStore = create<ExperienceState>()((set) => ({
   isPointing: -1,
   setIsPointing: (fixed) => set({ isPointing: fixed }),
     
-  isInfoHidden: false,
-  setIsInfoHidden: (fixed) => set({ isInfoHidden: fixed }),
+  isOverlayCollapsed: false,
+  setIsOverlayCollapsed: (fixed) => set({ isOverlayCollapsed: fixed }),
 
   isOnRaisedFloor: true,
   setIsOnRaisedFloor: (fixed) => set({ isOnRaisedFloor: fixed }),

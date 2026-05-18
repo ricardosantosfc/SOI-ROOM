@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef } from "react"
-import { pages } from "../overlays/OverlayInteraction1"
+import { pages, imagesSrc } from "../data/BookData"
 import { Bone, BoxGeometry, Color, Float32BufferAttribute, MeshStandardMaterial, Skeleton, SkinnedMesh, SRGBColorSpace, Uint16BufferAttribute, Vector3, type Group } from "three";
 import { useTexture } from "@react-three/drei";
 import { useStore } from "../store";
@@ -11,7 +11,7 @@ import { useFrame } from "@react-three/fiber";
 import { degToRad } from "three/src/math/MathUtils.js";
 
 
-const textureSrc = import.meta.env.VITE_MEDIA_SRC
+
 const lerpFactor = 0.05;
 const PAGE_WIDTH = 1.28;
 const PAGE_HEIGHT = 1.71;
@@ -81,8 +81,8 @@ const pageMaterials = [
 
 
 pages.forEach((page) => {
-    useTexture.preload(`${textureSrc}${page.front}.jpg`)
-    useTexture.preload(`${textureSrc}${page.back}.jpg`)
+    useTexture.preload(`${imagesSrc}${page.front}.jpg`)
+    useTexture.preload(`${imagesSrc}${page.back}.jpg`)
 })
 
 interface PageProps {
@@ -112,12 +112,12 @@ function Page({ number, front, back, page, opened, isHighlighted, ...props }: Pa
 
     }, [isHighlighted])
 
-    const [picture, picture2] = useTexture([
-        `${textureSrc}${front}.jpg`,
-        `${textureSrc}${back}.jpg`,
+    const [image, image2] = useTexture([
+        `${imagesSrc}${front}.jpg`,
+        `${imagesSrc}${back}.jpg`,
     ])
 
-    picture.colorSpace = picture2.colorSpace = SRGBColorSpace
+    image.colorSpace = image2.colorSpace = SRGBColorSpace
 
     const group = useRef<Group>(null);
 
@@ -143,12 +143,12 @@ function Page({ number, front, back, page, opened, isHighlighted, ...props }: Pa
         const materials = [...pageMaterials,
         new MeshStandardMaterial({
             color: whiteColor,
-            map: picture, roughness: 1,
+            map: image, roughness: 1,
         }),
 
         new MeshStandardMaterial({
             color: whiteColor,
-            map: picture2, roughness: 1,
+            map: image2, roughness: 1,
         })
 
         ];

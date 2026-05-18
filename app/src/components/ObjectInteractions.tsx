@@ -13,7 +13,7 @@ export function useObjectInteractions() {
         setCurrentInteraction,
         isPointing, setIsPointing, 
         setIsOnRaisedFloor,
-        setIsInfoHidden,
+        setIsOverlayCollapsed,
     } = useStore(useShallow((state) =>
     ({
         isInteracting: state.isInteracting,
@@ -22,7 +22,7 @@ export function useObjectInteractions() {
         isPointing: state.isPointing,
         setIsPointing: state.setIsPointing,
         setIsOnRaisedFloor: state.setIsOnRaisedFloor,
-        setIsInfoHidden: state.setIsInfoHidden,
+        setIsOverlayCollapsed: state.setIsOverlayCollapsed,
 
     })),)
 
@@ -114,7 +114,7 @@ export function useObjectInteractions() {
                 event.stopPropagation()
                 setIsInteracting(true)
                 setCurrentInteraction(id)
-                setIsInfoHidden(false)
+                setIsOverlayCollapsed(false)
              }
     }
 

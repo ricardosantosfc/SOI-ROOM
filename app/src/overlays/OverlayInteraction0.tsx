@@ -5,15 +5,15 @@ import { useShallow } from "zustand/shallow"
 import { ChevronToggleButton } from "./ChevronToggleButton"
 export function OverlayInteraction0() {
 
-   const { isInfoHidden } = useStore(useShallow((state) => ({
+   const { isOverlayCollapsed } = useStore(useShallow((state) => ({
 
-      isInfoHidden: state.isInfoHidden,
+      isOverlayCollapsed: state.isOverlayCollapsed,
 
    })),)
    
    return (
       <>
-         {!isInfoHidden && (<div className={styles.information}>
+         {!isOverlayCollapsed && (<div className={styles.information}>
             <h2>Futamigaura (monochrome edit)</h2>
             <h4>Watercolor and gouache, 2025</h4>
          </div>)}
