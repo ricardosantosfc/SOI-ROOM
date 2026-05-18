@@ -87,8 +87,11 @@ pages.forEach((page) => {
 
 interface PageProps {
     number: number;
-    front?: string;
-    back?: string;
+    front: string;
+    back: string;
+    page: number;
+    opened: boolean;
+    isHighlighted: boolean;
     [key: string]: any; // allow any extra props
 }
 

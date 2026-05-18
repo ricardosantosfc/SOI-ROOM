@@ -23,8 +23,9 @@ interface InteractionCameraSettings {
   initialAzimuthalAngle?: number
 
 }
-//{x: -1.2060902118682861, y: 0.7310000061988831, z: 0.4509589076042175
+
 //  0 = paitnng , 1 = sketchbook, 2= radio
+// meshPositions based on values obtained through ObjectInteractions.handlePointerChange
 const interactionCameraMap = new Map<number, InteractionCameraSettings>([
   [0, {
     cameraPosition: new THREE.Vector3(-0.3, 0.7310000061988831, 0.4509589076042175),
@@ -35,11 +36,8 @@ const interactionCameraMap = new Map<number, InteractionCameraSettings>([
     minPolarAngle: Math.PI / 10,
     minDistance: 0.6,
     maxDistance: 1,
-    
+  }], 
 
-
-
-  }], //x: -0.01708, y: 2.398081733190338e-19, z: 0.5
   [1, { 
     cameraPosition: new THREE.Vector3(0.3, 0, -0.02), 
     meshPosition: new THREE.Vector3(-0.01708,2.398081733190338e-19,0.5),
@@ -53,7 +51,6 @@ const interactionCameraMap = new Map<number, InteractionCameraSettings>([
     initialAzimuthalAngle: 0
     }],
 
-    /** x: 0.8659097669424373 y: 0.2009999957084656 z: -0.9220410861321143*/
     [2, { 
     cameraPosition: new THREE.Vector3(0.865, 0.2, -0.2), 
     meshPosition: new THREE.Vector3(0.8659097669424373,0.2009999957084656,-0.9220410861321143),
@@ -82,7 +79,7 @@ const RAISED_LEVEL_YSTEP = 0.02
 
 export function Player() {
 
-  const movingRef = useRef(false); // track movement state
+  const movingRef = useRef(false); // track movement state for footstep sfx playing/pausing
   const ref = useRef<RapierRigidBody | null>(null)
   const [, get] = useKeyboardControls()
   const { camera } = useThree()
@@ -123,13 +120,13 @@ export function Player() {
       setShouldAnimateCamera(true)
 
     } else {
-      //console.log("interacting set to false") //triggered on initial render, but not problemctic. restricting to !showMainMenu causes rotation bugs
+     //triggered on initial render, but not problemctic. restricting to !showMainMenu causes rotation bugs
       setShouldAnimateCamera(true)
     }
   }, [isInteracting])
 
 
-  //when starts inetracting and camera should be animated, 
+  //when starts interacting and camera should be animated, 
   const animateCameraToInteraction = (state: RootState, targetInteraction: InteractionCameraSettings, smoothSpeed: number) => {
 
     
@@ -188,7 +185,7 @@ export function Player() {
     }
   }, [obControls])
 
-  ////when exiting inetractign and camera should be animated,
+  //when exiting interaction and camera should be animated,
   const animateCameraToPlayer = (state: RootState, playerTranslation: Vector, smoothSpeed: number) => {
 
     const targetPosition = new THREE.Vector3(playerTranslation.x, playerTranslation.y, playerTranslation.z)
@@ -213,7 +210,7 @@ export function Player() {
     }
   }
 
-  //handle raised floor entering/exit
+  //handle raised floor entering/exit. not subtle at all, but the effect is there. no point triggering gravity just for this
   useEffect(() => {
 
     const body = ref.current
@@ -290,7 +287,7 @@ export function Player() {
       audio.play(); 
     } else if (!isMoving && movingRef.current) {
       movingRef.current = false;
-      audio.pause(); // stop footsteps
+      audio.pause(); 
     }
 
     }

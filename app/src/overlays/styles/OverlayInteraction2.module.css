@@ -42,7 +42,7 @@ margin: 0.5em;
 
 :global(.rhap_container) {
 
-  border-radius: 6px; /* see radius all all */
+  border-radius: 6px; 
 
   background-color: #d9d9d9;
   box-shadow: 0 2px 6px rgba(42, 42, 42, 0.3);
@@ -56,8 +56,6 @@ margin: 0.5em;
 }
 
 
-
-/* background + download (same color)   background-color: #7c4545 */
 :global(.rhap_progress-bar),
 :global(.rhap_progress-bar-show-download),
 :global(.rhap_download-progress) {
@@ -146,7 +144,7 @@ width: 10px;
    border: none;
    cursor: pointer;
    background: none;
-  /*border-radius: 50%;*/
+
   
 }
 

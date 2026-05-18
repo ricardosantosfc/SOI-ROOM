@@ -14,7 +14,7 @@
     right: 20px;
     box-shadow: 0 2px 6px rgba(42, 42, 42, 0.3);
     animation: fadeInUp 0.35s ease;
-  /* border: 3px solid #2d2d2d;*/
+
 }
 
 @keyframes fadeInUp {

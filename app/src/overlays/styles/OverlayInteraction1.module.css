@@ -47,7 +47,7 @@ input[type="number"]:focus {
   overflow-x: auto;
   max-width: 100%;
   background-color: #d9d9d9fa;
-  border-radius: 6px; /* see radius all all */
+  border-radius: 6px; 
   align-items: center;
   gap: 2px;
   padding: 6px;
@@ -61,7 +61,7 @@ input[type="number"]:focus {
    border: none;
    cursor: pointer;
    background: none;
-  /*border-radius: 50%;*/
+
   
 }
 
@@ -139,7 +139,7 @@ transform: translateY(5px);
     gap: 2px;
     box-shadow: 0 2px 6px rgba(42, 42, 42, 0.3);
     animation: fadeInUp 0.35s ease;
-    /*border: 0.4vh solid #494949;*/
+
 
 }
 

@@ -105,9 +105,7 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   useEffect(() => {
     if (ambRef.current) {
       if(!showMainMenu){
-        ambRef.current.play()
-        //const helper = new PositionalAudioHelper( ambRef.current );
-        //ambRef.current.add( helper );
+        ambRef.current.play() // needs explicit play() after inital !showMainMenu, otherwise AudioContext not allowed to start. Same for the volume
         ambRef.current.setVolume(ambVolume)
       }
       
@@ -117,40 +115,9 @@ export function Model(props: JSX.IntrinsicElements['group']) {
   }
   }, [showMainMenu])
  
-     /* leva controls
-    const { boatposition, boatscale, boatrotation, oceanposition, colliderposition, colliderargs } = useControls('', {
-    boatposition: {
-     value: [24.146, -2.28, -49.276],
-     step: 0.001,
-   },
-   boatrotation: {
-     value: [0, 3.20, 0],
-     step: 0.01,
-   },
-   boatscale: {
-     value: [0.20, 0.20, 0.20],
-     step: 0.001,
-   },
-    oceanposition: {
-     value: [0, 0.952, 0],
-     step: 0.001,
-   },
-   colliderargs: {
-     value: [0.5, 0.5, 0.3],
-     step: 0.001,
-   },
-    colliderposition: {
-     value: [0.666, 0.8, -0.251],
-     step: 0.001,
-   },
-   
- }) */
-
   const paintingRef = useRef<THREE.Mesh>(null);
   const radioRef = useRef<THREE.Mesh>(null);
-  
-
-  
+   
   useEffect(() => {
     if (!paintingRef.current) return;
 
@@ -171,8 +138,7 @@ useEffect(() => {
   
 
   const boatRef = useRef<THREE.Mesh>(null!)
-  const oceanRef = useRef<THREE.Mesh>(null!)
-  const oceanDarkRef = useRef<THREE.Mesh>(null!)
+  const oceanShallowRef = useRef<THREE.Mesh>(null!)
   const grassRef = useRef<THREE.Mesh>(null!)
   const treeRef = useRef<THREE.Mesh>(null!)
  
@@ -180,30 +146,17 @@ useEffect(() => {
    const { nodes, materials, animations } = useGLTF('/final_model1-transformed.glb') as unknown as GLTFResult
    const { actions } = useAnimations(animations, group)
  
-   //const min = 0.87
-   //const max = 0.952
-   //const direction = useRef(1) // 1 = up, -1 = down
-
-
  
    useFrame((state) => {
-      const t = state.clock.getElapsedTime()
-      //grassRef.current.rotation.z = Math.sin(t * 1.5) * 0.0005 + Math.sin(t * 2.0) * 0.0001
+     const t = state.clock.getElapsedTime()
+
      grassRef.current.rotation.z = Math.sin(t * 1.5) * 0.0005 
      grassRef.current.rotation.y = Math.cos(t * 1.0) * 0.0005 
      
      treeRef.current.rotation.z = Math.sin(t * 1.5) * 0.0005
      treeRef.current.rotation.y = Math.cos(t * 1.0) * 0.0005
-     /*
-     if (oceanRef.current.position.y <= min) {
-       direction.current = 1
-     }
-     if (oceanRef.current.position.y >= max) {
-       direction.current = -1
-     }
  
-     oceanRef.current.position.y += direction.current * 0.0002 */
-     oceanRef.current.rotation.y -= 0.0003
+     oceanShallowRef.current.rotation.y -= 0.0003
      //oceanDarkRef.current.rotation.y -= 0.00003
  
      boatRef.current.position.x -= 0.001
@@ -229,7 +182,7 @@ useEffect(() => {
                 <PositionalAudio ref={ambRef} loop url="/sfx/amb-001.mp3" distance={1.5}/></mesh> 
              
               <mesh name="Cube003_2" geometry={nodes.Cube003_2.geometry} > <meshBasicMaterial
-                                            depthWrite={false}  // transparency rendering without popping like deitor
+                                            depthWrite={false}  // transparency rendering without popping like editor
                                             side={THREE.DoubleSide}  // render front and back faces
                                       transparent
                                       opacity={0.1}
@@ -275,12 +228,12 @@ useEffect(() => {
               <mesh ref={grassRef} name="Cube003_16" geometry={nodes.Cube003_16.geometry} material={materials['cutouts foliage dog.002']} />
               <mesh ref = {treeRef} name="Cube003_17" geometry={nodes.Cube003_17.geometry} material={materials['island_tree_02.002']} />
               <mesh name="Cube003_18" geometry={nodes.Cube003_18.geometry} material={materials['mountains.002']} material-depthWrite={false} />
-              <mesh ref={oceanDarkRef} name="Cube003_19" geometry={nodes.Cube003_19.geometry} material={materials['ocean.006']} material-roughness={0.23}  />
+              <mesh name="Cube003_19" geometry={nodes.Cube003_19.geometry} material={materials['ocean.006']} material-roughness={0.23}  />
               <mesh name="Cube003_20" geometry={nodes.Cube003_20.geometry} material={materials['rocks and boat.002']} />
             </group>
             <mesh name="gull_shadow" geometry={nodes.gull_shadow.geometry} material={materials['gull shadow']} position={[4.011, 0.231, -9.038]} scale={0.048} />
             <mesh ref={boatRef} name="boat" geometry={nodes.boat.geometry} material={materials.boat} position={[24.146, -2.28, -49.276]} rotation={[0, 3.20, 0]}scale={[0.20, 0.20, 0.20]} ></mesh>
-            <mesh ref={oceanRef} name="Sphere_ocean_shallow" geometry={nodes.Sphere_ocean_shallow.geometry} material={materials['ocean.001']} position={[0, 0.952, 0]} rotation={[0, 1.035, 0]} scale={30} />
+            <mesh ref={oceanShallowRef} name="Sphere_ocean_shallow" geometry={nodes.Sphere_ocean_shallow.geometry} material={materials['ocean.001']} position={[0, 0.952, 0]} rotation={[0, 1.035, 0]} scale={30} />
     
     
     
@@ -316,7 +269,7 @@ useEffect(() => {
               </mesh>
               </RigidBody>
               
-              {/* <mesh name="IMG_20210303_043949002_1" geometry={nodes.IMG_20210303_043949002_1.geometry} material={materials['paitnng glass.001']} > <meshBasicMaterial
+              {/*better performance without glass frame/ <mesh name="IMG_20210303_043949002_1" geometry={nodes.IMG_20210303_043949002_1.geometry} material={materials['paitnng glass.001']} > <meshBasicMaterial
         transparent
         opacity={0.1}
         color="#e8ecef"
