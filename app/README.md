@@ -17,7 +17,7 @@ VITE_MEDIA_SRC = your_source_path
 ```
 It must also be configured manually in the production environment.
 
-Alternatively, for quick local testing, update the variables in `/components/Book.tsx` and `/overlays/OverlayInteraction2.tsx` to point to accessible resources.
+Likewise, the data structures defined in `/data/BookData.tsx` and `/data/RadioData.tsx` must also point to accessible resources.
 
 
 ## Development server
