@@ -116,7 +116,7 @@ transform: translateY(5px);
   opacity: 1;
 }
 
-.information {
+.description {
   position: absolute;
   bottom: 30px;
   left: 50%;   /*center  */
@@ -125,7 +125,7 @@ transform: translateY(5px);
 }
 
 
-.informationChild {
+.descriptionChild {
     position: absolute;
   bottom: 0;
       display: flex;
@@ -154,29 +154,29 @@ transform: translateY(5px);
   }
 }
 
-.informationChild:first-child {
+.descriptionChild:first-child {
   right: 180px;          /* gap from center */
   transform: translateX(0); /* right edge fixed, grows left */
 }
 
-.informationChild:last-child {
+.descriptionChild:last-child {
   left: 180px;           /* gap from center */
   transform: translateX(0); /* left edge fixed, grows right */
 }
 
 
 
-.information h2,
-.information h4 {
+.description h2,
+.description h4 {
     margin: 0;
 }
 
-.information h2{
+.description h2{
   font-weight: 400;
     color: #424242;
 }
 
-.information h4{
+.description h4{
 font-weight: 300;
 color: #656565;
 }

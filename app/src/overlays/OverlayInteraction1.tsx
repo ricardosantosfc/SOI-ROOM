@@ -1,14 +1,15 @@
-/* handles book and page ui + state*/
+/* handles book and page ui + state. Assumes theres an even number of pages*/
 import styles from "./styles/OverlayInteraction1.module.css"
 import { useShallow } from "zustand/shallow";
 import { useStore } from "../store";
 import { AnimatePresence, motion } from "motion/react"
 import { ChevronToggleButton } from "./ChevronToggleButton";
-import { informations, images } from "../data/BookData";
+import { pages, pageDescriptions } from "../data/BookData";
 
 
  const audio = new Audio("/sfx/pageflipcover-001.mp3");
  audio.volume= 0.6;
+ const pageMax = pages.length -1
 
 export const OverlayInteraction1 = () => {
   
@@ -20,7 +21,7 @@ export const OverlayInteraction1 = () => {
 
   })),)
 
-  const pageMax = images.length / 2
+
   const changePage = (value: number) => {
     if ((page + value >= 0) && (page + value <= pageMax)) {
       setPage(page + value)
@@ -48,13 +49,13 @@ export const OverlayInteraction1 = () => {
                   setPage(0);
                   return;
                 }
-                const clamped = Math.min(images.length / 2, Math.max(0, value));
+                const clamped = Math.min(pageMax, Math.max(0, value));
                 setPage(clamped);
                 audio.currentTime = 0; 
                 audio.play();
               }}
               type="number"
-              max={images.length / 2}
+              max={pageMax}
               min={0}
             ></input>
             <span className={styles.inputPageMax}>/{pageMax}</span>
@@ -69,28 +70,28 @@ export const OverlayInteraction1 = () => {
 
       {!isOverlayCollapsed && page !== 0 && (
 
-        <div className={styles.information} >
+        <div className={styles.description} >
           <AnimatePresence mode="wait"> {/* throws warning due to multiple children, but is working nicely so far*/}
             <motion.div
-              className={styles.informationChild}
-              key={informations[(page - 1) * 2].name}
+              className={styles.descriptionChild}
+              key={pageDescriptions[(page - 1) * 2].name}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 0 }} //y:15
               transition={{ duration: 0.35 }}
             >
-              <h2 >{informations[(page - 1) * 2].name}</h2>
-              <h4>{informations[(page - 1) * 2].mediumYear}</h4>
+              <h2 >{pageDescriptions[(page - 1) * 2].name}</h2>
+              <h4>{pageDescriptions[(page - 1) * 2].mediumYear}</h4>
             </motion.div>
 
             <motion.div
-              className={styles.informationChild}
-              key={informations[(page - 1) * 2 + 1].name}
+              className={styles.descriptionChild}
+              key={pageDescriptions[(page - 1) * 2 + 1].name}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 0 }}
               transition={{ duration: 0.35 }}
             >
-              <h2 >{informations[(page - 1) * 2 + 1].name}</h2>
-              <h4>{informations[(page - 1) * 2 + 1].mediumYear}</h4>
+              <h2 >{pageDescriptions[(page - 1) * 2 + 1].name}</h2>
+              <h4>{pageDescriptions[(page - 1) * 2 + 1].mediumYear}</h4>
             </motion.div>
           </AnimatePresence>
 

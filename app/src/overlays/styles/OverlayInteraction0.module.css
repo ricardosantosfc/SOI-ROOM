@@ -1,5 +1,5 @@
 
-.information {
+.description {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -28,17 +28,17 @@
   }
 }
 
-.information h2,
-.information h4 {
+.description h2,
+.description h4 {
     margin: 0;
 }
 
-.information h2{
+.description h2{
   font-weight: 400;
   color:#424242
 }
 
-.information h4{
+.description h4{
 font-weight: 300;
 color: #656565;
 }

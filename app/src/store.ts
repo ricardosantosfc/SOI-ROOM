@@ -2,7 +2,7 @@
 import { OrbitControls as OrbitControlsImpl } from 'three-stdlib'
 import { create } from 'zustand'
 
-interface ExperienceState { //see docs for fixed
+interface ExperienceState { 
 
   isInteracting: boolean //if curr interaciton !=-1
   setIsInteracting: (fixed: boolean) => void

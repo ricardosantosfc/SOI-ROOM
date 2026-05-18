@@ -22,7 +22,7 @@ pages.push({
   back: "front",
 });
 
-export const informations = [
+export const pageDescriptions = [
 
   {
     name: "Lucky",

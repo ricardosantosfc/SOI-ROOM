@@ -13,7 +13,7 @@ export function OverlayInteraction0() {
    
    return (
       <>
-         {!isOverlayCollapsed && (<div className={styles.information}>
+         {!isOverlayCollapsed && (<div className={styles.description}>
             <h2>Futamigaura (monochrome edit)</h2>
             <h4>Watercolor and gouache, 2025</h4>
          </div>)}
