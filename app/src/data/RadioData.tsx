@@ -11,7 +11,7 @@ export const radio = [
   {
     name: "91 Electron", lightColor: "#AA9E91", darkColor: "#968878",
     tracks: [
-      { src: `${radioSrc}blue-skies.mp3`, name: "blu3_sk135.mp3", date: "2026" },
+      { src: `${radioSrc}blue-skies.mp3`, name: "blu3 sk135", date: "2026" },
     ]
   },
   {

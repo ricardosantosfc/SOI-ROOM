@@ -36,7 +36,7 @@ Refer to the README in [`/app`](https://github.com/ricardosantosfc/SOI-ROOM/tree
 
 - Sketchbook logic is partially based on [Wawa sensei's book tutorial](https://www.youtube.com/watch?v=b7a_Y1Ja6js).
 
-- Hosted on [Cloudlflare Pages](https://pages.cloudflare.com/). Sketchbook images and radio songs are also fetched from a [R2 bucket](https://www.cloudflare.com/developer-platform/products/r2/) bound to a [worker](https://workers.cloudflare.com/product/workers). 
+- Hosted on [Cloudlflare Pages](https://pages.cloudflare.com/). Sketchbook images and radio songs are also fetched from a [R2 bucket](https://www.cloudflare.com/developer-platform/products/r2/) bound to a [Worker](https://workers.cloudflare.com/product/workers). 
 
 - GLB models created, textured, and baked in [Blender 3.2](https://www.blender.org/).
 
