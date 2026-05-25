@@ -1,6 +1,8 @@
 import { useStore } from "../store"
 import { useShallow } from "zustand/shallow"
 import styles from "./styles/ChevronToggleButton.module.css"
+import chevronDown from '../assets/chevron-down.svg'
+import chevronUp from '../assets/chevron-up.svg'
 
 const audio = new Audio("/sfx/buttonclick-004.mp3");
 audio.volume= 0.6
@@ -19,7 +21,7 @@ export function ChevronToggleButton() {
     }
     return (
         <button className={styles.btnChevron} onClick={handleClick}>
-            <img className={styles.btnChevronImg} src={isOverlayCollapsed ? "../chevron-down.svg" : "../chevron-up.svg"}></img>
+            <img className={styles.btnChevronImg} src={isOverlayCollapsed ? chevronDown : chevronUp}></img>
         </button>
     );
 }

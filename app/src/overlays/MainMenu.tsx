@@ -3,6 +3,13 @@ import { useShallow } from "zustand/shallow"
 import { useStore } from "../store"
 import styles from "./styles/MainMenu.module.css"
 import { useState } from "react"
+import exit_interaction from '../assets/exit_interaction.svg'
+import interact from '../assets/interact.svg'
+import logo4 from '../assets/logo4.svg'
+import logoSignature from '../assets/logoSignature.svg'
+import look_around from '../assets/look_around.svg'
+import main_menu from '../assets/main_menu.svg'
+import walk from '../assets/walk.svg'
 
 type Props = {
   tryLock: () => void
@@ -44,7 +51,7 @@ export function MainMenu({ tryLock }: Props) {
           </button>
         </div>
         <div className={styles.logo}>
-          <img src="../logo4.svg" alt="logo" />
+          <img src= {logo4} alt="logo" />
         </div>
         <div className={styles.bottomArea}>
           {!showInfoMenu &&
@@ -52,27 +59,27 @@ export function MainMenu({ tryLock }: Props) {
               (<div className={styles.controls}>
                 <div className={styles.controlChild}>
                   <span>walk</span>
-                  <img src="../walk.svg" alt="walk" />
+                  <img src= {walk} alt="walk" />
                 </div>
 
                 <div className={styles.controlChild}>
                   <span>look around</span>
-                  <img src="../look_around.svg" alt="look around" />
+                  <img src={look_around} alt="look around" />
                 </div>
 
                 <div className={styles.controlChild}>
                   <span>interact</span>
-                  <img src="../interact.svg" alt="interact" />
+                  <img src={interact} alt="interact" />
                 </div>
 
                 <div className={styles.controlChild}>
                   <span>exit interaction</span>
-                  <img src="../exit_interaction.svg" alt="exit interaction" />
+                  <img src={exit_interaction} alt="exit interaction" />
                 </div>
 
                 <div className={styles.controlChild}>
                   <span>main menu</span>
-                  <img src="../main_menu.svg" alt="main menu" />
+                  <img src={main_menu} alt="main menu" />
                 </div>
               </div>) 
             : <div className={styles.info}> 
@@ -102,7 +109,7 @@ export function MainMenu({ tryLock }: Props) {
             </p>
             <div className={styles.logoSignatureWrapper} >
               <a className={styles.logoSignature} href="https://www.ricardo-santos.dev/" target="_blank" rel="noopener noreferrer" aria-label="Visit my personal website through this link ">
-                <img src="../logoSignature.svg" ></img>
+                <img src={logoSignature} ></img>
               </a>
             </div>
           </div>)}

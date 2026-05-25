@@ -6,6 +6,8 @@ import { useShallow } from "zustand/shallow"
 import styles from "./styles/OverlayInteraction2.module.css"
 import { ChevronToggleButton } from './ChevronToggleButton';
 import { radio } from '../data/RadioData';
+import arrow_left from '../assets/arrow-left.svg'
+import arrow_right from '../assets/arrow-right.svg'
 
 
 const stationChangeAudio = new Audio("/sfx/stationChange-004.mp3");
@@ -115,11 +117,11 @@ export function OverlayInteraction2 ({ visible }: { visible: boolean }){
           header={<div className={styles.audioPlayerHeader}>
             <div className={styles.stationControls} >
               <button className={styles.buttonControl} onClick={handleClickPreviousStation}>
-                <img src="../arrow-left.svg"></img>
+                <img src={arrow_left}></img>
               </button>
               <h2 >{currentStation.name} </h2>
               <button className={styles.buttonControl} onClick={handleClickNextStation}>
-                <img src="../arrow-right.svg"></img>
+                <img src={arrow_right}></img>
               </button>
             </div>
             <div className={styles.trackRow}>

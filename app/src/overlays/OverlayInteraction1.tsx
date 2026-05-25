@@ -5,6 +5,8 @@ import { useStore } from "../store";
 import { AnimatePresence, motion } from "motion/react"
 import { ChevronToggleButton } from "./ChevronToggleButton";
 import { pages, pageDescriptions } from "../data/BookData";
+import arrow_left from '../assets/arrow-left.svg'
+import arrow_right from '../assets/arrow-right.svg'
 
 
  const audio = new Audio("/sfx/pageflipcover-001.mp3");
@@ -36,7 +38,7 @@ export const OverlayInteraction1 = () => {
         <div className={styles.controls}>
 
           <button className={`${styles.buttonControl} ${page - 1 < 0 ? styles.notClickable : ""}`} onClick={() => changePage(-1)}>
-            <img src="../arrow-left.svg"></img>
+            <img src={arrow_left}></img>
           </button>
 
           <div className={styles.inputWrapper}>
@@ -62,7 +64,7 @@ export const OverlayInteraction1 = () => {
           </div>
 
           <button className={`${styles.buttonControl} ${page + 1 > pageMax ? styles.notClickable : ""}`} onClick={() => changePage(1)}>
-            <img src="../arrow-right.svg"></img>
+            <img src={arrow_right}></img>
           </button>
         </div>
 
