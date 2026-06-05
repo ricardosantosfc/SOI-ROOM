@@ -38,7 +38,7 @@ Refer to the README in [`/app`](https://github.com/ricardosantosfc/SOI-ROOM/tree
 
 - Hosted on [Cloudlflare Pages](https://pages.cloudflare.com/). Sketchbook images and radio songs are also fetched from a [R2 bucket](https://www.cloudflare.com/developer-platform/products/r2/) bound to a [Worker](https://workers.cloudflare.com/product/workers). 
 
-- GLB models created, textured, and baked in [Blender 3.2](https://www.blender.org/).
+- GLB models created, textured, and baked in [Blender](https://www.blender.org/).
 
 - [Plant](https://polyhaven.com/a/potted_plant_01) and [tree](https://polyhaven.com/a/island_tree_02) meshes originally from Poly Haven, as well as most GLB meshes' textures.
 
